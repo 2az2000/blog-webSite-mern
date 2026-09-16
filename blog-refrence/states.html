@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI states — NOVA</title>
+<meta name="description" content="Every error, empty and loading state NOVA ships, written as real screens rather than generic placeholders.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <div class="wrap">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumbs">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="design-system.html">Design system</a></li>
+        <li><span aria-current="page">States</span></li>
+      </ol>
+    </nav>
+  </div>
+
+  <header class="wrap page-head">
+    <p class="overline text-accent" style="margin-block-end:var(--s-16)">Reference screens</p>
+    <h1 class="display">Error, empty and loading states</h1>
+    <p class="lead" style="margin-block-start:var(--s-24)">Every state below is a real screen with its own copy. None of them says “something went wrong” — each one names the cause, says what the reader can do, and gives them a way out.</p>
+  </header>
+
+  <!-- ======================================================= ERROR SCREENS -->
+  <section class="section" aria-labelledby="err-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="err-title">Error screens</h2>
+      </div>
+
+      <div class="cards-row" style="--cols:2;gap:var(--s-48)">
+
+        <div>
+          <p class="state-cell__label" style="margin-block-end:var(--s-12)">404 · Page not found</p>
+          <div class="panel">
+            <p style="font-family:var(--font-serif);font-size:3.5rem;line-height:1;color:var(--accent)">404</p>
+            <h3 style="font-size:var(--fs-h3);margin-block:var(--s-16) var(--s-12)">This page has been unpublished, moved, or never existed</h3>
+            <p class="meta" style="margin-block-end:var(--s-24)">If you followed a link from inside NOVA, that is our mistake and we would like the referring URL.</p>
+            <div class="od-cluster" style="--od-gap:12px">
+              <a class="btn btn--primary btn--sm" href="404.html">Open the full 404 page</a>
+              <a class="btn btn--secondary btn--sm" href="search.html">Search instead</a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="state-cell__label" style="margin-block-end:var(--s-12)">500 · Server error</p>
+          <div class="panel">
+            <p style="font-family:var(--font-serif);font-size:3.5rem;line-height:1;color:var(--error)">500</p>
+            <h3 style="font-size:var(--fs-h3);margin-block:var(--s-16) var(--s-12)">Our end, not yours</h3>
+            <p class="meta" style="margin-block-end:var(--s-24)">Something on our servers failed while building this page. The team has been paged automatically — you do not need to report it. The article itself is fine.</p>
+            <div class="od-cluster" style="--od-gap:12px">
+              <button class="btn btn--primary btn--sm" type="button" data-retry>Try again</button>
+              <a class="btn btn--secondary btn--sm" href="index.html">Back to the homepage</a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="state-cell__label" style="margin-block-end:var(--s-12)">Offline · Network error</p>
+          <div class="panel">
+            <p style="font-family:var(--font-serif);font-size:3.5rem;line-height:1;color:var(--warning)">⌁</p>
+            <h3 style="font-size:var(--fs-h3);margin-block:var(--s-16) var(--s-12)">You appear to be offline</h3>
+            <p class="meta" style="margin-block-end:var(--s-24)">We could not reach the server. Anything you had already opened is still readable from this device, including saved articles.</p>
+            <div class="od-cluster" style="--od-gap:12px">
+              <button class="btn btn--primary btn--sm" type="button" data-retry>Retry now</button>
+              <a class="btn btn--secondary btn--sm" href="bookmarks.html">Read something saved</a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="state-cell__label" style="margin-block-end:var(--s-12)">451 / regional · Content unavailable</p>
+          <div class="panel">
+            <p style="font-family:var(--font-serif);font-size:3.5rem;line-height:1;color:var(--muted-soft)">—</p>
+            <h3 style="font-size:var(--fs-h3);margin-block:var(--s-16) var(--s-12)">This story is not available in your region</h3>
+            <p class="meta" style="margin-block-end:var(--s-24)">A legal restriction applies to this piece where you are reading from. We publish the reason and the jurisdiction on our transparency page rather than hiding it.</p>
+            <div class="od-cluster" style="--od-gap:12px">
+              <a class="btn btn--secondary btn--sm" href="index.html#about">Read why</a>
+              <a class="btn btn--ghost btn--sm" href="category.html?s=latest">Browse other stories</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== EMPTY STATES -->
+  <section class="section" aria-labelledby="empty-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="empty-title">Empty states</h2>
+      </div>
+
+      <div class="od-stack" style="--od-gap:48px">
+
+        <div>
+          <p class="state-cell__label" style="margin-block-end:var(--s-12)">Search · No results</p>
+          <div class="empty-state">
+            <span class="empty-state__mark" aria-hidden="true">?</span>
+            <h3>Nothing matched “sodium interconnect”</h3>
+            <p>Search covers headlines, standfirsts, authors and tags. Try a broader word, check the spelling, or start from a section instead.</p>
+            <div class="od-cluster" style="--od-gap:12px;justify-content:center">
+              <a class="btn btn--primary" href="category.html?s=latest">Browse the latest</a>
+              <a class="btn btn--secondary" href="trending.html">See what’s trending</a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="state-cell__label" style="margin-block-end:var(--s-12)">Bookmarks · Nothing saved</p>
+          <div class="empty-state">
+            <span class="empty-state__mark" aria-hidden="true" id="bookmarkMark"></span>
+            <h3>Nothing saved yet</h3>
+            <p>Tap the bookmark on any story and it lands here. Saved articles sync across your devices and stay in the account even if your subscription lapses.</p>
+            <a class="btn btn--primary" href="category.html?s=latest">Browse the latest</a>
+          </div>
+        </div>
+
+        <div>
+          <p class="state-cell__label" style="margin-block-end:var(--s-12)">Comments · None yet</p>
+          <div class="empty-state">
+            <span class="empty-state__mark" aria-hidden="true">“”</span>
+            <h3>No comments yet</h3>
+            <p>Be the first to respond. Corrections, first-hand experience and pointed disagreement are all welcome; the reporter reads every thread.</p>
+            <a class="btn btn--primary" href="article.html#comments">Open a story and write one</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ SKELETONS -->
+  <section class="section" aria-labelledby="skel-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="skel-title">Loading skeletons</h2>
+        <span class="section-head__link" style="text-decoration:none">Shaped like the layout they replace</span>
+      </div>
+
+      <p class="state-cell__label" style="margin-block-end:var(--s-16)">Card grid · latest stories</p>
+      <div class="cards-row" style="--cols:3">
+        <div class="skeleton-card">
+          <div class="skeleton skeleton--media"></div>
+          <div class="skeleton skeleton--line is-short"></div>
+          <div class="skeleton skeleton--title"></div>
+          <div class="skeleton skeleton--line"></div>
+          <div class="skeleton skeleton--line is-mid"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton skeleton--media"></div>
+          <div class="skeleton skeleton--line is-short"></div>
+          <div class="skeleton skeleton--title"></div>
+          <div class="skeleton skeleton--line"></div>
+          <div class="skeleton skeleton--line is-mid"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton skeleton--media"></div>
+          <div class="skeleton skeleton--line is-short"></div>
+          <div class="skeleton skeleton--title"></div>
+          <div class="skeleton skeleton--line"></div>
+          <div class="skeleton skeleton--line is-mid"></div>
+        </div>
+      </div>
+
+      <p class="state-cell__label" style="margin-block:var(--s-48) var(--s-16)">Article page · headline, byline and body</p>
+      <div class="panel">
+        <div class="skeleton-card" style="max-width:42rem;margin-inline:auto;gap:var(--s-16)">
+          <div class="skeleton skeleton--line is-short"></div>
+          <div class="skeleton skeleton--title" style="height:42px"></div>
+          <div class="skeleton skeleton--title" style="height:42px;width:80%"></div>
+          <div class="skeleton skeleton--line is-mid"></div>
+          <div class="skeleton skeleton--media" style="margin-block:var(--s-16)"></div>
+          <div class="skeleton skeleton--line"></div>
+          <div class="skeleton skeleton--line"></div>
+          <div class="skeleton skeleton--line is-mid"></div>
+          <div class="skeleton skeleton--line"></div>
+          <div class="skeleton skeleton--line is-short"></div>
+        </div>
+      </div>
+
+      <p class="state-cell__label" style="margin-block:var(--s-48) var(--s-16)">Compact list · trending rail</p>
+      <div class="od-stack" style="--od-gap:24px;max-width:28rem">
+        <div class="od-row" style="--od-gap:16px;align-items:flex-start">
+          <div class="skeleton od-fixed" style="width:96px;height:96px"></div>
+          <div class="skeleton-card od-fill"><div class="skeleton skeleton--line is-short"></div><div class="skeleton skeleton--line"></div><div class="skeleton skeleton--line is-mid"></div></div>
+        </div>
+        <div class="od-row" style="--od-gap:16px;align-items:flex-start">
+          <div class="skeleton od-fixed" style="width:96px;height:96px"></div>
+          <div class="skeleton-card od-fill"><div class="skeleton skeleton--line is-short"></div><div class="skeleton skeleton--line"></div><div class="skeleton skeleton--line is-mid"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== FEEDBACK BITS -->
+  <section class="section" aria-labelledby="feedback-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="feedback-title">Inline feedback</h2>
+      </div>
+
+      <div class="od-stack" style="--od-gap:16px;max-width:52rem">
+        <div class="notice notice--success"><span aria-hidden="true">{{check}}</span><span><strong style="color:var(--fg)">Saved.</strong> The story is in your reading list and available offline on this device.</span></div>
+        <div class="notice notice--warning"><span aria-hidden="true">{{alert}}</span><span><strong style="color:var(--fg)">You have one free article left this month.</strong> Reading stays free after that on the homepage and the Dispatch.</span></div>
+        <div class="notice notice--error"><span aria-hidden="true">{{alert}}</span><span><strong style="color:var(--fg)">Comment not posted.</strong> The connection dropped mid-send. Your text is still in the box — press post again.</span></div>
+        <div class="notice"><span aria-hidden="true">{{info}}</span><span><strong style="color:var(--fg)">This article was updated</strong> on 13 September. The changes are listed at the foot of the piece.</span></div>
+      </div>
+
+      <div class="od-cluster" style="--od-gap:12px;margin-block-start:var(--s-32)">
+        <button class="btn btn--primary" type="button" data-toast="success">Show a success toast</button>
+        <button class="btn btn--danger" type="button" data-toast="error">Show an error toast</button>
+        <button class="btn btn--secondary is-loading" type="button" aria-label="Loading example">Loading</button>
+        <button class="btn btn--primary" type="button" disabled>Disabled</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script src="assets/nova.js"></script>
+<script>
+(function () {
+  var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  var hits = [], n;
+  while ((n = walker.nextNode())) { if (/\{\{\w+\}\}/.test(n.nodeValue)) hits.push(n); }
+  hits.forEach(function (node) {
+    var span = document.createElement('span');
+    span.style.display = 'contents';
+    span.innerHTML = node.nodeValue.replace(/\{\{(\w+)\}\}/g, function (m, k) { return NOVA.icons[k] || ''; });
+    node.parentNode.replaceChild(span, node);
+  });
+})();
+
+window.novaPage = function () {
+  document.getElementById('bookmarkMark').innerHTML = NOVA.icons.bookmark;
+
+  document.querySelectorAll('[data-retry]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      b.classList.add('is-loading');
+      setTimeout(function () {
+        b.classList.remove('is-loading');
+        NOVA.toast('Still unreachable — try again in a moment', 'error');
+      }, 900);
+    });
+  });
+
+  document.querySelectorAll('[data-toast]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var k = b.getAttribute('data-toast');
+      NOVA.toast(k === 'error' ? 'Could not save — you appear to be offline' : 'Saved to your reading list', k);
+    });
+  });
+};
+</script>
+</body>
+</html>

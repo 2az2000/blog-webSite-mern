@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "newsletter.html",
+  "entry": "newsletter.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-14T13:36:15.421Z",
+  "updatedAt": "2026-09-14T13:36:15.421Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

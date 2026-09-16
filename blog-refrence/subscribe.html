@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subscribe to NOVA</title>
+<meta name="description" content="Three ways to read NOVA: free, Reader, and Premium. Independent journalism funded by readers rather than advertisers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ================================================================ HERO -->
+  <section class="category-hero">
+    <img src="assets/img/subscribe-hero.jpg" width="1600" height="1067" alt="" decoding="async">
+    <div class="wrap category-hero__body">
+      <nav aria-label="Breadcrumb">
+        <ol class="breadcrumbs" style="color:rgba(247,246,242,.75)">
+          <li><a href="index.html">Home</a></li>
+          <li><span aria-current="page" style="color:#F7F6F2">Subscribe</span></li>
+        </ol>
+      </nav>
+      <p class="overline" style="color:#B9C2FF;margin-block:var(--s-24) var(--s-16)">Reader-funded since 2021</p>
+      <h1 style="font-size:var(--fs-display);line-height:var(--lh-display);letter-spacing:var(--ls-display);max-width:17ch">Journalism paid for by the people who read it</h1>
+      <p class="lead" style="margin-block-start:var(--s-24)">NOVA takes no advertising inside the edit and runs no sponsored articles. Subscriptions are the whole business model, which is why the reporting can take eleven months when it needs to.</p>
+    </div>
+  </section>
+
+  <!-- =============================================================== PLANS -->
+  <section class="section" aria-labelledby="plans-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="plans-title">Choose how you read</h2>
+        <div class="tabs" role="tablist" aria-label="Billing period" data-tabs id="billingTabs" style="border:0">
+          <button role="tab" type="button" data-tab-key="monthly" aria-selected="true">Monthly</button>
+          <button role="tab" type="button" data-tab-key="annual" aria-selected="false">Annual</button>
+        </div>
+      </div>
+
+      <div class="plan-grid">
+
+        <div class="plan">
+          <div>
+            <h3 class="plan__name">Free</h3>
+            <p class="meta" style="margin-block-start:var(--s-8)">For readers who arrive from the Dispatch</p>
+          </div>
+          <div class="plan__price od-stat">
+            <span class="plan__amount od-nowrap">£0</span>
+            <span class="plan__cadence">Forever. No card required.</span>
+          </div>
+          <ul class="plan__list">
+            <li>{{check}}<span>Five articles a month, any section</span></li>
+            <li>{{check}}<span>The NOVA Dispatch, twice a week</span></li>
+            <li>{{check}}<span>Comments, once you verify an email</span></li>
+            <li class="is-off">{{minus}}<span>Long reads and investigations</span></li>
+            <li class="is-off">{{minus}}<span>Full archive back to 2021</span></li>
+            <li class="is-off">{{minus}}<span>Saved articles and collections</span></li>
+          </ul>
+          <a class="btn btn--secondary btn--block" href="auth.html#signup">Create a free account</a>
+        </div>
+
+        <div class="plan plan--featured">
+          <div class="od-row" style="--od-gap:12px">
+            <h3 class="plan__name od-fill">Reader</h3>
+            <span class="badge od-fixed">Most chosen</span>
+          </div>
+          <p class="meta">Everything we publish, on every device</p>
+          <div class="plan__price od-stat">
+            <span class="plan__amount od-nowrap" data-price-monthly="£7" data-price-annual="£70">£7</span>
+            <span class="plan__cadence" data-cadence-monthly="per month, cancel any time"
+                  data-cadence-annual="per year — two months free, cancel any time">per month, cancel any time</span>
+          </div>
+          <ul class="plan__list">
+            <li>{{check}}<span>Unlimited articles, no meter</span></li>
+            <li>{{check}}<span>Long reads, investigations and interviews</span></li>
+            <li>{{check}}<span>Full archive back to 2021</span></li>
+            <li>{{check}}<span>Saved articles, collections and reading list</span></li>
+            <li>{{check}}<span>Ad-free on every surface, including email</span></li>
+            <li class="is-off">{{minus}}<span>Reporter briefings and the annual print edition</span></li>
+          </ul>
+          <button class="btn btn--accent btn--block" type="button" data-modal-open="checkoutModal" data-plan="Reader">Subscribe — Reader</button>
+          <p class="meta">Student and low-income rate available at £3. No documentation required; we take your word for it.</p>
+        </div>
+
+        <div class="plan">
+          <div>
+            <h3 class="plan__name">Premium</h3>
+            <p class="meta" style="margin-block-start:var(--s-8)">For readers who want to fund the slow work</p>
+          </div>
+          <div class="plan__price od-stat">
+            <span class="plan__amount od-nowrap" data-price-monthly="£18" data-price-annual="£180">£18</span>
+            <span class="plan__cadence" data-cadence-monthly="per month, cancel any time"
+                  data-cadence-annual="per year — two months free, cancel any time">per month, cancel any time</span>
+          </div>
+          <ul class="plan__list">
+            <li>{{check}}<span>Everything in Reader</span></li>
+            <li>{{check}}<span>Monthly briefing call with the reporting desk</span></li>
+            <li>{{check}}<span>Datasets published alongside investigations</span></li>
+            <li>{{check}}<span>The annual print edition, posted</span></li>
+            <li>{{check}}<span>Two gift subscriptions a year</span></li>
+            <li>{{check}}<span>Your name in the masthead, if you want it</span></li>
+          </ul>
+          <button class="btn btn--primary btn--block" type="button" data-modal-open="checkoutModal" data-plan="Premium">Subscribe — Premium</button>
+        </div>
+
+      </div>
+
+      <div class="notice notice--success" style="margin-block-start:var(--s-32);max-width:62ch">
+        {{check}}
+        <span><strong style="color:var(--fg)">Secure checkout.</strong> Payments are processed by our provider over TLS; NOVA never sees or stores your card details. Cancel from account settings in two clicks — no phone call, no retention offer.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== COMPARISON -->
+  <section class="section" aria-labelledby="compare-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="compare-title">Compared side by side</h2>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="compare">
+          <caption class="sr-only">Feature comparison across the Free, Reader and Premium plans</caption>
+          <thead>
+            <tr><th scope="col">What you get</th><th scope="col">Free</th><th scope="col">Reader</th><th scope="col">Premium</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Articles per month</th><td class="od-nowrap">5</td><td class="od-nowrap">Unlimited</td><td class="od-nowrap">Unlimited</td></tr>
+            <tr><th scope="row">The NOVA Dispatch</th><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><th scope="row">Long reads &amp; investigations</th><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><th scope="row">Archive back to 2021</th><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><th scope="row">Saved articles &amp; collections</th><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><th scope="row">Comments</th><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            <tr><th scope="row">Published datasets</th><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
+            <tr><th scope="row">Monthly desk briefing</th><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
+            <tr><th scope="row">Annual print edition</th><td class="no">No</td><td class="no">No</td><td class="yes">Yes</td></tr>
+            <tr><th scope="row">Gift subscriptions</th><td class="no">No</td><td class="no">No</td><td class="od-nowrap">2 per year</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ EDITORIAL -->
+  <section class="section" aria-labelledby="why-title">
+    <div class="wrap grid12" style="row-gap:var(--s-32)">
+      <div style="grid-column:span 5">
+        <div class="section-head">
+          <h2 class="section-head__title" id="why-title">Where the money goes</h2>
+        </div>
+      </div>
+      <div style="grid-column:span 7">
+        <p class="lead">Roughly three quarters of subscription revenue pays reporters, editors and the freelance photography budget. The rest covers hosting, legal review for investigations, and the access-request fees that a story like the grid rebuild runs up over eleven months.</p>
+        <p style="margin-block-start:var(--s-24);color:var(--muted);max-width:62ch">We publish the full breakdown once a year, audited, alongside the number of subscribers. Both figures go up and down; we print them either way.</p>
+        <p class="meta" style="margin-block-start:var(--s-24)">Figures described here are illustrative content for this prototype.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= FAQ -->
+  <section class="section" aria-labelledby="sfaq-title">
+    <div class="wrap wrap--narrow">
+      <div class="section-head">
+        <h2 class="section-head__title" id="sfaq-title">Before you subscribe</h2>
+      </div>
+      <div class="accordion">
+        <details open>
+          <summary>Can I cancel whenever I want?</summary>
+          <div class="accordion__body">Yes, from account settings, in two clicks. Your access runs to the end of the period you have paid for, and we do not email you to ask why.</div>
+        </details>
+        <details>
+          <summary>What happens to my saved articles if I cancel?</summary>
+          <div class="accordion__body">They stay in your account. You keep the list and can export it as a file; you simply lose access to the pieces that sit behind the paywall.</div>
+        </details>
+        <details>
+          <summary>Do you offer a student rate?</summary>
+          <div class="accordion__body">£3 a month, on the honour system. Select it at checkout — there is nothing to upload and nobody checks.</div>
+        </details>
+        <details>
+          <summary>Is there a team or institutional rate?</summary>
+          <div class="accordion__body">Yes, for newsrooms, universities and libraries. Contact the newsroom and we will work out something proportionate to your size.</div>
+        </details>
+        <details>
+          <summary>Will you sell my data?</summary>
+          <div class="accordion__body">No. We do not run third-party advertising trackers, and reader data is never sold or shared for marketing. The privacy notice lists every processor we use.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ====================================================== CHECKOUT MODAL -->
+<div class="modal-backdrop" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle" aria-hidden="true">
+  <div class="modal">
+    <p class="overline text-accent">Secure checkout</p>
+    <h2 id="checkoutTitle" style="font-size:var(--fs-h3)">Subscribe — <span id="checkoutPlan">Reader</span></h2>
+    <p style="font-size:var(--fs-body-sm);color:var(--fg-soft)">You will be charged <strong id="checkoutPrice">£7</strong> and can cancel at any time from account settings.</p>
+    <div class="notice">
+      {{info}}
+      <span>This prototype takes no payment and transmits nothing. A real checkout would hand off to the payment provider at this point.</span>
+    </div>
+    <div class="od-row" style="--od-gap:12px;justify-content:flex-end;flex-wrap:wrap">
+      <button class="btn btn--secondary" type="button" data-modal-close>Not now</button>
+      <button class="btn btn--accent" type="button" data-modal-close id="confirmCheckout">Continue to payment</button>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script src="assets/nova.js"></script>
+<script>
+(function () {
+  var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  var hits = [], n;
+  while ((n = walker.nextNode())) { if (/\{\{\w+\}\}/.test(n.nodeValue)) hits.push(n); }
+  hits.forEach(function (node) {
+    var span = document.createElement('span');
+    span.style.display = 'contents';
+    span.innerHTML = node.nodeValue.replace(/\{\{(\w+)\}\}/g, function (m, k) { return NOVA.icons[k] || ''; });
+    node.parentNode.replaceChild(span, node);
+  });
+})();
+
+window.novaPage = function () {
+  var period = 'monthly';
+
+  document.getElementById('billingTabs').addEventListener('nova:tab', function (e) {
+    period = e.detail.key;
+    document.querySelectorAll('[data-price-monthly]').forEach(function (el) {
+      el.textContent = el.getAttribute('data-price-' + period);
+    });
+    document.querySelectorAll('[data-cadence-monthly]').forEach(function (el) {
+      el.textContent = el.getAttribute('data-cadence-' + period);
+    });
+    NOVA.toast(period === 'annual' ? 'Showing annual pricing — two months free' : 'Showing monthly pricing');
+  });
+
+  document.querySelectorAll('[data-modal-open="checkoutModal"]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var plan = b.getAttribute('data-plan');
+      document.getElementById('checkoutPlan').textContent = plan;
+      var card = b.closest('.plan');
+      var amount = card.querySelector('[data-price-monthly]');
+      document.getElementById('checkoutPrice').textContent =
+        amount ? amount.getAttribute('data-price-' + period) : '£0';
+    });
+  });
+
+  document.getElementById('confirmCheckout').addEventListener('click', function () {
+    NOVA.toast('Checkout would open here — nothing was charged');
+  });
+};
+</script>
+</body>
+</html>

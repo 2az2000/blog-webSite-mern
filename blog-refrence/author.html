@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elena Duarte — NOVA</title>
+<meta name="description" content="Author profile, biography and complete archive for a NOVA writer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <div class="wrap">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumbs">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html">Writers</a></li>
+        <li><span aria-current="page" id="crumbName">Elena Duarte</span></li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- =========================================================== AUTHOR HEAD -->
+  <header class="wrap section section--tight">
+    <div class="grid12" style="align-items:end;row-gap:var(--s-32)">
+
+      <div style="grid-column:span 4">
+        <figure id="portraitSlot">
+          <img class="od-media" src="assets/img/author-duarte.jpg" width="900" height="1200"
+               alt="Elena Duarte, photographed in a stairwell, half-turned toward the camera."
+               decoding="async">
+        </figure>
+      </div>
+
+      <div style="grid-column:span 8">
+        <p class="overline text-accent" style="margin-block-end:var(--s-16)">NOVA Writer</p>
+        <h1 class="display" id="authorName">Elena Duarte</h1>
+        <p class="lead" style="margin-block-start:var(--s-16)" id="authorRole">Senior Technology Correspondent</p>
+        <p style="margin-block-start:var(--s-24);max-width:62ch;color:var(--fg-soft)" id="authorBio"></p>
+
+        <div class="od-cluster" style="--od-gap:12px;margin-block-start:var(--s-32)">
+          <button class="btn btn--primary" type="button" id="followAuthor" aria-pressed="false">Follow</button>
+          <a class="btn btn--secondary" href="newsletter.html">Get their stories by email</a>
+          <a class="btn btn--ghost" href="#archive">Jump to archive</a>
+        </div>
+
+        <div class="od-cluster" style="--od-gap:8px;margin-block-start:var(--s-24)" id="socialLinks"></div>
+      </div>
+    </div>
+
+    <div class="stat-strip" style="margin-block-start:var(--s-64)">
+      <div class="stat od-stat"><span class="stat__value od-nowrap" id="statArticles">0</span><span class="stat__label">Stories for NOVA</span></div>
+      <div class="stat od-stat"><span class="stat__value od-nowrap" id="statReads">0</span><span class="stat__label">Total reads</span></div>
+      <div class="stat od-stat"><span class="stat__value od-nowrap" id="statMins">0</span><span class="stat__label">Minutes published</span></div>
+      <div class="stat od-stat"><span class="stat__value od-nowrap" id="statSince">2021</span><span class="stat__label">Writing here since</span></div>
+    </div>
+  </header>
+
+  <!-- ============================================================ EXPERTISE -->
+  <section class="section section--tight" aria-labelledby="expertise-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="expertise-title">Covers</h2>
+      </div>
+      <div class="od-cluster" style="--od-gap:8px" id="expertise"></div>
+    </div>
+  </section>
+
+  <!-- ====================================================== LATEST + POPULAR -->
+  <section class="section" aria-labelledby="author-latest">
+    <div class="wrap grid12" style="row-gap:var(--s-64)">
+      <div style="grid-column:span 8">
+        <div class="section-head">
+          <h2 class="section-head__title" id="author-latest">Latest work</h2>
+        </div>
+        <div id="authorFeatured" style="margin-block-end:var(--s-48)"></div>
+        <div class="cards-list" id="authorLatest" style="gap:var(--s-32)"></div>
+      </div>
+
+      <aside style="grid-column:span 4;display:grid;gap:var(--s-64);align-content:start">
+        <div>
+          <div class="section-head">
+            <h2 class="section-head__title">Most read</h2>
+          </div>
+          <div class="cards-list" id="authorPopular"></div>
+        </div>
+        <div class="panel panel--sunk">
+          <p class="overline text-accent">Tip this desk</p>
+          <h3 style="font-size:var(--fs-h4);margin-block:var(--s-12)">Something we should look at?</h3>
+          <p class="meta">Encrypted drop and postal address are on the newsroom contact page. Do not send confidential material from a work device.</p>
+          <a class="btn btn--secondary btn--sm" href="index.html#about" style="margin-block-start:var(--s-16)">Contact the newsroom</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============================================================== ARCHIVE -->
+  <section class="section" id="archive" aria-labelledby="archive-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="archive-title">Full archive</h2>
+        <span class="section-head__link" style="text-decoration:none" id="archiveCount"></span>
+      </div>
+      <div class="cards-list" id="authorArchive"></div>
+
+      <div id="authorEmpty" hidden>
+        <div class="empty-state">
+          <span class="empty-state__mark" aria-hidden="true">∅</span>
+          <h3>No published stories yet</h3>
+          <p>This writer has joined NOVA but has not filed yet. Follow them and their first piece will arrive in your reading list.</p>
+          <a class="btn btn--primary" href="category.html?s=latest">Read the rest of NOVA</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== OTHER WRITERS -->
+  <section class="section" aria-labelledby="writers-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="writers-title">Other NOVA writers</h2>
+      </div>
+      <div class="cards-row" id="otherWriters" style="--cols:4;gap:var(--s-24)"></div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script src="assets/nova.js"></script>
+<script>
+var AUTHOR_EXTRA = {
+  duarte:    { since: 2021, bio: 'Elena has covered software infrastructure for eleven years, previously at two trade publications and one that folded. She writes about the parts of the industry that do not photograph well: procurement, maintenance, and the long tail of systems nobody wants to own.', portrait: 'author-duarte.jpg' },
+  feldt:     { since: 2022, bio: 'Marcus edits the Business desk. Before NOVA he spent a decade covering mid-market companies — the ones too large to be scrappy and too small to be news — and he still thinks that is where the interesting decisions get made.' },
+  raghu:     { since: 2021, bio: 'Priya trained as a molecular biologist and has been explaining other people\'s experiments ever since. She is interested in methods, replication, and the long unfashionable middle of a research programme.' },
+  okonkwo:   { since: 2023, bio: 'Tomás writes criticism about objects and interfaces. He is unusually forgiving of ugly things that work and unusually harsh about beautiful things that do not.' },
+  vo:        { since: 2022, bio: 'Hannah covers culture with a bias toward institutions: archives, libraries, catalogues, and the people who maintain them long after the funding cycle has moved on.' },
+  ashworth:  { since: 2021, bio: 'Daniel writes the opinion column and edits outside contributors. He argues in public and changes his mind in public, which he regards as the same job.' },
+  lindqvist: { since: 2020, bio: 'Sofia reports on infrastructure and the institutions that fund it. Her work relies on access requests, night shifts, and a stubborn interest in maintenance budgets.' },
+  haddad:    { since: 2024, bio: 'Noor covers innovation with a working definition borrowed from a materials scientist: new means it survived contact with a factory.' }
+};
+
+window.novaPage = function () {
+  var key = NOVA.qs('a', 'duarte');
+  var au = NOVA.author(key);
+  var extra = AUTHOR_EXTRA[key] || { since: 2023, bio: 'Biography to follow.' };
+  var pool = window.NOVA_ARTICLES.filter(function (x) { return x.author === key; });
+
+  document.title = au.name + ' — NOVA';
+  document.getElementById('authorName').textContent = au.name;
+  document.getElementById('crumbName').textContent = au.name;
+  document.getElementById('authorRole').textContent = au.role;
+  document.getElementById('authorBio').textContent = extra.bio;
+  document.getElementById('statSince').textContent = extra.since;
+
+  /* Portrait: a commissioned photograph where one exists, otherwise the
+     publication's typographic monogram — never a stand-in photo of someone
+     who is not the writer. */
+  var slot = document.getElementById('portraitSlot');
+  if (extra.portrait) {
+    slot.innerHTML = '<img class="od-media" src="assets/img/' + extra.portrait + '" width="900" height="1200" alt="' +
+      NOVA.esc(au.name) + ', photographed for NOVA." decoding="async">';
+  } else {
+    slot.innerHTML = '<div style="aspect-ratio:3/4;display:grid;place-items:center;background:var(--surface-sunk);border:1px solid var(--border)">' +
+      '<span style="font-family:var(--font-serif);font-size:clamp(4rem,10vw,7rem);line-height:1;color:var(--accent)" aria-hidden="true">' +
+      NOVA.esc(au.initials) + '</span><span class="sr-only">' + NOVA.esc(au.name) + '</span></div>';
+  }
+
+  var reads = 0, mins = 0, tags = {};
+  pool.forEach(function (x) { reads += x.views; mins += x.mins; x.tags.forEach(function (t) { tags[t] = 1; }); });
+  document.getElementById('statArticles').textContent = pool.length;
+  document.getElementById('statReads').textContent = NOVA.fmtNum(reads);
+  document.getElementById('statMins').textContent = mins;
+
+  document.getElementById('expertise').innerHTML = Object.keys(tags).map(function (t) {
+    var name = (window.NOVA_TOPICS[t] || {}).name || t.replace(/-/g, ' ');
+    return '<a class="tag" href="topic.html?t=' + encodeURIComponent(t) + '">' + NOVA.esc(name) + '</a>';
+  }).join('') || '<span class="meta">No topics yet.</span>';
+
+  document.getElementById('socialLinks').innerHTML =
+    ['Mastodon', 'Bluesky', 'Signal', 'RSS'].map(function (s) {
+      return '<a class="tag" href="index.html#about">' + s + '</a>';
+    }).join('');
+
+  var follow = document.getElementById('followAuthor');
+  follow.addEventListener('click', function () {
+    var on = follow.getAttribute('aria-pressed') !== 'true';
+    follow.setAttribute('aria-pressed', String(on));
+    follow.textContent = on ? 'Following' : 'Follow';
+    NOVA.toast(on ? 'Following ' + au.name : 'Stopped following ' + au.name);
+  });
+
+  if (!pool.length) {
+    document.getElementById('authorEmpty').hidden = false;
+    document.getElementById('archiveCount').textContent = '';
+    document.getElementById('authorPopular').innerHTML = '<p class="meta">Nothing yet.</p>';
+    document.getElementById('authorLatest').innerHTML = '';
+  } else {
+    document.getElementById('authorFeatured').innerHTML = NOVA.card(pool[0], 'featured');
+    document.getElementById('authorLatest').innerHTML = pool.slice(1, 4)
+      .map(function (x) { return NOVA.card(x, 'horizontal'); }).join('');
+    document.getElementById('authorPopular').innerHTML = pool.slice()
+      .sort(function (x, y) { return y.views - x.views; }).slice(0, 4)
+      .map(function (x, i) { return NOVA.card(x, 'numbered', { rank: i + 1 }); }).join('');
+    document.getElementById('authorArchive').innerHTML = pool
+      .map(function (x) { return NOVA.card(x, 'minimal'); }).join('');
+    document.getElementById('archiveCount').textContent = pool.length + ' stories';
+  }
+
+  document.getElementById('otherWriters').innerHTML = Object.keys(window.NOVA_AUTHORS)
+    .filter(function (k) { return k !== key; }).slice(0, 4)
+    .map(function (k) {
+      var o = window.NOVA_AUTHORS[k];
+      var n = window.NOVA_ARTICLES.filter(function (x) { return x.author === k; }).length;
+      return '<a class="collection-tile" href="author.html?a=' + k + '">' +
+        '<span class="avatar avatar--lg" aria-hidden="true">' + NOVA.esc(o.initials) + '</span>' +
+        '<span style="font-family:var(--font-serif);font-size:var(--fs-h4)">' + NOVA.esc(o.name) + '</span>' +
+        '<span class="collection-tile__count">' + NOVA.esc(o.role) + '</span>' +
+        '<span class="collection-tile__count od-nowrap">' + n + ' stories</span></a>';
+    }).join('');
+};
+</script>
+</body>
+</html>

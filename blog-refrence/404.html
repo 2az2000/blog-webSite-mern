@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — NOVA</title>
+<meta name="description" content="The page you asked for is not here. Some suggestions for what to read instead.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <header class="wrap section" style="padding-block:var(--s-96) var(--s-48)">
+    <div class="grid12" style="align-items:end;row-gap:var(--s-32)">
+      <div style="grid-column:span 5">
+        <p style="font-family:var(--font-serif);font-size:clamp(6rem,18vw,11rem);line-height:.85;letter-spacing:-0.04em;color:var(--accent)">404</p>
+      </div>
+      <div style="grid-column:span 7">
+        <h1 class="display" style="font-size:var(--fs-h1)">This page has been unpublished, moved, or never existed</h1>
+        <p class="lead" style="margin-block-start:var(--s-24)">Three ordinary explanations, in rough order of likelihood. If you followed a link from inside NOVA, that is our mistake and the newsroom would like to know about it.</p>
+        <div class="od-cluster" style="--od-gap:12px;margin-block-start:var(--s-32)">
+          <a class="btn btn--primary" href="index.html">Go to the homepage</a>
+          <a class="btn btn--secondary" href="search.html">Search the archive</a>
+          <button class="btn btn--ghost" type="button" id="reportLink">Report the broken link</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" aria-labelledby="fourohfour-read">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="fourohfour-read">While you are here</h2>
+        <a class="section-head__link" href="category.html?s=latest">All stories</a>
+      </div>
+      <div class="cards-row" id="suggested" style="--cols:3"></div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script src="assets/nova.js"></script>
+<script>
+window.novaPage = function () {
+  document.getElementById('suggested').innerHTML = window.NOVA_ARTICLES.slice()
+    .sort(function (a, b) { return b.views - a.views; }).slice(0, 3)
+    .map(function (a) { return NOVA.card(a, 'default'); }).join('');
+  document.getElementById('reportLink').addEventListener('click', function () {
+    NOVA.toast('Thanks — the newsroom has the referring URL');
+  });
+};
+</script>
+</body>
+</html>

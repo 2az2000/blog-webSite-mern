@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why the Next Generation of Software Will Be Built Around Context — NOVA</title>
+<meta name="description" content="For forty years we built software that waits to be told what to do. The systems arriving now assume the opposite — and that changes what a product is.">
+<meta property="og:title" content="Why the Next Generation of Software Will Be Built Around Context">
+<meta property="og:description" content="For forty years we built software that waits to be told what to do. The systems arriving now assume the opposite.">
+<meta property="og:image" content="assets/img/context-software.jpg">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="technology" class="has-article-bar">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="reading-progress" role="presentation"><div class="reading-progress__bar"></div></div>
+<div id="site-header"></div>
+
+<main id="main">
+ <article data-progress-target>
+
+  <div class="wrap">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumbs">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="category.html?s=technology" data-bind="sectionHref"><span data-bind="sectionName">Technology</span></a></li>
+        <li><span aria-current="page" data-bind="crumbTitle">Why the Next Generation of Software…</span></li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- ========================================================= ARTICLE HEAD -->
+  <header class="wrap article-head">
+    <p class="card__kicker" style="justify-content:center">
+      <a class="badge" href="category.html?s=technology" data-bind="sectionHref"><span data-bind="sectionName">Technology</span></a>
+    </p>
+    <h1 data-bind="title">Why the Next Generation of Software Will Be Built Around Context</h1>
+    <p class="lead" data-bind="standfirst">For forty years we built software that waits to be told what to do. The systems arriving now assume the opposite — and that changes what a product is.</p>
+
+    <div class="article-byline">
+      <div class="byline">
+        <a href="author.html?a=duarte" aria-label="Elena Duarte, author profile">
+          <span class="avatar" aria-hidden="true" data-bind="authorInitials">ED</span>
+        </a>
+        <span class="byline__text">
+          <a class="byline__name" href="author.html?a=duarte" data-bind="authorName">Elena Duarte</a>
+          <span class="byline__meta" data-bind="authorRole">Senior Technology Correspondent</span>
+        </span>
+      </div>
+
+      <p class="meta">
+        <span class="od-nowrap">Published <time datetime="2026-09-12" data-bind="date">Sep 12, 2026</time></span><br>
+        <span class="od-nowrap">Updated <time datetime="2026-09-13">Sep 13, 2026</time></span>
+      </p>
+      <p class="meta od-nowrap"><span data-bind="mins">14</span> min read</p>
+
+      <div class="share" role="group" aria-label="Share this article">
+        <button class="share__btn" type="button" aria-label="Share on social" data-share>{{share}}</button>
+        <button class="share__btn" type="button" aria-label="Copy link to this article" id="copyLink">{{link}}</button>
+        <button class="share__btn" type="button" aria-label="Email this article">{{mail}}</button>
+        <button class="share__btn bookmark-btn" type="button" data-toggle="bookmark" aria-pressed="false"
+                data-label="Why the Next Generation of Software Will Be Built Around Context"
+                aria-label="Save for later: Why the Next Generation of Software Will Be Built Around Context">{{bookmark}}</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================== HERO IMAGE -->
+  <div class="wrap">
+    <figure class="figure-full">
+      <img src="assets/img/context-software.jpg" width="1600" height="1067" data-bind="heroImg"
+           alt="A long exposure of a server hall corridor, racks receding into low blue light."
+           fetchpriority="high" decoding="async">
+      <figcaption class="figcaption">
+        <span>Overnight maintenance at a colocation facility outside Dublin, where three of the systems described in this story are hosted.</span>
+        <span class="figcaption__credit">Photograph for NOVA</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <!-- ========================================================= ARTICLE BODY -->
+  <div class="wrap">
+    <div class="prose">
+
+      <p>The first spreadsheet did exactly what it was told and nothing else. That was the promise: a machine that would not surprise you. Four decades of software design inherited the assumption without ever quite examining it, and the result is an industry that treats a program's ignorance of its own situation as a feature rather than a limitation.</p>
+
+      <p>That assumption is now being dismantled, quietly, in products most people already use. The shift is not the one the marketing describes. It is not that software has become clever. It is that software has begun to carry a memory of the circumstances it is operating in — who is asking, what they were doing an hour ago, which of the fourteen open documents is the one that matters — and to act on that memory without being asked.</p>
+
+      <h2>The cost of starting from zero</h2>
+
+      <p>Ask the people who maintain large internal tools what they spend their time on and the answer is rarely the feature list. It is re-explaining. Every session begins from nothing: the tool does not know which project you are on, which conventions your team uses, or that the thing it is about to suggest was rejected last Tuesday for reasons recorded three tabs away.</p>
+
+      <p>“We measured it once, half as a joke,” said a platform engineer at a logistics company who asked not to be named because the study was never published. “Forty per cent of the interactions in our internal tooling were the user telling the system something the system already had access to. It just had not been wired to look.”</p>
+
+      <p>That number is not generalisable and she would be the first to say so. But the shape of it recurs everywhere. The expensive part of most software is not computation. It is the repeated human labour of supplying context that the system could, in principle, have held onto.</p>
+
+      <figure class="figure-full">
+        <img src="assets/img/ai-labour.jpg" width="1600" height="1067"
+             alt="A worker at a standing desk reviewing two monitors of scheduling software in a warehouse office."
+             loading="lazy" decoding="async">
+        <figcaption class="figcaption">
+          <span>A scheduling floor in Rotterdam, where context-aware tooling was piloted for eleven months before a wider rollout.</span>
+          <span class="figcaption__credit">Photograph for NOVA</span>
+        </figcaption>
+      </figure>
+
+      <blockquote class="pullquote">
+        The expensive part of most software is not computation. It is the repeated human labour of supplying context the system could have held onto.
+        <cite>Elena Duarte, reporting</cite>
+      </blockquote>
+
+      <h2>What changes when the system remembers</h2>
+
+      <p>The engineering answer is unglamorous: retrieval, state, and a great deal of plumbing. The design answer is more interesting, because holding context changes what an interface is <strong>for</strong>. A tool that knows nothing must be commanded. A tool that knows something can propose — and proposal is a fundamentally different interaction, with a different failure mode.</p>
+
+      <p>Command fails loudly. You asked for the wrong thing and you can see that you did. Proposal fails quietly. The system offers something plausible, you accept it because accepting is cheaper than checking, and the error propagates. Designers who have worked on these systems describe an unfamiliar obligation: making the machine's reasoning legible enough to argue with.</p>
+
+      <ul>
+        <li><strong>Show the working.</strong> Every proposal carries the two or three pieces of context that produced it, inline, not behind a disclosure.</li>
+        <li><strong>Make refusal cheap.</strong> Dismissing a suggestion should take one gesture and should teach the system something.</li>
+        <li><strong>Keep the command path.</strong> The moment a proposal is wrong, the user needs the old, dumb, explicit controls — intact and in the same place.</li>
+      </ul>
+
+      <div class="inline-recirc">
+        <p class="inline-recirc__label">Related reporting</p>
+        <div class="cards-list" id="inlineRecirc"></div>
+      </div>
+
+      <h2>The institutional problem</h2>
+
+      <p>Context is a privacy question wearing an engineering costume. A system that remembers what you were doing is, by construction, a system that holds a record of what you were doing — and the teams shipping these features are largely making retention decisions on their own, inside product reviews, without anything resembling institutional oversight.</p>
+
+      <blockquote class="blockquote">
+        “The question we kept failing to answer was not whether we could keep the context. It was who gets to delete it, and how fast, and whether a user can tell that it happened.”
+      </blockquote>
+
+      <p>Three of the four companies that spoke to NOVA for this story have written retention limits into their context layers. None of them surface those limits in the interface. Asked why, two gave versions of the same answer: nobody has worked out how to explain it without alarming people, and the incentive to try is weak.</p>
+
+      <h3>What to watch next</h3>
+
+      <p>The interesting signal over the next eighteen months will not be capability announcements. It will be whether context becomes portable — whether the record a system builds about how you work can be exported, inspected and moved, the way a document can. If it can, this is a genuine shift in what software is. If it cannot, it is a very sophisticated form of lock-in with a better story attached.</p>
+
+      <p>Either way, the assumption that shipped with the first spreadsheet is gone. Software has started to carry circumstance. The design profession has perhaps two years to work out what honest circumstance-carrying looks like before the conventions harden and we all live inside whatever we happened to ship.</p>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ AUTHOR BIO -->
+  <div class="wrap wrap--narrow">
+    <div class="author-bio">
+      <a href="author.html?a=duarte" aria-label="Elena Duarte, author profile">
+        <span class="avatar avatar--lg" aria-hidden="true" data-bind="authorInitials">ED</span>
+      </a>
+      <div>
+        <p class="overline text-accent" style="margin-block-end:var(--s-8)">Written by</p>
+        <h2 style="font-size:var(--fs-h3)"><a href="author.html?a=duarte" data-bind="authorName">Elena Duarte</a></h2>
+        <p class="meta" data-bind="authorRole">Senior Technology Correspondent</p>
+        <p style="margin-block:var(--s-16);max-width:62ch;color:var(--fg-soft);font-size:var(--fs-body-sm)" data-bind="authorBio">
+          Elena has covered software infrastructure for eleven years, previously at two trade publications and one that folded. She writes about the parts of the industry that do not photograph well: procurement, maintenance, and the long tail of systems nobody wants to own.
+        </p>
+        <div class="od-cluster" style="--od-gap:12px">
+          <a class="btn btn--secondary btn--sm" href="author.html?a=duarte">All stories by this author</a>
+          <button class="btn btn--ghost btn--sm" type="button" data-modal-open="contactModal">Contact securely</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================ TAGS -->
+    <section aria-labelledby="tags-title" style="padding-block:var(--s-16) var(--s-48)">
+      <h2 class="sr-only" id="tags-title">Filed under</h2>
+      <div class="od-cluster" style="--od-gap:8px">
+        <span class="meta od-nowrap" style="margin-inline-end:var(--s-8)">Filed under</span>
+        <div class="od-cluster" style="--od-gap:8px" id="tagList"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ====================================================== RELATED STORIES -->
+  <section class="section" aria-labelledby="related-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="related-title">Related stories</h2>
+        <a class="section-head__link" href="category.html?s=technology">More from this section</a>
+      </div>
+      <div class="cards-row" id="relatedGrid" style="--cols:3"></div>
+    </div>
+  </section>
+
+  <!-- ================================================== MORE FROM THE AUTHOR -->
+  <section class="section" aria-labelledby="more-author-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="more-author-title">More from <span data-bind="authorName">Elena Duarte</span></h2>
+        <a class="section-head__link" href="author.html?a=duarte" data-bind="authorHref">Author archive</a>
+      </div>
+      <div class="cards-list" id="moreAuthor" style="gap:var(--s-24)"></div>
+    </div>
+  </section>
+
+ </article>
+
+  <!-- ======================================================= NEWSLETTER CTA -->
+  <section class="newsletter-band" aria-labelledby="anl-title">
+    <div class="wrap newsletter-band__grid">
+      <div>
+        <p class="overline" style="color:var(--accent);margin-block-end:var(--s-16)">Keep reading NOVA</p>
+        <h2 id="anl-title" style="font-size:var(--fs-h2)">The reporting behind the headline, twice a week</h2>
+        <p class="lead" style="margin-block-start:var(--s-16)">Stories like this one, plus what our editors read elsewhere. Free.</p>
+      </div>
+      <form class="newsletter-form" data-validate data-success="You're subscribed. Check your inbox to confirm." novalidate>
+        <div class="field">
+          <label class="field__label" for="artEmail" style="color:inherit">Email address <span class="field__req" aria-hidden="true">required</span></label>
+          <input class="input" id="artEmail" type="email" required data-label-name="Email address" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <button class="btn btn--primary" type="submit">Subscribe free</button>
+        <p class="meta" style="color:inherit;opacity:.65">Unsubscribe in one click from any issue.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============================================================= COMMENTS -->
+  <section class="section" id="comments" aria-labelledby="comments-title">
+    <div class="wrap wrap--narrow">
+      <div class="section-head">
+        <h2 class="section-head__title" id="comments-title">Comments (<span id="commentCount">4</span>)</h2>
+        <div class="dropdown" id="commentSort">
+          <button class="btn btn--ghost btn--sm" type="button" data-dropdown-trigger aria-expanded="false" aria-haspopup="true">
+            Sort: <span data-dropdown-label>Newest</span>
+          </button>
+          <div class="dropdown__menu" role="menu" aria-label="Sort comments">
+            <button role="menuitemradio" type="button" aria-checked="true" data-key="new" data-value="Newest">Newest</button>
+            <button role="menuitemradio" type="button" aria-checked="false" data-key="old" data-value="Oldest">Oldest</button>
+            <button role="menuitemradio" type="button" aria-checked="false" data-key="top" data-value="Most liked">Most liked</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- composer (signed-in state) -->
+      <form class="panel" id="commentForm" style="margin-block-end:var(--s-32)">
+        <div class="od-row" style="--od-gap:12px;margin-block-end:var(--s-16)">
+          <span class="avatar avatar--sm" aria-hidden="true">YO</span>
+          <span class="meta od-fill">Posting as <strong style="color:var(--fg)">You</strong> · Subscriber</span>
+          <button class="btn btn--ghost btn--sm od-fixed" type="button" data-modal-open="rulesModal">Community rules</button>
+        </div>
+        <div class="field">
+          <label class="field__label" for="commentBody">Your comment <span class="field__req" aria-hidden="true">required</span></label>
+          <textarea class="textarea" id="commentBody" placeholder="Add to the reporting — corrections and first-hand experience are especially welcome."></textarea>
+          <p class="field__hint">Comments are moderated by a person, usually within an hour. Be specific; be civil.</p>
+        </div>
+        <div class="od-row" style="--od-gap:12px;margin-block-start:var(--s-16);justify-content:flex-end">
+          <button class="btn btn--ghost" type="reset">Clear</button>
+          <button class="btn btn--primary" type="submit">Post comment</button>
+        </div>
+      </form>
+
+      <!-- logged-out state, shown for reference -->
+      <div class="notice" style="margin-block-end:var(--s-32)">
+        {{info}}
+        <span>Reading this signed out? <a href="auth.html">Sign in</a> or <a href="auth.html#signup">create a free account</a> to join the discussion. Reading never requires an account.</span>
+      </div>
+
+      <div id="commentList">
+        <article class="comment">
+          <span class="avatar avatar--sm" aria-hidden="true">JR</span>
+          <div>
+            <div class="comment__head">
+              <span class="comment__author">Jonas Rehn</span>
+              <span class="comment__badge">Subscriber</span>
+              <span class="meta">2 hours ago</span>
+            </div>
+            <p class="comment__body">The “make refusal cheap” point is the one teams skip. We shipped a suggestion surface last year with a dismiss action buried in an overflow menu, and the telemetry made it look like users loved the suggestions. They just could not find the exit.</p>
+            <div class="comment__actions">
+              <button class="comment__action" type="button" data-toggle="like" aria-pressed="false" aria-label="Like this comment">{{heart}}<span data-count>34</span></button>
+              <button class="comment__action" type="button">{{reply}}Reply</button>
+              <button class="comment__action" type="button">{{flag}}Report</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="comment comment--reply">
+          <span class="avatar avatar--sm avatar--2" aria-hidden="true">ED</span>
+          <div>
+            <div class="comment__head">
+              <span class="comment__author">Elena Duarte</span>
+              <span class="comment__badge">Author</span>
+              <span class="meta">1 hour ago</span>
+            </div>
+            <p class="comment__body">That matches what two of the four teams told me, and it is why I did not use engagement figures anywhere in the piece. If you are able to share the telemetry shape, my contact details are on my author page.</p>
+            <div class="comment__actions">
+              <button class="comment__action" type="button" data-toggle="like" aria-pressed="false" aria-label="Like this comment">{{heart}}<span data-count>52</span></button>
+              <button class="comment__action" type="button">{{reply}}Reply</button>
+              <button class="comment__action" type="button">{{flag}}Report</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="comment">
+          <span class="avatar avatar--sm" aria-hidden="true">MP</span>
+          <div>
+            <div class="comment__head">
+              <span class="comment__author">Marta Pereira</span>
+              <span class="meta">4 hours ago</span>
+            </div>
+            <p class="comment__body">Portability is the right thing to watch. Everything else in this space is a UI question; that one is a market-structure question, and it will be decided by procurement departments long before it is decided by designers.</p>
+            <div class="comment__actions">
+              <button class="comment__action" type="button" data-toggle="like" aria-pressed="false" aria-label="Like this comment">{{heart}}<span data-count>28</span></button>
+              <button class="comment__action" type="button">{{reply}}Reply</button>
+              <button class="comment__action" type="button">{{flag}}Report</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="comment comment--moderated">
+          <span class="avatar avatar--sm" aria-hidden="true">—</span>
+          <div>
+            <div class="comment__head">
+              <span class="comment__author">Comment removed</span>
+              <span class="meta">5 hours ago</span>
+            </div>
+            <p class="comment__body">Removed by a moderator for personal abuse. The author has been notified and may edit and repost once.</p>
+          </div>
+        </article>
+      </div>
+
+      <div id="commentEmpty" hidden>
+        <div class="empty-state">
+          <span class="empty-state__mark" aria-hidden="true">“”</span>
+          <h3>No comments yet</h3>
+          <p>Be the first to respond. Corrections, first-hand experience and pointed disagreement are all welcome.</p>
+        </div>
+      </div>
+
+      <div class="pagination">
+        <a href="#comments" class="is-disabled">←</a>
+        <a href="#comments" aria-current="page">1</a>
+        <a href="#comments">2</a>
+        <a href="#comments" aria-label="Next page of comments">→</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================================================== MOBILE STICKY ACTIONS -->
+<div class="mobile-article-bar" role="group" aria-label="Article actions">
+  <a class="btn btn--primary od-fill" href="#comments">Join the discussion</a>
+  <button class="icon-btn bookmark-btn od-fixed" type="button" data-toggle="bookmark" aria-pressed="false"
+          data-label="this article" aria-label="Save for later: this article">{{bookmark}}</button>
+  <button class="icon-btn od-fixed" type="button" data-share aria-label="Share this article">{{share}}</button>
+</div>
+
+<!-- ================================================================ MODALS -->
+<div class="modal-backdrop" id="rulesModal" role="dialog" aria-modal="true" aria-labelledby="rulesTitle" aria-hidden="true">
+  <div class="modal">
+    <h2 id="rulesTitle" style="font-size:var(--fs-h3)">Community rules</h2>
+    <p style="font-size:var(--fs-body-sm);color:var(--fg-soft)">NOVA comments are moderated by people, not filters. Three rules: argue with the reporting rather than the reporter, disclose a stake if you have one, and do not post anything you would not say with your name attached — because it is.</p>
+    <div class="od-row" style="--od-gap:12px;justify-content:flex-end">
+      <button class="btn btn--secondary" type="button" data-modal-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="contactTitle" aria-hidden="true">
+  <div class="modal">
+    <h2 id="contactTitle" style="font-size:var(--fs-h3)">Contact this reporter</h2>
+    <p style="font-size:var(--fs-body-sm);color:var(--fg-soft)">For confidential material, use the newsroom's encrypted drop rather than email. Do not use a work device or a work network.</p>
+    <div class="notice notice--warning">{{alert}}<span>This prototype does not transmit anything. The real drop would be published at a separate, hardened domain.</span></div>
+    <div class="od-row" style="--od-gap:12px;justify-content:flex-end">
+      <button class="btn btn--secondary" type="button" data-modal-close>Close</button>
+      <button class="btn btn--primary" type="button" data-modal-close>Open secure drop</button>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script src="assets/nova.js"></script>
+<script>
+/* Expand {{icon}} placeholders from the shared icon family, and set the active
+   nav section, before the header component renders. */
+(function () {
+  var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  var hits = [], n;
+  while ((n = walker.nextNode())) { if (/\{\{\w+\}\}/.test(n.nodeValue)) hits.push(n); }
+  hits.forEach(function (node) {
+    var span = document.createElement('span');
+    span.style.display = 'contents';
+    span.innerHTML = node.nodeValue.replace(/\{\{(\w+)\}\}/g, function (m, k) { return NOVA.icons[k] || ''; });
+    node.parentNode.replaceChild(span, node);
+  });
+  var slug = new URLSearchParams(location.search).get('a');
+  var art = (window.NOVA_ARTICLES || []).filter(function (x) { return x.slug === slug; })[0];
+  if (art) document.body.setAttribute('data-nav', art.section);
+})();
+
+window.novaPage = function () {
+  var slug = NOVA.qs('a', 'context-software');
+  var a = NOVA.find(slug) || NOVA.find('context-software');
+  var au = NOVA.author(a.author);
+  var sec = NOVA.section(a.section);
+
+  var set = function (key, fn) {
+    document.querySelectorAll('[data-bind="' + key + '"]').forEach(fn);
+  };
+  document.title = a.title + ' — NOVA';
+  set('title', function (el) { el.textContent = a.title; });
+  set('crumbTitle', function (el) { el.textContent = a.title.length > 46 ? a.title.slice(0, 44) + '…' : a.title; });
+  set('standfirst', function (el) { el.textContent = a.standfirst; });
+  set('sectionName', function (el) { el.textContent = sec.name; });
+  set('sectionHref', function (el) { el.setAttribute('href', 'category.html?s=' + a.section); });
+  set('date', function (el) { el.textContent = NOVA.fmtDate(a.date); el.setAttribute('datetime', a.date); });
+  set('mins', function (el) { el.textContent = a.mins; });
+  set('authorName', function (el) { el.textContent = au.name; if (el.tagName === 'A') el.href = 'author.html?a=' + au.slug; });
+  set('authorRole', function (el) { el.textContent = au.role; });
+  set('authorInitials', function (el) { el.textContent = au.initials; });
+  set('authorHref', function (el) { el.setAttribute('href', 'author.html?a=' + au.slug); });
+  set('heroImg', function (el) { el.src = 'assets/img/' + a.img; });
+  document.querySelectorAll('[data-toggle="bookmark"]').forEach(function (b) {
+    b.setAttribute('data-label', a.title);
+    b.setAttribute('aria-label', 'Save for later: ' + a.title);
+  });
+
+  /* tags */
+  document.getElementById('tagList').innerHTML = a.tags.map(function (t) {
+    var name = (window.NOVA_TOPICS[t] || {}).name || t.replace(/-/g, ' ');
+    return '<a class="tag" href="topic.html?t=' + encodeURIComponent(t) + '">' + NOVA.esc(name) + '</a>';
+  }).join('');
+
+  /* recirculation */
+  var others = window.NOVA_ARTICLES.filter(function (x) { return x.slug !== a.slug; });
+  var sameSection = others.filter(function (x) { return x.section === a.section; });
+  var related = sameSection.concat(others).slice(0, 3);
+  document.getElementById('relatedGrid').innerHTML =
+    related.map(function (x) { return NOVA.card(x, 'default'); }).join('');
+
+  document.getElementById('inlineRecirc').innerHTML =
+    others.filter(function (x) { return x.tags.some(function (t) { return a.tags.indexOf(t) > -1; }); })
+      .slice(0, 2).map(function (x) { return NOVA.card(x, 'compact'); }).join('') ||
+    others.slice(0, 2).map(function (x) { return NOVA.card(x, 'compact'); }).join('');
+
+  var byAuthor = others.filter(function (x) { return x.author === a.author; }).slice(0, 3);
+  document.getElementById('moreAuthor').innerHTML = byAuthor.length
+    ? byAuthor.map(function (x) { return NOVA.card(x, 'minimal'); }).join('')
+    : '<p class="meta">This is the author’s first piece for NOVA.</p>';
+
+  /* share + copy link */
+  document.querySelectorAll('[data-share]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (navigator.share) { navigator.share({ title: a.title, url: location.href }).catch(function () {}); }
+      else NOVA.toast('Sharing sheet would open here');
+    });
+  });
+  var copy = document.getElementById('copyLink');
+  if (copy) copy.addEventListener('click', function () {
+    if (navigator.clipboard) navigator.clipboard.writeText(location.href).catch(function () {});
+    NOVA.toast('Link copied to clipboard');
+  });
+
+  document.getElementById('commentSort').addEventListener('nova:sort', function (e) {
+    var list = document.getElementById('commentList');
+    var items = Array.prototype.slice.call(list.children);
+    if (e.detail.value === 'old') items.reverse();
+    if (e.detail.value === 'top') {
+      items.sort(function (x, y) {
+        var cx = x.querySelector('[data-count]'), cy = y.querySelector('[data-count]');
+        return (cy ? +cy.textContent : -1) - (cx ? +cx.textContent : -1);
+      });
+    }
+    items.forEach(function (i) { list.appendChild(i); });
+    NOVA.toast('Comments re-sorted');
+  });
+
+  NOVA.initToggles(document);
+};
+</script>
+</body>
+</html>

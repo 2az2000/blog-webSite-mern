@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technology — NOVA</title>
+<meta name="description" content="NOVA's Technology desk: the systems being built, the people building them, and the assumptions they carry.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="technology">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <div class="wrap">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumbs">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="category.html?s=latest">Sections</a></li>
+        <li><span aria-current="page" id="crumbSection">Technology</span></li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- ====================================================== CATEGORY HEADER -->
+  <header class="wrap page-head">
+    <p class="overline text-accent" style="margin-block-end:var(--s-16)">NOVA Section</p>
+    <h1 class="display" id="sectionName">Technology</h1>
+    <p class="lead" style="margin-block-start:var(--s-24)" id="sectionBlurb"></p>
+    <div class="stat-strip" style="margin-block-start:var(--s-48)">
+      <div class="stat od-stat">
+        <span class="stat__value od-nowrap" id="statCount">0</span>
+        <span class="stat__label">Stories in this section</span>
+      </div>
+      <div class="stat od-stat">
+        <span class="stat__value od-nowrap" id="statWriters">0</span>
+        <span class="stat__label">Contributing writers</span>
+      </div>
+      <div class="stat od-stat">
+        <span class="stat__value od-nowrap" id="statMins">0</span>
+        <span class="stat__label">Minutes of reading</span>
+      </div>
+      <div class="stat od-stat">
+        <span class="stat__value od-nowrap" id="statUpdated">—</span>
+        <span class="stat__label">Last updated</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================= FILTERS -->
+  <section class="section section--tight" aria-labelledby="filter-label">
+    <div class="wrap">
+      <h2 class="sr-only" id="filter-label">Filter and sort this section</h2>
+      <div class="od-row" style="--od-gap:24px;flex-wrap:wrap;justify-content:space-between">
+        <div class="tabs od-fill" role="tablist" aria-label="Article filters" data-tabs id="filterTabs">
+          <button role="tab" type="button" data-tab-key="latest" aria-selected="true">Latest</button>
+          <button role="tab" type="button" data-tab-key="popular" aria-selected="false">Popular</button>
+          <button role="tab" type="button" data-tab-key="discussed" aria-selected="false">Most discussed</button>
+        </div>
+        <div class="dropdown od-fixed" id="rangeDropdown">
+          <button class="btn btn--secondary btn--sm" type="button" data-dropdown-trigger aria-expanded="false" aria-haspopup="true">
+            Period: <span data-dropdown-label>All time</span>
+          </button>
+          <div class="dropdown__menu" role="menu" aria-label="Time period">
+            <button role="menuitemradio" type="button" aria-checked="true" data-key="all" data-value="All time">All time</button>
+            <button role="menuitemradio" type="button" aria-checked="false" data-key="month" data-value="This month">This month</button>
+            <button role="menuitemradio" type="button" aria-checked="false" data-key="week" data-value="This week">This week</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== FEATURED ARTICLE -->
+  <section class="section section--tight" aria-labelledby="featured-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="featured-title">Featured</h2>
+      </div>
+      <div id="featuredSlot"></div>
+    </div>
+  </section>
+
+  <!-- ================================================ ARTICLES + SIDE RAILS -->
+  <section class="section" aria-labelledby="list-title">
+    <div class="wrap grid12" style="row-gap:var(--s-64)">
+
+      <div style="grid-column:span 8">
+        <div class="section-head">
+          <h2 class="section-head__title" id="list-title">Latest in this section</h2>
+          <span class="section-head__link" style="text-decoration:none" id="resultCount"></span>
+        </div>
+        <div class="cards-row" id="articleGrid" style="--cols:2"></div>
+
+        <div id="emptySlot" hidden>
+          <div class="empty-state">
+            <span class="empty-state__mark" aria-hidden="true">∅</span>
+            <h3>Nothing published here yet</h3>
+            <p>This desk is new. Follow it and we will email you the moment the first story runs, or browse the sections that are already going.</p>
+            <div class="od-cluster" style="--od-gap:12px;justify-content:center">
+              <a class="btn btn--primary" href="newsletter.html">Follow this section</a>
+              <a class="btn btn--secondary" href="category.html?s=latest">Browse everything</a>
+            </div>
+          </div>
+        </div>
+
+        <nav class="pagination" aria-label="Pagination" id="pager">
+          <span class="is-disabled" aria-hidden="true">←</span>
+          <a href="#" aria-current="page">1</a>
+          <a href="#">2</a>
+          <a href="#">3</a>
+          <span>…</span>
+          <a href="#">12</a>
+          <a href="#" aria-label="Next page">→</a>
+        </nav>
+        <div style="display:flex;justify-content:center;padding-block-end:var(--s-32)">
+          <button class="btn btn--secondary" type="button" id="loadMore">Load more</button>
+        </div>
+      </div>
+
+      <aside style="grid-column:span 4;display:grid;gap:var(--s-64);align-content:start">
+        <div>
+          <div class="section-head">
+            <h2 class="section-head__title">Trending in section</h2>
+          </div>
+          <div class="cards-list" id="sideTrending"></div>
+        </div>
+        <div>
+          <div class="section-head">
+            <h2 class="section-head__title">Editors’ picks</h2>
+          </div>
+          <div class="cards-list" id="sidePicks" style="gap:var(--s-24)"></div>
+        </div>
+        <div class="panel panel--sunk">
+          <p class="overline text-accent">Section newsletter</p>
+          <h3 style="font-size:var(--fs-h4);margin-block:var(--s-12)">Get this desk by email</h3>
+          <p class="meta" style="margin-block-end:var(--s-16)">A weekly round-up from the editors who commission this section.</p>
+          <form class="od-stack" style="--od-gap:12px" data-validate data-success="You're following this section." novalidate>
+            <div class="field">
+              <label class="field__label" for="sideEmail">Email <span class="field__req" aria-hidden="true">required</span></label>
+              <input class="input" id="sideEmail" type="email" required data-label-name="Email" placeholder="you@example.com" autocomplete="email">
+            </div>
+            <button class="btn btn--accent" type="submit">Follow section</button>
+          </form>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script>
+/* Set the active nav before the header component renders. */
+(function () {
+  var s = new URLSearchParams(location.search).get('s') || 'technology';
+  document.body.setAttribute('data-nav', s);
+})();
+
+window.novaPage = function () {
+  var key = NOVA.qs('s', 'technology');
+  var sec = NOVA.section(key);
+  var all = window.NOVA_ARTICLES;
+  var pool = key === 'latest' ? all.slice() : all.filter(function (a) { return a.section === key; });
+
+  /* masthead */
+  document.title = sec.name + ' — NOVA';
+  document.getElementById('sectionName').textContent = sec.name;
+  document.getElementById('crumbSection').textContent = sec.name;
+  document.getElementById('sectionBlurb').textContent = sec.blurb;
+
+  var writers = {};
+  var mins = 0;
+  pool.forEach(function (a) { writers[a.author] = 1; mins += a.mins; });
+  document.getElementById('statCount').textContent = pool.length;
+  document.getElementById('statWriters').textContent = Object.keys(writers).length;
+  document.getElementById('statMins').textContent = mins;
+  document.getElementById('statUpdated').textContent = pool.length
+    ? NOVA.fmtDate(pool.map(function (a) { return a.date; }).sort().reverse()[0]).replace(/, \d{4}$/, '')
+    : '—';
+
+  var featured = pool[0];
+  var rest = pool.slice(1);
+  var shown = 4;
+  var sortKey = 'latest';
+
+  var sorted = function () {
+    var r = rest.slice();
+    if (sortKey === 'popular') r.sort(function (a, b) { return b.views - a.views; });
+    if (sortKey === 'discussed') r.sort(function (a, b) { return b.comments - a.comments; });
+    return r;
+  };
+
+  var render = function () {
+    var grid = document.getElementById('articleGrid');
+    var empty = document.getElementById('emptySlot');
+    var feat = document.getElementById('featuredSlot');
+
+    if (!pool.length) {
+      feat.closest('section').hidden = true;
+      grid.innerHTML = '';
+      empty.hidden = false;
+      document.getElementById('pager').hidden = true;
+      document.getElementById('loadMore').hidden = true;
+      document.getElementById('resultCount').textContent = '';
+      return;
+    }
+    feat.innerHTML = NOVA.card(featured, 'featured');
+    var list = sorted().slice(0, shown);
+    grid.innerHTML = list.map(function (a) { return NOVA.card(a, 'default'); }).join('');
+    document.getElementById('resultCount').textContent =
+      'Showing ' + list.length + ' of ' + rest.length;
+    document.getElementById('loadMore').hidden = shown >= rest.length;
+    NOVA.initToggles(grid);
+  };
+
+  document.getElementById('filterTabs').addEventListener('nova:tab', function (e) {
+    sortKey = e.detail.key; shown = 4; render();
+  });
+  document.getElementById('rangeDropdown').addEventListener('nova:sort', function () {
+    render();
+    NOVA.toast('Period filter applied');
+  });
+  document.getElementById('loadMore').addEventListener('click', function () {
+    var btn = this;
+    btn.classList.add('is-loading');
+    setTimeout(function () { btn.classList.remove('is-loading'); shown += 4; render(); }, 600);
+  });
+
+  /* side rails always draw from the whole publication so a thin desk still
+     has something to recirculate to */
+  document.getElementById('sideTrending').innerHTML = all.slice()
+    .sort(function (a, b) { return b.views - a.views; }).slice(0, 5)
+    .map(function (a, i) { return NOVA.card(a, 'numbered', { rank: i + 1 }); }).join('');
+
+  document.getElementById('sidePicks').innerHTML =
+    ['interview-rasmussen', 'archive-fever', 'remote-labs']
+      .map(function (s) { return NOVA.card(NOVA.find(s), 'compact'); }).join('');
+
+  render();
+};
+</script>
+<script src="assets/nova.js"></script>
+</body>
+</html>

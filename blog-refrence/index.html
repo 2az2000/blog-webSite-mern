@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOVA — Ideas, stories, and perspectives shaping tomorrow</title>
+<meta name="description" content="NOVA is an independent digital publication covering technology, business, science, design and culture. Reporting, criticism and long-form journalism, published daily.">
+<meta property="og:title" content="NOVA — Ideas, stories, and perspectives shaping tomorrow">
+<meta property="og:description" content="Independent reporting on technology, business, science, design and culture.">
+<meta property="og:image" content="assets/img/context-software.jpg">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="home">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ===================================================== HERO EDITORIAL -->
+  <section class="hero" aria-labelledby="lead-story">
+    <div class="wrap">
+      <div class="hero__grid">
+
+        <article class="card card--featured">
+          <div class="card__media">
+            <img src="assets/img/context-software.jpg" width="1600" height="1067"
+                 alt="A long exposure of a server hall corridor, racks receding into low blue light."
+                 fetchpriority="high" decoding="async">
+          </div>
+          <div class="card__kicker">
+            <span class="badge">Technology</span>
+            <span class="card__meta od-nowrap">The lead story</span>
+          </div>
+          <h1 class="card__title" id="lead-story" style="font-size:clamp(2rem,1.1rem + 2.6vw,3rem);line-height:1.06">
+            <a class="card__link" href="article.html?a=context-software">Why the Next Generation of Software Will Be Built Around Context</a>
+          </h1>
+          <p class="card__standfirst">For forty years we built software that waits to be told what to do. The systems arriving now assume the opposite — and that changes what a product is.</p>
+          <div class="od-row" style="--od-gap:16px;flex-wrap:wrap">
+            <div class="byline">
+              <span class="avatar" aria-hidden="true">ED</span>
+              <span class="byline__text">
+                <span class="byline__name">Elena Duarte</span>
+                <span class="byline__meta"><span class="od-nowrap">Sep 12, 2026</span><span class="dot-sep od-nowrap">14 min read</span></span>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <aside class="hero__aside" aria-labelledby="brief-title">
+          <div class="hero__rail">
+            <h2 class="section-head__title" id="brief-title" style="margin-block-end:var(--s-8)">The Brief</h2>
+            <p class="meta">Four things worth your morning, chosen by the editors.</p>
+          </div>
+          <div class="cards-list" id="briefList"></div>
+          <a class="btn btn--secondary" href="category.html?s=latest">Read everything from today</a>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================= LATEST STORIES -->
+  <section class="section" aria-labelledby="latest-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="latest-title">Latest stories</h2>
+        <a class="section-head__link" href="category.html?s=latest">All stories</a>
+      </div>
+      <div class="cards-row" id="latestGrid" style="--cols:3"></div>
+      <div style="display:flex;justify-content:center;padding-block-start:var(--s-48)">
+        <button class="btn btn--secondary" type="button" id="loadMore">Load more stories</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== TRENDING + EDITOR'S PICKS -->
+  <section class="section" aria-labelledby="trending-title">
+    <div class="wrap grid12" style="row-gap:var(--s-48)">
+
+      <div style="grid-column:span 4">
+        <div class="section-head">
+          <h2 class="section-head__title" id="trending-title">Trending now</h2>
+          <a class="section-head__link" href="trending.html">Full board</a>
+        </div>
+        <div class="cards-list" id="trendingList"></div>
+      </div>
+
+      <div style="grid-column:span 8">
+        <div class="section-head">
+          <h2 class="section-head__title" id="picks-title">Editor’s picks</h2>
+          <a class="section-head__link" href="category.html?s=latest">More</a>
+        </div>
+        <div class="cards-list" id="picksList" style="gap:var(--s-32)"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====================================================== FEATURED TOPICS -->
+  <section class="section" aria-labelledby="topics-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="topics-title">Featured topics</h2>
+        <a class="section-head__link" href="topic.html?t=artificial-intelligence">All topics</a>
+      </div>
+      <div class="topics-row">
+        <a class="topic-tile" href="category.html?s=technology">
+          <img src="assets/img/topic-technology.jpg" width="800" height="533" alt="" loading="lazy" decoding="async">
+          <span class="topic-tile__label">Technology<span class="topic-tile__count">148 stories</span></span>
+        </a>
+        <a class="topic-tile" href="category.html?s=science">
+          <img src="assets/img/topic-science.jpg" width="800" height="533" alt="" loading="lazy" decoding="async">
+          <span class="topic-tile__label">Science<span class="topic-tile__count">96 stories</span></span>
+        </a>
+        <a class="topic-tile" href="category.html?s=business">
+          <img src="assets/img/topic-business.jpg" width="800" height="533" alt="" loading="lazy" decoding="async">
+          <span class="topic-tile__label">Business<span class="topic-tile__count">121 stories</span></span>
+        </a>
+        <a class="topic-tile" href="category.html?s=design">
+          <img src="assets/img/topic-design.jpg" width="800" height="533" alt="" loading="lazy" decoding="async">
+          <span class="topic-tile__label">Design<span class="topic-tile__count">84 stories</span></span>
+        </a>
+        <a class="topic-tile" href="category.html?s=culture">
+          <img src="assets/img/topic-culture.jpg" width="800" height="533" alt="" loading="lazy" decoding="async">
+          <span class="topic-tile__label">Culture<span class="topic-tile__count">73 stories</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ LONG READ -->
+  <section class="section" aria-labelledby="longread-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="longread-title">The long read</h2>
+        <a class="section-head__link" href="longform.html">Open the full feature</a>
+      </div>
+      <div id="longRead"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================== OPINION -->
+  <section class="section" aria-labelledby="opinion-title">
+    <div class="wrap grid12" style="row-gap:var(--s-32)">
+      <div style="grid-column:span 4">
+        <div class="section-head" style="border-top-color:var(--accent-2)">
+          <h2 class="section-head__title" id="opinion-title">Opinion &amp; interviews</h2>
+        </div>
+        <p class="meta" style="max-width:34ch">Signed arguments from NOVA writers and outside contributors. Every piece is open to reply in the comments.</p>
+        <a class="btn btn--ghost" href="category.html?s=opinion" style="margin-block-start:var(--s-16);padding-inline:0">All opinion →</a>
+      </div>
+      <div style="grid-column:span 8">
+        <div class="cards-list" id="opinionList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================= NEWSLETTER CTA -->
+  <section class="newsletter-band" aria-labelledby="nl-title">
+    <div class="wrap newsletter-band__grid">
+      <div>
+        <p class="overline" style="color:var(--accent);margin-block-end:var(--s-16)">The NOVA Dispatch</p>
+        <h2 id="nl-title" style="font-size:var(--fs-h2)">One email. Six stories. No noise.</h2>
+        <p class="lead" style="margin-block-start:var(--s-16)">Every Tuesday and Friday our editors write up what mattered and why — the reporting behind the headline, not a link dump. Free, and you can leave in one click.</p>
+        <p class="meta" style="margin-block-start:var(--s-24);color:inherit;opacity:.7">Joined by 214,000 readers · <a href="newsletter.html" style="color:inherit">See a sample issue</a></p>
+      </div>
+      <form class="newsletter-form" data-validate data-success="You're subscribed. Check your inbox to confirm." novalidate>
+        <div class="field">
+          <label class="field__label" for="nlEmail" style="color:inherit">Email address <span class="field__req" aria-hidden="true">required</span></label>
+          <input class="input" id="nlEmail" name="email" type="email" required data-label-name="Email address" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <button class="btn btn--primary" type="submit">Subscribe free</button>
+        <label class="checkbox">
+          <input type="checkbox" name="offers">
+          <span>Also send me occasional subscriber offers. Optional, and separate from the Dispatch.</span>
+        </label>
+        <p class="meta" style="color:inherit;opacity:.65">We never sell reader data. Unsubscribe from any issue — one click, no survey.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script>
+window.novaPage = function () {
+  var A = window.NOVA_ARTICLES;
+  var by = function (slug) { return NOVA.find(slug); };
+
+  /* The Brief — text-only minimal cards beside the lead story */
+  document.getElementById('briefList').innerHTML =
+    ['human-brain', 'small-powerful-companies', 'think-better', 'battery-chemistry']
+      .map(function (s) { return NOVA.card(by(s), 'minimal'); }).join('');
+
+  /* Latest — newest first, excluding the lead and the long read */
+  var latestPool = A.filter(function (a) {
+    return a.slug !== 'context-software' && a.kind !== 'longread';
+  });
+  var shown = 6;
+  var renderLatest = function () {
+    document.getElementById('latestGrid').innerHTML = latestPool.slice(0, shown)
+      .map(function (a) { return NOVA.card(a, NOVA.autoVariant(a) === 'opinion' ? 'default' : NOVA.autoVariant(a)); }).join('');
+    NOVA.initToggles(document.getElementById('latestGrid'));
+  };
+  renderLatest();
+
+  document.getElementById('loadMore').addEventListener('click', function () {
+    var btn = this;
+    if (shown >= latestPool.length) return;
+    btn.classList.add('is-loading');
+    var grid = document.getElementById('latestGrid');
+    var sk = document.createElement('div');
+    sk.className = 'skeleton-card';
+    sk.innerHTML = '<div class="skeleton skeleton--media"></div><div class="skeleton skeleton--title"></div>' +
+                   '<div class="skeleton skeleton--line"></div><div class="skeleton skeleton--line is-short"></div>';
+    grid.appendChild(sk);
+    setTimeout(function () {
+      btn.classList.remove('is-loading');
+      shown = Math.min(shown + 3, latestPool.length);
+      renderLatest();
+      if (shown >= latestPool.length) {
+        btn.textContent = 'You’re all caught up';
+        btn.setAttribute('aria-disabled', 'true');
+      }
+    }, 700);
+  });
+
+  /* Trending — ranked by reads */
+  var trending = A.slice().sort(function (a, b) { return b.views - a.views; }).slice(0, 5);
+  document.getElementById('trendingList').innerHTML = trending
+    .map(function (a, i) { return NOVA.card(a, 'numbered', { rank: i + 1 }); }).join('');
+
+  /* Editor's picks — horizontal cards */
+  document.getElementById('picksList').innerHTML =
+    ['open-source-money', 'type-revival', 'ocean-floor', 'public-transit']
+      .map(function (s) { return NOVA.card(by(s), 'horizontal'); }).join('');
+
+  /* The long read */
+  document.getElementById('longRead').innerHTML = NOVA.card(by('grid-rebuild'), 'longread');
+
+  /* Opinion + interviews */
+  document.getElementById('opinionList').innerHTML =
+    ['think-better', 'attention-economy', 'founder-mode', 'interview-rasmussen']
+      .map(function (s) { return NOVA.card(by(s), 'opinion'); }).join('');
+};
+</script>
+<script src="assets/nova.js"></script>
+</body>
+</html>

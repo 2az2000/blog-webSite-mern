@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saved articles — NOVA</title>
+<meta name="description" content="Your reading list, saved articles, recently viewed stories and collections.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <div class="wrap">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumbs">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="bookmarks.html">Account</a></li>
+        <li><span aria-current="page">Saved</span></li>
+      </ol>
+    </nav>
+  </div>
+
+  <header class="wrap page-head">
+    <div class="od-row" style="--od-gap:24px;flex-wrap:wrap;align-items:flex-end">
+      <div class="od-fill">
+        <p class="overline text-accent" style="margin-block-end:var(--s-16)">Signed in as You · Subscriber</p>
+        <h1 class="display">Your reading</h1>
+        <p class="lead" style="margin-block-start:var(--s-16)">Everything you saved, in the order you saved it. Saved articles stay in your account whether or not your subscription is active.</p>
+      </div>
+      <div class="od-fixed od-cluster" style="--od-gap:12px">
+        <button class="btn btn--secondary" type="button" id="exportList">Export list</button>
+        <button class="btn btn--danger" type="button" data-modal-open="clearModal">Clear all saved</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="tabs" role="tablist" aria-label="Saved views" data-tabs id="savedTabs">
+        <button role="tab" type="button" data-tab-key="saved" aria-selected="true">Saved articles <span id="cSaved"></span></button>
+        <button role="tab" type="button" data-tab-key="list" aria-selected="false">Reading list <span id="cList"></span></button>
+        <button role="tab" type="button" data-tab-key="recent" aria-selected="false">Recently viewed <span id="cRecent"></span></button>
+        <button role="tab" type="button" data-tab-key="collections" aria-selected="false">Collections <span id="cColl"></span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-live="polite">
+    <div class="wrap">
+      <div class="od-row" style="--od-gap:16px;flex-wrap:wrap;justify-content:space-between;margin-block-end:var(--s-24)">
+        <p class="meta od-fill" id="viewStatus"></p>
+        <div class="dropdown od-fixed" id="savedSort">
+          <button class="btn btn--ghost btn--sm" type="button" data-dropdown-trigger aria-expanded="false" aria-haspopup="true">
+            Sort: <span data-dropdown-label>Recently saved</span>
+          </button>
+          <div class="dropdown__menu" role="menu" aria-label="Sort saved articles">
+            <button role="menuitemradio" type="button" aria-checked="true" data-key="saved" data-value="Recently saved">Recently saved</button>
+            <button role="menuitemradio" type="button" aria-checked="false" data-key="short" data-value="Shortest first">Shortest first</button>
+            <button role="menuitemradio" type="button" aria-checked="false" data-key="long" data-value="Longest first">Longest first</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="savedView"></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="modal-backdrop" id="clearModal" role="dialog" aria-modal="true" aria-labelledby="clearTitle" aria-hidden="true">
+  <div class="modal">
+    <h2 id="clearTitle" style="font-size:var(--fs-h3)">Clear everything you have saved?</h2>
+    <p style="font-size:var(--fs-body-sm);color:var(--fg-soft)">This removes all saved articles and your reading list from this account. Collections and their names are removed too. It cannot be undone.</p>
+    <div class="od-row" style="--od-gap:12px;justify-content:flex-end;flex-wrap:wrap">
+      <button class="btn btn--secondary" type="button" data-modal-close>Keep them</button>
+      <button class="btn btn--danger" type="button" data-modal-close id="confirmClear">Yes, clear all saved</button>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script src="assets/nova.js"></script>
+<script>
+(function () {
+  var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  var hits = [], n;
+  while ((n = walker.nextNode())) { if (/\{\{\w+\}\}/.test(n.nodeValue)) hits.push(n); }
+  hits.forEach(function (node) {
+    var span = document.createElement('span');
+    span.style.display = 'contents';
+    span.innerHTML = node.nodeValue.replace(/\{\{(\w+)\}\}/g, function (m, k) { return NOVA.icons[k] || ''; });
+    node.parentNode.replaceChild(span, node);
+  });
+})();
+
+window.novaPage = function () {
+  var state = {
+    saved:  ['grid-rebuild', 'open-source-money', 'human-brain', 'type-revival', 'attention-economy'],
+    list:   ['ai-labour', 'ocean-floor'],
+    recent: ['context-software', 'think-better', 'public-transit', 'battery-chemistry'],
+    collections: [
+      { name: 'Infrastructure reading', slugs: ['grid-rebuild', 'city-night', 'battery-chemistry'] },
+      { name: 'For the design review', slugs: ['interfaces-standing-still', 'type-revival', 'public-transit'] },
+      { name: 'Unsorted', slugs: [] }
+    ]
+  };
+  var view = 'saved';
+  var sort = 'saved';
+
+  var EMPTY = {
+    saved: {
+      mark: NOVA.icons.bookmark,
+      title: 'Nothing saved yet',
+      body: 'Tap the bookmark on any story and it lands here. Saved articles sync across your devices and stay in the account even if your subscription lapses.',
+      cta: ['Browse the latest', 'category.html?s=latest']
+    },
+    list: {
+      mark: '≡',
+      title: 'Your reading list is empty',
+      body: 'The reading list is for the long ones — pieces you want to sit down with rather than skim. Add a story from its page or from anything you have saved.',
+      cta: ['Find a long read', 'longform.html']
+    },
+    recent: {
+      mark: '↺',
+      title: 'No reading history on this device',
+      body: 'Stories you open appear here for thirty days. History is stored on your device only and never leaves it.',
+      cta: ['Start reading', 'index.html']
+    },
+    collections: {
+      mark: '+',
+      title: 'No collections yet',
+      body: 'Collections group saved stories by whatever makes sense to you — a project, a pitch, a class. Make the first one and drag saved articles into it.',
+      cta: ['Create a collection', '#']
+    }
+  };
+
+  var emptyHtml = function (key) {
+    var e = EMPTY[key];
+    return '<div class="empty-state">' +
+      '<span class="empty-state__mark" aria-hidden="true">' + e.mark + '</span>' +
+      '<h2>' + e.title + '</h2><p>' + e.body + '</p>' +
+      '<a class="btn btn--primary" href="' + e.cta[1] + '">' + e.cta[0] + '</a></div>';
+  };
+
+  var sortSlugs = function (slugs) {
+    var list = slugs.map(NOVA.find).filter(Boolean);
+    if (sort === 'short') list.sort(function (a, b) { return a.mins - b.mins; });
+    if (sort === 'long') list.sort(function (a, b) { return b.mins - a.mins; });
+    return list;
+  };
+
+  var row = function (a, bucket) {
+    return '<div class="od-row-top" style="--od-gap:24px;padding-block:var(--s-24);border-top:1px solid var(--border)">' +
+      '<div class="od-fill">' + NOVA.card(a, 'horizontal') + '</div>' +
+      '<div class="od-fixed od-stack" style="--od-gap:8px">' +
+        '<button class="btn btn--ghost btn--sm" type="button" data-remove="' + a.slug + '" data-bucket="' + bucket + '">Remove</button>' +
+        (bucket === 'saved'
+          ? '<button class="btn btn--ghost btn--sm" type="button" data-tolist="' + a.slug + '">Add to list</button>'
+          : '') +
+      '</div></div>';
+  };
+
+  var render = function () {
+    var host = document.getElementById('savedView');
+    var status = document.getElementById('viewStatus');
+    document.getElementById('cSaved').textContent = '(' + state.saved.length + ')';
+    document.getElementById('cList').textContent = '(' + state.list.length + ')';
+    document.getElementById('cRecent').textContent = '(' + state.recent.length + ')';
+    document.getElementById('cColl').textContent = '(' + state.collections.length + ')';
+    document.getElementById('savedSort').hidden = view === 'collections';
+
+    if (view === 'collections') {
+      status.textContent = state.collections.length + ' collections';
+      host.innerHTML = state.collections.length
+        ? '<div class="cards-row" style="--cols:3;gap:var(--s-24)">' + state.collections.map(function (c) {
+            return '<div class="collection-tile">' +
+              '<span class="overline text-accent">Collection</span>' +
+              '<span style="font-family:var(--font-serif);font-size:var(--fs-h3)">' + NOVA.esc(c.name) + '</span>' +
+              '<span class="collection-tile__count od-nowrap">' + c.slugs.length + ' stories</span>' +
+              (c.slugs.length
+                ? '<ul style="list-style:none;display:grid;gap:var(--s-8);margin-block-start:var(--s-8)">' +
+                  c.slugs.map(function (s) {
+                    var a = NOVA.find(s);
+                    return a ? '<li class="meta od-truncate"><a href="' + NOVA.articleHref(a) + '">' + NOVA.esc(a.title) + '</a></li>' : '';
+                  }).join('') + '</ul>'
+                : '<p class="meta">Empty — drag a saved story here.</p>') +
+              '</div>';
+          }).join('') +
+          '<button class="collection-tile" type="button" id="newCollection" style="text-align:start;cursor:pointer">' +
+          '<span class="overline text-accent">New</span>' +
+          '<span style="font-family:var(--font-serif);font-size:var(--fs-h3)">Create a collection</span>' +
+          '<span class="collection-tile__count">Group saved stories by project, pitch or class.</span></button></div>'
+        : emptyHtml('collections');
+      var nc = document.getElementById('newCollection');
+      if (nc) nc.addEventListener('click', function () {
+        state.collections.push({ name: 'New collection', slugs: [] });
+        render();
+        NOVA.toast('Collection created');
+      });
+      return;
+    }
+
+    var slugs = state[view];
+    if (!slugs.length) {
+      status.textContent = '';
+      host.innerHTML = emptyHtml(view);
+      return;
+    }
+    var list = sortSlugs(slugs);
+    var mins = list.reduce(function (t, a) { return t + a.mins; }, 0);
+    status.textContent = list.length + ' stories · ' + mins + ' minutes of reading';
+    host.innerHTML = list.map(function (a) { return row(a, view); }).join('');
+
+    host.querySelectorAll('[data-remove]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var bucket = b.dataset.bucket;
+        state[bucket] = state[bucket].filter(function (s) { return s !== b.dataset.remove; });
+        render();
+        NOVA.toast('Removed from ' + (bucket === 'list' ? 'your reading list' : bucket === 'recent' ? 'history' : 'saved articles'));
+      });
+    });
+    host.querySelectorAll('[data-tolist]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (state.list.indexOf(b.dataset.tolist) === -1) state.list.unshift(b.dataset.tolist);
+        render();
+        NOVA.toast('Added to your reading list');
+      });
+    });
+    NOVA.initToggles(host);
+  };
+
+  document.getElementById('savedTabs').addEventListener('nova:tab', function (e) { view = e.detail.key; render(); });
+  document.getElementById('savedSort').addEventListener('nova:sort', function (e) { sort = e.detail.value; render(); });
+  document.getElementById('confirmClear').addEventListener('click', function () {
+    state.saved = []; state.list = []; state.collections = [];
+    render();
+    NOVA.toast('All saved articles cleared', 'error');
+  });
+  document.getElementById('exportList').addEventListener('click', function () {
+    NOVA.toast('Your list would download as a file');
+  });
+
+  render();
+};
+</script>
+</body>
+</html>

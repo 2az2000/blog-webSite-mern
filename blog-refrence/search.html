@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search — NOVA</title>
+<meta name="description" content="Search NOVA's archive of reporting, criticism and long-form journalism by story, author or topic.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <div class="wrap">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumbs">
+        <li><a href="index.html">Home</a></li>
+        <li><span aria-current="page">Search</span></li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- ============================================================== SEARCH -->
+  <section class="wrap search-hero" aria-labelledby="search-title">
+    <h1 class="sr-only" id="search-title">Search NOVA</h1>
+    <form class="search-big" role="search" id="searchForm">
+      <span aria-hidden="true">{{search}}</span>
+      <label class="sr-only" for="searchInput">Search stories, authors and topics</label>
+      <input id="searchInput" name="q" type="search" data-search-input
+             placeholder="Search stories, authors, topics" autocomplete="off" spellcheck="false">
+      <button class="btn btn--primary od-fixed" type="submit">Search</button>
+    </form>
+
+    <div class="od-row" style="--od-gap:16px;flex-wrap:wrap;margin-block-start:var(--s-16)">
+      <p class="meta od-fixed" id="searchStatus" role="status" aria-live="polite">Type a word, or start from a suggestion below.</p>
+      <button class="btn btn--ghost btn--sm" type="button" id="clearSearch" hidden>Clear search</button>
+    </div>
+  </section>
+
+  <!-- ================================================ SUGGESTIONS / RECENTS -->
+  <section class="section section--tight" id="suggestPanel" aria-labelledby="suggest-title">
+    <div class="wrap grid12" style="row-gap:var(--s-48)">
+      <div style="grid-column:span 6">
+        <div class="section-head">
+          <h2 class="section-head__title" id="suggest-title">Try one of these</h2>
+        </div>
+        <div class="od-cluster" style="--od-gap:8px" id="suggestions"></div>
+      </div>
+      <div style="grid-column:span 6">
+        <div class="section-head">
+          <h2 class="section-head__title">Recent searches</h2>
+          <button class="section-head__link" type="button" id="clearRecent" style="background:none;border:0;cursor:pointer">Clear</button>
+        </div>
+        <div class="od-cluster" style="--od-gap:8px" id="recentSearches"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================= RESULTS -->
+  <section class="section" id="resultsPanel" hidden aria-labelledby="results-title">
+    <div class="wrap">
+      <div class="od-row" style="--od-gap:24px;flex-wrap:wrap;justify-content:space-between;margin-block-end:var(--s-24)">
+        <div class="tabs od-fill" role="tablist" aria-label="Result type" data-tabs id="typeTabs">
+          <button role="tab" type="button" data-tab-key="articles" aria-selected="true">Articles <span id="cArticles"></span></button>
+          <button role="tab" type="button" data-tab-key="authors" aria-selected="false">Authors <span id="cAuthors"></span></button>
+          <button role="tab" type="button" data-tab-key="topics" aria-selected="false">Topics <span id="cTopics"></span></button>
+        </div>
+        <div class="dropdown od-fixed" id="sortDropdown">
+          <button class="btn btn--secondary btn--sm" type="button" data-dropdown-trigger aria-expanded="false" aria-haspopup="true">
+            Sort: <span data-dropdown-label>Relevance</span>
+          </button>
+          <div class="dropdown__menu" role="menu" aria-label="Sort results">
+            <button role="menuitemradio" type="button" aria-checked="true" data-key="relevance" data-value="Relevance">Relevance</button>
+            <button role="menuitemradio" type="button" aria-checked="false" data-key="newest" data-value="Newest">Newest</button>
+            <button role="menuitemradio" type="button" aria-checked="false" data-key="popular" data-value="Most popular">Most popular</button>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="sr-only" id="results-title">Search results</h2>
+
+      <!-- loading skeleton, shaped like the result rows it replaces -->
+      <div id="resultsLoading" hidden>
+        <div class="cards-list" style="gap:var(--s-32)">
+          <div class="card--horizontal" style="display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s-24)">
+            <div class="skeleton skeleton--media"></div>
+            <div class="skeleton-card"><div class="skeleton skeleton--title"></div><div class="skeleton skeleton--line"></div><div class="skeleton skeleton--line is-mid"></div><div class="skeleton skeleton--line is-short"></div></div>
+          </div>
+          <div class="card--horizontal" style="display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s-24)">
+            <div class="skeleton skeleton--media"></div>
+            <div class="skeleton-card"><div class="skeleton skeleton--title"></div><div class="skeleton skeleton--line"></div><div class="skeleton skeleton--line is-mid"></div><div class="skeleton skeleton--line is-short"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-list" id="resultsList" style="gap:var(--s-32)"></div>
+
+      <div id="noResults" hidden>
+        <div class="empty-state">
+          <span class="empty-state__mark" aria-hidden="true">?</span>
+          <h3>Nothing matched “<span id="noResultsTerm"></span>”</h3>
+          <p>Search covers headlines, standfirsts, authors and tags. Try a broader word, check the spelling, or start from a section instead.</p>
+          <div class="od-cluster" style="--od-gap:12px;justify-content:center">
+            <a class="btn btn--primary" href="category.html?s=latest">Browse the latest</a>
+            <a class="btn btn--secondary" href="trending.html">See what’s trending</a>
+          </div>
+          <p class="meta" style="margin-block-start:var(--s-16)">Or try: <span id="altSuggestions"></span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script src="assets/nova.js"></script>
+<script>
+(function () {
+  var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  var hits = [], n;
+  while ((n = walker.nextNode())) { if (/\{\{\w+\}\}/.test(n.nodeValue)) hits.push(n); }
+  hits.forEach(function (node) {
+    var span = document.createElement('span');
+    span.style.display = 'contents';
+    span.innerHTML = node.nodeValue.replace(/\{\{(\w+)\}\}/g, function (m, k) { return NOVA.icons[k] || ''; });
+    node.parentNode.replaceChild(span, node);
+  });
+})();
+
+window.novaPage = function () {
+  var SUGGESTED = ['artificial intelligence', 'grid', 'design systems', 'open source', 'memory', 'batteries', 'founders'];
+  var RECENT_KEY = 'nova:recent-searches';
+  var input = document.getElementById('searchInput');
+  var form = document.getElementById('searchForm');
+  var type = 'articles';
+  var sort = 'relevance';
+  var term = '';
+
+  var readRecent = function () {
+    try { return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'); } catch (e) { return []; }
+  };
+  var writeRecent = function (list) {
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, 6))); } catch (e) {}
+  };
+
+  var renderChips = function (el, list, empty) {
+    el.innerHTML = list.length
+      ? list.map(function (s) {
+          return '<button class="tag" type="button" data-term="' + NOVA.esc(s) + '">' + NOVA.esc(s) + '</button>';
+        }).join('')
+      : '<span class="meta">' + empty + '</span>';
+    el.querySelectorAll('[data-term]').forEach(function (b) {
+      b.addEventListener('click', function () { input.value = b.dataset.term; run(b.dataset.term); });
+    });
+  };
+
+  var renderRecent = function () {
+    renderChips(document.getElementById('recentSearches'), readRecent(),
+      'No recent searches on this device yet.');
+  };
+
+  var match = function (a, q) {
+    var hay = (a.title + ' ' + a.standfirst + ' ' + a.tags.join(' ') + ' ' +
+               NOVA.author(a.author).name + ' ' + NOVA.section(a.section).name).toLowerCase();
+    return q.split(/\s+/).every(function (w) { return hay.indexOf(w) > -1; });
+  };
+
+  var score = function (a, q) {
+    var t = a.title.toLowerCase();
+    return (t.indexOf(q) > -1 ? 100 : 0) + (a.tags.join(' ').indexOf(q.replace(/\s+/g, '-')) > -1 ? 50 : 0) + a.views / 10000;
+  };
+
+  var render = function () {
+    var q = term.toLowerCase().trim();
+    var list = document.getElementById('resultsList');
+    var none = document.getElementById('noResults');
+    list.innerHTML = '';
+    none.hidden = true;
+
+    var articles = window.NOVA_ARTICLES.filter(function (a) { return match(a, q); });
+    if (sort === 'newest') articles.sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    else if (sort === 'popular') articles.sort(function (a, b) { return b.views - a.views; });
+    else articles.sort(function (a, b) { return score(b, q) - score(a, q); });
+
+    var authors = Object.keys(window.NOVA_AUTHORS).filter(function (k) {
+      var o = window.NOVA_AUTHORS[k];
+      return (o.name + ' ' + o.role).toLowerCase().indexOf(q) > -1;
+    });
+    var topics = Object.keys(window.NOVA_TOPICS).filter(function (k) {
+      var o = window.NOVA_TOPICS[k];
+      return (k + ' ' + o.name + ' ' + o.blurb).toLowerCase().indexOf(q) > -1;
+    });
+
+    document.getElementById('cArticles').textContent = '(' + articles.length + ')';
+    document.getElementById('cAuthors').textContent = '(' + authors.length + ')';
+    document.getElementById('cTopics').textContent = '(' + topics.length + ')';
+
+    var active = type === 'articles' ? articles : (type === 'authors' ? authors : topics);
+
+    if (!active.length) {
+      document.getElementById('noResultsTerm').textContent = term;
+      document.getElementById('altSuggestions').innerHTML = SUGGESTED.slice(0, 3).map(function (s) {
+        return '<a href="search.html?q=' + encodeURIComponent(s) + '">' + NOVA.esc(s) + '</a>';
+      }).join(', ');
+      none.hidden = false;
+      document.getElementById('searchStatus').textContent =
+        'No ' + type + ' matched “' + term + '”.';
+      return;
+    }
+
+    if (type === 'articles') {
+      list.innerHTML = articles.map(function (a) { return NOVA.card(a, 'horizontal'); }).join('');
+    } else if (type === 'authors') {
+      list.innerHTML = '<div class="cards-row" style="--cols:3;gap:var(--s-24)">' + authors.map(function (k) {
+        var o = window.NOVA_AUTHORS[k];
+        var count = window.NOVA_ARTICLES.filter(function (x) { return x.author === k; }).length;
+        return '<a class="collection-tile" href="author.html?a=' + k + '">' +
+          '<span class="avatar avatar--lg" aria-hidden="true">' + NOVA.esc(o.initials) + '</span>' +
+          '<span style="font-family:var(--font-serif);font-size:var(--fs-h4)">' + NOVA.esc(o.name) + '</span>' +
+          '<span class="collection-tile__count">' + NOVA.esc(o.role) + '</span>' +
+          '<span class="collection-tile__count od-nowrap">' + count + ' stories</span></a>';
+      }).join('') + '</div>';
+    } else {
+      list.innerHTML = '<div class="cards-row" style="--cols:2;gap:var(--s-24)">' + topics.map(function (k) {
+        var o = window.NOVA_TOPICS[k];
+        var count = window.NOVA_ARTICLES.filter(function (x) { return x.tags.indexOf(k) > -1; }).length;
+        return '<a class="collection-tile" href="topic.html?t=' + encodeURIComponent(k) + '">' +
+          '<span class="overline text-accent">Topic</span>' +
+          '<span style="font-family:var(--font-serif);font-size:var(--fs-h3)">' + NOVA.esc(o.name) + '</span>' +
+          '<span class="collection-tile__count od-clamp-2">' + NOVA.esc(o.blurb) + '</span>' +
+          '<span class="collection-tile__count od-nowrap">' + count + ' stories</span></a>';
+      }).join('') + '</div>';
+    }
+
+    document.getElementById('searchStatus').textContent =
+      active.length + ' ' + type + ' for “' + term + '”';
+    NOVA.initToggles(list);
+  };
+
+  var run = function (q) {
+    term = (q || '').trim();
+    var loading = document.getElementById('resultsLoading');
+    if (!term) {
+      document.getElementById('resultsPanel').hidden = true;
+      document.getElementById('suggestPanel').hidden = false;
+      document.getElementById('clearSearch').hidden = true;
+      document.getElementById('searchStatus').textContent = 'Type a word, or start from a suggestion below.';
+      return;
+    }
+    var recent = readRecent().filter(function (r) { return r !== term; });
+    recent.unshift(term);
+    writeRecent(recent);
+    renderRecent();
+
+    document.getElementById('suggestPanel').hidden = true;
+    document.getElementById('resultsPanel').hidden = false;
+    document.getElementById('clearSearch').hidden = false;
+    document.getElementById('resultsList').innerHTML = '';
+    document.getElementById('noResults').hidden = true;
+    loading.hidden = false;
+    document.getElementById('searchStatus').textContent = 'Searching for “' + term + '”…';
+
+    setTimeout(function () { loading.hidden = true; render(); }, 450);
+  };
+
+  form.addEventListener('submit', function (e) { e.preventDefault(); run(input.value); });
+  document.getElementById('clearSearch').addEventListener('click', function () {
+    input.value = ''; run(''); input.focus();
+  });
+  document.getElementById('clearRecent').addEventListener('click', function () {
+    writeRecent([]); renderRecent(); NOVA.toast('Recent searches cleared');
+  });
+  document.getElementById('typeTabs').addEventListener('nova:tab', function (e) { type = e.detail.key; render(); });
+  document.getElementById('sortDropdown').addEventListener('nova:sort', function (e) { sort = e.detail.value; render(); });
+
+  renderChips(document.getElementById('suggestions'), SUGGESTED, '');
+  renderRecent();
+
+  var initial = NOVA.qs('q', '');
+  if (initial) { input.value = initial; run(initial); } else { input.focus(); }
+};
+</script>
+</body>
+</html>

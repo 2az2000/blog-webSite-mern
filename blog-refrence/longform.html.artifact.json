@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "longform.html",
+  "entry": "longform.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-14T07:35:53.346Z",
+  "updatedAt": "2026-09-14T07:35:53.346Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

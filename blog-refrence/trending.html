@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trending on NOVA</title>
+<meta name="description" content="What NOVA readers are reading, arguing about and sharing right now — ranked, with movement since yesterday.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="latest">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <div class="wrap">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumbs">
+        <li><a href="index.html">Home</a></li>
+        <li><span aria-current="page">Trending</span></li>
+      </ol>
+    </nav>
+  </div>
+
+  <header class="wrap page-head">
+    <p class="overline text-accent" style="margin-block-end:var(--s-16)">Updated every 15 minutes</p>
+    <h1 class="display">What NOVA is reading</h1>
+    <p class="lead" style="margin-block-start:var(--s-24)">Ranked by completed reads rather than clicks, so a headline that disappoints does not climb. Movement is measured against the same hour yesterday.</p>
+  </header>
+
+  <!-- ========================================================= TRENDING NOW -->
+  <section class="section" aria-labelledby="now-title">
+    <div class="wrap grid12" style="row-gap:var(--s-48)">
+      <div style="grid-column:span 8">
+        <div class="section-head">
+          <h2 class="section-head__title" id="now-title">Trending now</h2>
+          <span class="section-head__link" style="text-decoration:none">Top 10 · completed reads</span>
+        </div>
+        <div class="rank-board" id="rankBoard"></div>
+      </div>
+
+      <aside style="grid-column:span 4;display:grid;gap:var(--s-64);align-content:start">
+        <div>
+          <div class="section-head">
+            <h2 class="section-head__title">Most read today</h2>
+          </div>
+          <div class="cards-list" id="mostRead"></div>
+        </div>
+        <div>
+          <div class="section-head" style="border-top-color:var(--accent-2)">
+            <h2 class="section-head__title">Most discussed</h2>
+          </div>
+          <div class="cards-list" id="mostDiscussed"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ======================================================= RISING STORIES -->
+  <section class="section" aria-labelledby="rising-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="rising-title">Rising</h2>
+        <span class="section-head__link" style="text-decoration:none">Fastest growth in the last six hours</span>
+      </div>
+      <div class="cards-row" id="risingGrid" style="--cols:3"></div>
+    </div>
+  </section>
+
+  <!-- ======================================================= TRENDING TOPICS -->
+  <section class="section" aria-labelledby="topics-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="topics-title">Trending topics</h2>
+        <a class="section-head__link" href="topic.html?t=artificial-intelligence">Browse topics</a>
+      </div>
+      <div class="chart" style="--max: 4.2" role="img" aria-label="Share of NOVA reads by topic over the past seven days: Artificial intelligence 4.2 percent-share index, Energy and infrastructure 3.1, Design systems 2.4, Labour and work 2.2, Archives and memory 1.3.">
+        <div class="bar-row">
+          <span class="bar-label">AI</span>
+          <div class="bar-track"><div class="bar" style="--v: 4.2"></div></div>
+          <span class="bar-value od-nowrap">4.2 index</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Energy</span>
+          <div class="bar-track"><div class="bar" style="--v: 3.1"></div></div>
+          <span class="bar-value od-nowrap">3.1 index</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Design</span>
+          <div class="bar-track"><div class="bar" style="--v: 2.4"></div></div>
+          <span class="bar-value od-nowrap">2.4 index</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Work</span>
+          <div class="bar-track"><div class="bar" style="--v: 2.2"></div></div>
+          <span class="bar-value od-nowrap">2.2 index</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Archives</span>
+          <div class="bar-track"><div class="bar bar--muted" style="--v: 1.3"></div></div>
+          <span class="bar-value od-nowrap">1.3 index</span>
+        </div>
+      </div>
+      <p class="chart-note">Index = share of completed reads over seven days, normalised against this quarter's average. Placeholder figures for the prototype.</p>
+
+      <div class="od-cluster" style="--od-gap:12px;margin-block-start:var(--s-32)">
+        <a class="tag" href="topic.html?t=artificial-intelligence">Artificial intelligence</a>
+        <a class="tag" href="topic.html?t=climate">Climate</a>
+        <a class="tag" href="topic.html?t=design-systems">Design systems</a>
+        <a class="tag" href="topic.html?t=work">Work</a>
+        <a class="tag" href="topic.html?t=archives">Archives</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script>
+window.novaPage = function () {
+  var A = window.NOVA_ARTICLES;
+  var TREND = {
+    up:   { cls: 'is-up',   icon: NOVA.icons.arrowUp,   label: 'Up' },
+    down: { cls: 'is-down', icon: NOVA.icons.arrowDown, label: 'Down' },
+    flat: { cls: 'is-flat', icon: NOVA.icons.equal,     label: 'Unchanged' }
+  };
+
+  var top10 = A.slice().sort(function (a, b) { return b.views - a.views; }).slice(0, 10);
+  document.getElementById('rankBoard').innerHTML = top10.map(function (a, i) {
+    var au = NOVA.author(a.author);
+    var t = TREND[a.trend] || TREND.flat;
+    var move = a.trend === 'flat' ? 'level' : (i % 3) + 2 + ' places';
+    return '<article class="rank-row">' +
+      '<span class="rank-row__num" aria-hidden="true">' + (i < 9 ? '0' : '') + (i + 1) + '</span>' +
+      '<div>' +
+        '<div class="card__kicker"><span class="badge' + (a.section === 'opinion' ? ' badge--opinion' : '') + '">' +
+          NOVA.esc(NOVA.section(a.section).name) + '</span></div>' +
+        '<h3 class="card__title" style="font-size:var(--fs-h4)"><a class="card__link" href="' + NOVA.articleHref(a) + '">' +
+          NOVA.esc(a.title) + '</a></h3>' +
+        '<p class="card__meta"><span class="od-nowrap">' + NOVA.esc(au.name) + '</span>' +
+        '<span class="dot-sep od-nowrap">' + NOVA.fmtNum(a.views) + ' reads</span>' +
+        '<span class="dot-sep od-nowrap">' + a.comments + ' comments</span></p>' +
+      '</div>' +
+      '<span class="rank-row__trend ' + t.cls + '">' + t.icon +
+        '<span class="od-nowrap">' + t.label + ' ' + move + '</span></span>' +
+      '</article>';
+  }).join('');
+
+  document.getElementById('mostRead').innerHTML = A.slice()
+    .sort(function (a, b) { return b.views - a.views; }).slice(0, 4)
+    .map(function (a) { return NOVA.card(a, 'compact'); }).join('');
+
+  document.getElementById('mostDiscussed').innerHTML = A.slice()
+    .sort(function (a, b) { return b.comments - a.comments; }).slice(0, 4)
+    .map(function (a, i) { return NOVA.card(a, 'numbered', { rank: i + 1 }); }).join('');
+
+  document.getElementById('risingGrid').innerHTML =
+    ['battery-chemistry', 'public-transit', 'type-revival']
+      .map(function (s) { return NOVA.card(NOVA.find(s), 'default'); }).join('');
+};
+</script>
+<script src="assets/nova.js"></script>
+</body>
+</html>

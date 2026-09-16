@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "trending.html",
+  "entry": "trending.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-14T07:31:20.460Z",
+  "updatedAt": "2026-09-14T07:31:20.460Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

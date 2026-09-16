@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artificial Intelligence — NOVA topics</title>
+<meta name="description" content="NOVA's continuing coverage of a single subject: every story, newest first, plus the topics that sit next to it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <!-- ============================================================ TOPIC HERO -->
+  <section class="category-hero">
+    <img src="assets/img/category-technology.jpg" width="2000" height="900" alt="" decoding="async">
+    <div class="wrap category-hero__body">
+      <nav aria-label="Breadcrumb">
+        <ol class="breadcrumbs" style="color:rgba(247,246,242,.75)">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="topic.html?t=artificial-intelligence">Topics</a></li>
+          <li><span aria-current="page" id="crumbTopic" style="color:#F7F6F2">Artificial Intelligence</span></li>
+        </ol>
+      </nav>
+      <p class="overline" style="color:#B9C2FF;margin-block:var(--s-24) var(--s-16)">Continuing coverage</p>
+      <h1 style="font-size:var(--fs-display);line-height:var(--lh-display);letter-spacing:var(--ls-display);max-width:16ch" id="topicName">Artificial Intelligence</h1>
+      <p class="lead" style="margin-block-start:var(--s-24)" id="topicBlurb"></p>
+      <div class="od-cluster" style="--od-gap:12px;margin-block-start:var(--s-32)">
+        <button class="btn btn--accent" type="button" id="followTopic" aria-pressed="false">Follow this topic</button>
+        <a class="btn btn--secondary" href="newsletter.html" style="color:#F7F6F2;border-color:rgba(247,246,242,.4)">Get it by email</a>
+        <span class="meta od-nowrap" style="color:rgba(247,246,242,.7)" id="topicCount"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================= FEATURED STORY -->
+  <section class="section" aria-labelledby="tfeat-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="section-head__title" id="tfeat-title">The story to start with</h2>
+      </div>
+      <div id="topicFeatured"></div>
+    </div>
+  </section>
+
+  <!-- ================================================= LATEST + POPULAR -->
+  <section class="section" aria-labelledby="tlatest-title">
+    <div class="wrap grid12" style="row-gap:var(--s-64)">
+      <div style="grid-column:span 8">
+        <div class="section-head">
+          <h2 class="section-head__title" id="tlatest-title">Latest on this topic</h2>
+          <span class="section-head__link" style="text-decoration:none" id="topicResults"></span>
+        </div>
+        <div class="cards-list" id="topicLatest" style="gap:var(--s-32)"></div>
+
+        <div id="topicEmpty" hidden>
+          <div class="empty-state">
+            <span class="empty-state__mark" aria-hidden="true">∅</span>
+            <h3>No stories tagged yet</h3>
+            <p>We open a topic page as soon as the second story lands. Follow it now and the first dispatch will reach you before the page fills up.</p>
+            <a class="btn btn--primary" href="newsletter.html">Follow this topic</a>
+          </div>
+        </div>
+      </div>
+
+      <aside style="grid-column:span 4;display:grid;gap:var(--s-64);align-content:start">
+        <div>
+          <div class="section-head">
+            <h2 class="section-head__title">Most read on this topic</h2>
+          </div>
+          <div class="cards-list" id="topicPopular"></div>
+        </div>
+        <div>
+          <div class="section-head">
+            <h2 class="section-head__title">Related topics</h2>
+          </div>
+          <div class="od-cluster" style="--od-gap:8px" id="relatedTopics"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script>
+window.novaPage = function () {
+  var key = NOVA.qs('t', 'artificial-intelligence');
+  var topic = (window.NOVA_TOPICS || {})[key] || { name: key.replace(/-/g, ' '), blurb: '', related: [] };
+  var pool = window.NOVA_ARTICLES.filter(function (a) { return a.tags.indexOf(key) > -1; });
+
+  document.title = topic.name + ' — NOVA topics';
+  document.getElementById('topicName').textContent = topic.name;
+  document.getElementById('crumbTopic').textContent = topic.name;
+  document.getElementById('topicBlurb').textContent = topic.blurb;
+  document.getElementById('topicCount').textContent = pool.length + ' stories';
+
+  var follow = document.getElementById('followTopic');
+  follow.addEventListener('click', function () {
+    var on = follow.getAttribute('aria-pressed') !== 'true';
+    follow.setAttribute('aria-pressed', String(on));
+    follow.textContent = on ? 'Following' : 'Follow this topic';
+    NOVA.toast(on ? 'Following ' + topic.name : 'Stopped following ' + topic.name);
+  });
+
+  if (!pool.length) {
+    document.getElementById('topicFeatured').closest('section').hidden = true;
+    document.getElementById('topicEmpty').hidden = false;
+    document.getElementById('topicResults').textContent = '';
+    document.getElementById('topicPopular').innerHTML = '<p class="meta">Nothing yet.</p>';
+  } else {
+    document.getElementById('topicFeatured').innerHTML = NOVA.card(pool[0], 'featured');
+    var rest = pool.slice(1);
+    document.getElementById('topicLatest').innerHTML = rest.length
+      ? rest.map(function (a) { return NOVA.card(a, 'horizontal'); }).join('')
+      : '<p class="meta">This is the only story on the topic so far.</p>';
+    document.getElementById('topicResults').textContent = pool.length + ' stories';
+    document.getElementById('topicPopular').innerHTML = pool.slice()
+      .sort(function (a, b) { return b.views - a.views; }).slice(0, 4)
+      .map(function (a, i) { return NOVA.card(a, 'numbered', { rank: i + 1 }); }).join('');
+  }
+
+  document.getElementById('relatedTopics').innerHTML = (topic.related || [])
+    .concat(Object.keys(window.NOVA_TOPICS).filter(function (k) { return k !== key; }))
+    .slice(0, 8)
+    .map(function (r) {
+      var t = (window.NOVA_TOPICS || {})[r];
+      return '<a class="tag" href="topic.html?t=' + encodeURIComponent(r) + '">' +
+        NOVA.esc(t ? t.name : r.replace(/-/g, ' ')) + '</a>';
+    }).join('');
+};
+</script>
+<script src="assets/nova.js"></script>
+</body>
+</html>
