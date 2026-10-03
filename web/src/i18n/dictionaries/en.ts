@@ -1,0 +1,207 @@
+/**
+ * English UI copy — the source dictionary (the reference export's own wording).
+ * `fa.ts` must satisfy the same shape (`Dictionary`), so a missing key is a type error.
+ *
+ * Scope: copy used by SHARED components (chrome, controls, messages).
+ * Editorial content and page-specific copy live in `src/content/` and
+ * `src/data/`, not here.
+ */
+const en = {
+  site: {
+    name: "NOVA",
+    title: "NOVA — Ideas, stories, and perspectives shaping tomorrow",
+    tagline: "Ideas, stories, and perspectives shaping tomorrow.",
+    description:
+      "NOVA is an independent digital publication covering technology, business, science, design and culture. Reporting, criticism and long-form journalism, published daily.",
+    footerAbout:
+      "Ideas, stories, and perspectives shaping tomorrow. Independent reporting on technology, business, science, design and culture — published daily since 2021.",
+    copyright: "© 2026 NOVA Media. All rights reserved.",
+  },
+  a11y: {
+    skipToContent: "Skip to content",
+    home: "NOVA — home",
+    sections: "Sections",
+    breadcrumb: "Breadcrumb",
+    legal: "Legal",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    search: "Search",
+    searchLabel: "Search NOVA",
+    toDark: "Switch to dark theme",
+    toLight: "Switch to light theme",
+    dismiss: "Dismiss",
+    close: "Close",
+    pagination: "Pagination",
+    previousPage: "Previous page",
+    nextPage: "Next page",
+  },
+  nav: {
+    home: "Home",
+    latest: "Latest",
+    technology: "Technology",
+    business: "Business",
+    science: "Science",
+    design: "Design",
+    culture: "Culture",
+    opinion: "Opinion",
+  },
+  header: {
+    searchPlaceholder: "Search stories, authors, topics",
+    signIn: "Sign in",
+    subscribe: "Subscribe",
+    subscribeLong: "Subscribe to NOVA",
+    saved: "Saved articles",
+    searchSubmit: "Search",
+  },
+  footer: {
+    sections: "Sections",
+    discover: "Discover",
+    account: "Account",
+    publication: "Publication",
+    links: {
+      trending: "Trending",
+      topics: "Topics",
+      longReads: "Long reads",
+      interviews: "Interviews",
+      search: "Search",
+      designSystem: "Design system",
+      signIn: "Sign in",
+      createAccount: "Create account",
+      saved: "Saved articles",
+      newsletters: "Newsletters",
+      subscribe: "Subscribe",
+      uiStates: "UI states",
+      about: "About NOVA",
+      standards: "Editorial standards",
+      contact: "Contact",
+      privacy: "Privacy",
+      terms: "Terms",
+      cookies: "Cookies",
+      accessibility: "Accessibility",
+      notFound: "404 page",
+    },
+  },
+  card: {
+    minRead: (mins: string) => `${mins} min read`,
+    mins: (mins: string) => `${mins} min`,
+    reads: (count: string) => `${count} reads`,
+    replies: (count: string) => `${count} replies`,
+    stories: (count: string) => `${count} stories`,
+    longRead: "Long read",
+  },
+  ledger: {
+    rising: "Rising",
+    falling: "Falling",
+    level: "Level",
+    reads: "reads",
+    replies: "replies",
+  },
+  share: {
+    group: "Share this article",
+    share: "Share",
+    shareSocial: "Share on social",
+    copyLink: "Copy link",
+    copyArticleLink: "Copy link to this article",
+    email: "Email this article",
+    save: "Save",
+    saveFor: (title: string) => `Save for later: ${title}`,
+    removeFor: (title: string) => `Remove from saved: ${title}`,
+    saved: "Saved to your reading list",
+    unsaved: "Removed from your reading list",
+    linkCopied: "Link copied to clipboard",
+    sheetFallback: "Sharing sheet would open here",
+  },
+  follow: {
+    follow: "Follow",
+    following: "Following",
+    followTopic: "Follow this topic",
+    started: (name: string) => `Following ${name}`,
+    stopped: (name: string) => `Stopped following ${name}`,
+  },
+  article: {
+    published: "Published",
+    updated: "Updated",
+    writtenBy: "Written by",
+    reportedBy: "Reported by",
+    authorProfile: (name: string) => `${name}, author profile`,
+    allByAuthor: "All stories by this author",
+    contactSecurely: "Contact securely",
+    filedUnder: "Filed under",
+    actions: "Article actions",
+    joinDiscussion: "Join the discussion",
+    backToChapterOne: "Back to chapter one",
+    thisArticle: "this article",
+    thisLongRead: "this long read",
+    chapters: "Chapters",
+  },
+  comments: {
+    title: "Comments",
+    sort: "Sort",
+    sortLabel: "Sort comments",
+    newest: "Newest",
+    oldest: "Oldest",
+    mostLiked: "Most liked",
+    resorted: "Comments re-sorted",
+    postingAs: "Posting as",
+    you: "You",
+    subscriber: "Subscriber",
+    authorBadge: "Author",
+    rules: "Community rules",
+    rulesBody:
+      "NOVA comments are moderated by people, not filters. Three rules: argue with the reporting rather than the reporter, disclose a stake if you have one, and do not post anything you would not say with your name attached — because it is.",
+    label: "Your comment",
+    placeholder: "Add to the reporting — corrections and first-hand experience are especially welcome.",
+    hint: "Comments are moderated by a person, usually within an hour. Be specific; be civil.",
+    empty: "Write something before posting. Comments are held for review if they are under 10 characters.",
+    clear: "Clear",
+    post: "Post comment",
+    posted: "Comment posted",
+    justNow: "just now",
+    signedOutLead: "Reading this signed out?",
+    signIn: "Sign in",
+    or: "or",
+    createAccount: "create a free account",
+    signedOutTail: "to join the discussion. Reading never requires an account.",
+    like: "Like this comment",
+    reply: "Reply",
+    report: "Report",
+    noneTitle: "No comments yet",
+    noneBody: "Be the first to respond. Corrections, first-hand experience and pointed disagreement are all welcome.",
+    nextPage: "Next page of comments",
+  },
+  newsletter: {
+    emailLabel: "Email address",
+    placeholder: "you@example.com",
+    subscribe: "Subscribe free",
+    subscribed: "You're subscribed. Check your inbox to confirm.",
+  },
+  form: {
+    required: "required",
+    requiredError: (label: string) => `${label} is required. Enter a value to continue.`,
+    emailError: "That address is missing an @ or a domain. Check it and try again.",
+    passwordError:
+      "Use at least 8 characters. Longer passphrases are stronger than short complex ones.",
+    summary: (count: string) =>
+      count === "1" ? "1 field needs your attention" : `${count} fields need your attention`,
+  },
+  notFound: {
+    title: "This page has been unpublished, moved, or never existed",
+    lead: "Three ordinary explanations, in rough order of likelihood. If you followed a link from inside NOVA, that is our mistake and the newsroom would like to know about it.",
+    home: "Go to the homepage",
+    search: "Search the archive",
+    report: "Report the broken link",
+    reported: "Thanks — the newsroom has the referring URL",
+    whileHere: "While you are here",
+    allStories: "All stories",
+  },
+} as const;
+
+type Widen<T> = T extends string
+  ? string
+  : T extends (...args: infer A) => infer R
+    ? (...args: A) => Widen<R>
+    : { [K in keyof T]: Widen<T[K]> };
+
+export type Dictionary = Widen<typeof en>;
+
+export default en satisfies Dictionary;
