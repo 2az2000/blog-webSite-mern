@@ -37,7 +37,7 @@
       <button class="btn btn--primary od-fixed" type="submit">Search</button>
     </form>
 
-    <div class="od-row" style="--od-gap:16px;flex-wrap:wrap;margin-block-start:var(--s-16)">
+    <div class="od-row gap-16 mt-16">
       <p class="meta od-fixed" id="searchStatus" role="status" aria-live="polite">Type a word, or start from a suggestion below.</p>
       <button class="btn btn--ghost btn--sm" type="button" id="clearSearch" hidden>Clear search</button>
     </div>
@@ -45,19 +45,21 @@
 
   <!-- ================================================ SUGGESTIONS / RECENTS -->
   <section class="section section--tight" id="suggestPanel" aria-labelledby="suggest-title">
-    <div class="wrap grid12" style="row-gap:var(--s-48)">
-      <div style="grid-column:span 6">
-        <div class="section-head">
-          <h2 class="section-head__title" id="suggest-title">Try one of these</h2>
+    <div class="wrap grid12 row-gap-48">
+      <div class="col-6">
+        <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">01</span>
+          <h2 class="sec-head__title" id="suggest-title">Try one of these</h2>
         </div>
-        <div class="od-cluster" style="--od-gap:8px" id="suggestions"></div>
+        <div class="od-cluster gap-8" id="suggestions"></div>
       </div>
-      <div style="grid-column:span 6">
-        <div class="section-head">
-          <h2 class="section-head__title">Recent searches</h2>
-          <button class="section-head__link" type="button" id="clearRecent" style="background:none;border:0;cursor:pointer">Clear</button>
+      <div class="col-6">
+        <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">02</span>
+          <h2 class="sec-head__title">Recent searches</h2>
+          <button class="sec-head__link" type="button" id="clearRecent">Clear</button>
         </div>
-        <div class="od-cluster" style="--od-gap:8px" id="recentSearches"></div>
+        <div class="od-cluster gap-8" id="recentSearches"></div>
       </div>
     </div>
   </section>
@@ -65,7 +67,7 @@
   <!-- ============================================================= RESULTS -->
   <section class="section" id="resultsPanel" hidden aria-labelledby="results-title">
     <div class="wrap">
-      <div class="od-row" style="--od-gap:24px;flex-wrap:wrap;justify-content:space-between;margin-block-end:var(--s-24)">
+      <div class="od-row gap-24 row--between mb-24">
         <div class="tabs od-fill" role="tablist" aria-label="Result type" data-tabs id="typeTabs">
           <button role="tab" type="button" data-tab-key="articles" aria-selected="true">Articles <span id="cArticles"></span></button>
           <button role="tab" type="button" data-tab-key="authors" aria-selected="false">Authors <span id="cAuthors"></span></button>
@@ -87,30 +89,30 @@
 
       <!-- loading skeleton, shaped like the result rows it replaces -->
       <div id="resultsLoading" hidden>
-        <div class="cards-list" style="gap:var(--s-32)">
-          <div class="card--horizontal" style="display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s-24)">
+        <div class="cards-list gap-32">
+          <div class="card--horizontal split-5-7">
             <div class="skeleton skeleton--media"></div>
             <div class="skeleton-card"><div class="skeleton skeleton--title"></div><div class="skeleton skeleton--line"></div><div class="skeleton skeleton--line is-mid"></div><div class="skeleton skeleton--line is-short"></div></div>
           </div>
-          <div class="card--horizontal" style="display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s-24)">
+          <div class="card--horizontal split-5-7">
             <div class="skeleton skeleton--media"></div>
             <div class="skeleton-card"><div class="skeleton skeleton--title"></div><div class="skeleton skeleton--line"></div><div class="skeleton skeleton--line is-mid"></div><div class="skeleton skeleton--line is-short"></div></div>
           </div>
         </div>
       </div>
 
-      <div class="cards-list" id="resultsList" style="gap:var(--s-32)"></div>
+      <div class="cards-list gap-32" id="resultsList"></div>
 
       <div id="noResults" hidden>
         <div class="empty-state">
           <span class="empty-state__mark" aria-hidden="true">?</span>
           <h3>Nothing matched “<span id="noResultsTerm"></span>”</h3>
           <p>Search covers headlines, standfirsts, authors and tags. Try a broader word, check the spelling, or start from a section instead.</p>
-          <div class="od-cluster" style="--od-gap:12px;justify-content:center">
+          <div class="od-cluster gap-12 row--center">
             <a class="btn btn--primary" href="category.html?s=latest">Browse the latest</a>
             <a class="btn btn--secondary" href="trending.html">See what’s trending</a>
           </div>
-          <p class="meta" style="margin-block-start:var(--s-16)">Or try: <span id="altSuggestions"></span></p>
+          <p class="meta mt-16">Or try: <span id="altSuggestions"></span></p>
         </div>
       </div>
     </div>
@@ -219,22 +221,22 @@ window.novaPage = function () {
     if (type === 'articles') {
       list.innerHTML = articles.map(function (a) { return NOVA.card(a, 'horizontal'); }).join('');
     } else if (type === 'authors') {
-      list.innerHTML = '<div class="cards-row" style="--cols:3;gap:var(--s-24)">' + authors.map(function (k) {
+      list.innerHTML = '<div class="cards-row cols-3 gap-24">' + authors.map(function (k) {
         var o = window.NOVA_AUTHORS[k];
         var count = window.NOVA_ARTICLES.filter(function (x) { return x.author === k; }).length;
         return '<a class="collection-tile" href="author.html?a=' + k + '">' +
           '<span class="avatar avatar--lg" aria-hidden="true">' + NOVA.esc(o.initials) + '</span>' +
-          '<span style="font-family:var(--font-serif);font-size:var(--fs-h4)">' + NOVA.esc(o.name) + '</span>' +
+          '<span class="t-serif t-h4">' + NOVA.esc(o.name) + '</span>' +
           '<span class="collection-tile__count">' + NOVA.esc(o.role) + '</span>' +
           '<span class="collection-tile__count od-nowrap">' + count + ' stories</span></a>';
       }).join('') + '</div>';
     } else {
-      list.innerHTML = '<div class="cards-row" style="--cols:2;gap:var(--s-24)">' + topics.map(function (k) {
+      list.innerHTML = '<div class="cards-row cols-2 gap-24">' + topics.map(function (k) {
         var o = window.NOVA_TOPICS[k];
         var count = window.NOVA_ARTICLES.filter(function (x) { return x.tags.indexOf(k) > -1; }).length;
         return '<a class="collection-tile" href="topic.html?t=' + encodeURIComponent(k) + '">' +
           '<span class="overline text-accent">Topic</span>' +
-          '<span style="font-family:var(--font-serif);font-size:var(--fs-h3)">' + NOVA.esc(o.name) + '</span>' +
+          '<span class="t-serif t-h3">' + NOVA.esc(o.name) + '</span>' +
           '<span class="collection-tile__count od-clamp-2">' + NOVA.esc(o.blurb) + '</span>' +
           '<span class="collection-tile__count od-nowrap">' + count + ' stories</span></a>';
       }).join('') + '</div>';

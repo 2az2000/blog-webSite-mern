@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The NOVA design system</title>
+<meta name="description" content="Foundations, editorial signatures, components and states as they are actually implemented in assets/nova.css and assets/nova.js.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nova.css">
+<script>try{var t=localStorage.getItem('nova:theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+</head>
+<body data-nav="">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+  <div class="wrap">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumbs">
+        <li><a href="index.html">Home</a></li>
+        <li><span aria-current="page">Design system</span></li>
+      </ol>
+    </nav>
+  </div>
+
+  <header class="wrap page-head">
+    <p class="t-index t-accent">Version 2 · Phase 2 refinement</p>
+    <h1 class="display mt-16">The NOVA design system</h1>
+    <p class="lead mt-24">Everything on this page is read from the same two files every screen uses — <code class="t-index">assets/nova.css</code> and <code class="t-index">assets/nova.js</code>. Nothing here is a mock-up of an intention: if a token, signature or state is documented below, it is the one the product ships.</p>
+    <p class="meta mt-24 measure-long">Phase 2 retired four Phase 1 components — <code class="t-index">.section-head</code>, <code class="t-index">.figure-full</code>/<code class="t-index">.figcaption</code> and <code class="t-index">.rank-board</code>/<code class="t-index">.rank-row</code> — and replaced the values they carried inline with the named utility layer in section 21 of the stylesheet. No page in this prototype carries a <code class="t-index">style</code> attribute except for chart data values, where the number belongs in the markup.</p>
+  </header>
+
+  <!-- ============================================================== BRAND -->
+  <section class="section" aria-labelledby="brand-title">
+    <div class="wrap">
+      <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">01</span>
+        <h2 class="sec-head__title" id="brand-title">Brand</h2>
+      </div>
+
+      <div class="grid12 row-gap-48">
+        <div class="col-4">
+          <p class="wordmark">NOVA</p>
+          <p class="meta mt-16 measure-short">The wordmark is set in the editorial serif at 600, letter-spaced tight. It is never outlined, gradiented, rotated or set in the sans.</p>
+        </div>
+        <div class="col-8">
+          <ul class="stack gap-16 measure-long">
+            <li><strong class="t-fg">Paper, not product.</strong> The surface language is hairline rules and generous whitespace. Cards have no chrome; separation comes from a rule, a gap, or a change of ground.</li>
+            <li><strong class="t-fg">Typography carries the hierarchy.</strong> Size, weight, family and space do the ranking. Borders, shadows and colour do not.</li>
+            <li><strong class="t-fg">Accent is punctuation.</strong> Electric blue marks links, section indices and the primary action. A page with three blue elements is correct; a page with thirty is broken.</li>
+            <li><strong class="t-fg">One dominant story per screen.</strong> The lead step of the type scale appears once. If two things are the biggest, neither is.</li>
+            <li><strong class="t-fg">Dark mode is authored, not inverted.</strong> Its surfaces, borders and accent were chosen against a dark ground and audited separately.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== TYPOGRAPHY -->
+  <section class="section" aria-labelledby="type-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">02</span>
+        <h2 class="sec-head__title" id="type-title">Typography</h2>
+        <p class="sec-head__note">Newsreader carries Display → H4; Inter carries Body → Label. Family is the second axis of separation, so a featured card and a standard card never read as the same rank.</p>
+      </div>
+
+      <div class="ledger" id="typeSpecimen"></div>
+
+      <h3 class="t-h4 mt-64 mb-16">Reading measure</h3>
+      <div class="panel panel--sunk">
+        <p class="prose">This paragraph is set at the article measure: <code class="t-index">--measure</code>, 39rem, which lands at roughly 69 characters per line at the 18px body size — inside the 60–75 band the brief asks for. Long-form figures and annotations use <code class="t-index">--measure-wide</code> at 46rem and reach past the column through a single <code class="t-index">--outset</code> variable rather than through per-figure margins.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== COLOUR -->
+  <section class="section" aria-labelledby="colour-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">03</span>
+        <h2 class="sec-head__title" id="colour-title">Colour</h2>
+        <p class="sec-head__note">Semantic tokens only — no page names a hex. Switch the theme in the header to audit the dark values; they are authored independently, not derived.</p>
+      </div>
+      <div class="cards-row cols-4 gap-24" id="swatches"></div>
+      <p class="chart-note mt-32">Body text measures 5.7:1 on paper at <code class="t-index">--muted</code> <code class="t-index">#5C5A55</code>. Phase 1 used the brief's <code class="t-index">#737373</code>, which measures 4.2:1 — under the 4.5 floor — so it was deepened and the change recorded here rather than left silent.</p>
+    </div>
+  </section>
+
+  <!-- ================================================== SPACING · GRID · ETC -->
+  <section class="section" aria-labelledby="space-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">04</span>
+        <h2 class="sec-head__title" id="space-title">Spacing, grid, radius, elevation, motion</h2>
+      </div>
+
+      <div class="grid12 row-gap-48">
+        <div class="col-6">
+          <h3 class="t-h4 mb-16">Spacing scale</h3>
+          <p class="meta mb-16">Multiples of 4 and 8 only. There is no 17, 23 or 37 anywhere in the stylesheet.</p>
+          <div class="stack gap-8" id="spaceScale"></div>
+        </div>
+
+        <div class="col-6">
+          <h3 class="t-h4 mb-16">Grid &amp; containers</h3>
+          <dl class="ledger" id="gridSpec"></dl>
+        </div>
+
+        <div class="col-6">
+          <h3 class="t-h4 mb-16">Radius</h3>
+          <p class="meta mb-16">Editorial and near-square. 8px is the ceiling; <code class="t-index">--r-full</code> exists only for pills and avatars. The Phase 1 12/16/24 steps were documented but unused, and are gone.</p>
+          <div class="cards-row cols-4 gap-16" id="radiusScale"></div>
+        </div>
+
+        <div class="col-6">
+          <h3 class="t-h4 mb-16">Elevation</h3>
+          <p class="meta mb-16">Two shadows, both functional: a raised surface and an overlay. Surfaces are separated by rules first.</p>
+          <div class="cards-row cols-2 gap-16">
+            <div class="panel panel--elevated"><p class="t-index">--shadow-raised</p><p class="meta mt-8">Sticky header, panels on paper</p></div>
+            <div class="panel" id="shadowOverlay"><p class="t-index">--shadow-overlay</p><p class="meta mt-8">Modals, dropdown menus, toasts</p></div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <h3 class="t-h4 mb-16">Motion</h3>
+          <p class="meta mb-16 measure-long">Micro-interactions run 120–240ms, larger transitions 360ms, all on <code class="t-index">--ease-out</code> entering and <code class="t-index">--ease-in</code> leaving. Every motion in the product is suppressed under <code class="t-index">prefers-reduced-motion</code>, including the card image zoom and the topic-tile scale.</p>
+          <div class="ledger" id="motionSpec"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================ EDITORIAL SIGNATURES -->
+  <section class="section" aria-labelledby="sig-title">
+    <div class="wrap">
+      <div class="sec-head sec-head--accent">
+        <span class="sec-head__index" aria-hidden="true">05</span>
+        <h2 class="sec-head__title" id="sig-title">Editorial signatures</h2>
+        <p class="sec-head__note">Five marks that make a page recognisable as NOVA before a word is read. They are the Phase 2 answer to “every section looks like the same card grid”.</p>
+      </div>
+
+      <h3 class="t-h4 mb-16">S1 · Indexed section divider — four weights</h3>
+      <p class="meta mb-24 measure-long">One component, four weights, an index numeral on the rule. Alternating the weights down a page is what produces the large → quiet → dense rhythm; the homepage runs major, quiet, accent in that order.</p>
+
+      <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">01</span>
+        <h2 class="sec-head__title">Major — the band that owns the screen</h2>
+        <a class="sec-head__link" href="index.html">Example</a>
+      </div>
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">02</span>
+        <h2 class="sec-head__title">Default — a working section</h2>
+        <span class="sec-head__link">A note, not an action</span>
+      </div>
+      <div class="sec-head sec-head--quiet">
+        <span class="sec-head__index" aria-hidden="true">03</span>
+        <h2 class="sec-head__title">Quiet — a breather between two dense bands</h2>
+      </div>
+      <div class="sec-head sec-head--accent">
+        <span class="sec-head__index" aria-hidden="true">04</span>
+        <h2 class="sec-head__title">Accent — opinion and interviews</h2>
+      </div>
+      <p class="sec-mark" aria-hidden="true"><span>NOVA</span></p>
+      <p class="meta">Above: <code class="t-index">.sec-mark</code>, the fifth state — no rule, no title, a centred typographic breath between movements.</p>
+
+      <h3 class="t-h4 mt-64 mb-16">S2 · Broadsheet ledger</h3>
+      <p class="meta mb-24 measure-long">Ranking as a printed table. Movement direction comes from each record's own <code class="t-index">trend</code> field and is labelled in words, never by colour alone. Phase 1 printed a “places moved” figure computed from the loop index — a number the data never held — and it has been removed.</p>
+      <ol class="ledger ledger--board" id="ledgerDemo"></ol>
+
+      <h3 class="t-h4 mt-64 mb-16">S3 · The metadata lockup</h3>
+      <p class="meta mb-24 measure-long">One lockup on every surface: author in ink, everything after it muted, separated by a hairline stroke rather than a dot, with tabular figures so stacked cards align down the column.</p>
+      <div class="stack gap-16">
+        <p class="metabar metabar--strong"><span class="metabar__by">Elena Duarte</span><span class="dot-sep">Sep 12, 2026</span><span class="dot-sep">14 min read</span></p>
+        <p class="metabar"><span class="metabar__by">Sofia Lindqvist</span><span class="dot-sep">Investigations</span><span class="dot-sep">32 min</span></p>
+      </div>
+
+      <h3 class="t-h4 mt-64 mb-16">S5 · Ratio-locked image frame</h3>
+      <p class="meta mb-24 measure-long">The container takes the ratio; the image never negotiates. Ratios are modifiers — <code class="t-index">--3x2</code>, <code class="t-index">--4x5</code>, <code class="t-index">--1x1</code>, <code class="t-index">--16x9</code>, <code class="t-index">--20x9</code> — so a page cannot invent a ninth crop inline. <code class="t-index">.frame--natural</code> renders a full frame for content that must not be cropped.</p>
+      <div class="cards-row cols-3 gap-24">
+        <figure class="frame frame--3x2">
+          <span class="frame__media"><img src="assets/img/quiet-office.jpg" width="1600" height="1067" alt="An empty open-plan office at dusk, chairs pushed in." loading="lazy" decoding="async"></span>
+          <figcaption class="frame__cap"><span>3 : 2 — the article default</span><span class="frame__credit">NOVA</span></figcaption>
+        </figure>
+        <figure class="frame frame--1x1">
+          <span class="frame__media"><img src="assets/img/type-revival.jpg" width="1600" height="1067" alt="Metal type sorts arranged in a composing stick." loading="lazy" decoding="async"></span>
+          <figcaption class="frame__cap"><span>1 : 1 — compact thumbnails</span><span class="frame__credit">NOVA</span></figcaption>
+        </figure>
+        <figure class="frame frame--16x9 frame--top">
+          <span class="frame__media"><img src="assets/img/city-night.jpg" width="1600" height="1067" alt="A city skyline at night seen from an elevated road." loading="lazy" decoding="async"></span>
+          <figcaption class="frame__cap"><span>16 : 9 with a top focus</span><span class="frame__credit">NOVA</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== S4 · THE BREAK -->
+  <aside class="brk" aria-labelledby="brk-demo">
+    <div class="wrap brk__inner">
+      <p class="brk__kicker" id="brk-demo">S4 · Full-bleed editorial break</p>
+      <blockquote class="brk__quote">One per page, never two. The page goes to ink, a single sentence carries the whole band, and the reader comes back out onto <em>paper</em>.</blockquote>
+      <p class="brk__cite"><b>Placement</b> &middot; homepage, category, author, newsletter and trending. Long-form uses its own inverted language instead — the hero and the <code class="t-index">.lf-break</code> image bands.</p>
+    </div>
+  </aside>
+
+  <!-- ====================================================== CARD SYSTEM -->
+  <section class="section" aria-labelledby="cards-title">
+    <div class="wrap">
+      <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">06</span>
+        <h2 class="sec-head__title" id="cards-title">Article card system</h2>
+        <p class="sec-head__note">Eight variants, one grammar. Every variant sits one clear step from its neighbours on the rank ladder, and image ratio is a per-variant token, never a local override.</p>
+      </div>
+
+      <div class="ledger mb-48" id="rankLadder"></div>
+
+      <h3 class="t-h4 mb-16">Lead — one per page, the dominant story</h3>
+      <div class="frontpage__lead mb-48" id="cardLead"></div>
+
+      <div class="grid12 row-gap-48">
+        <div class="col-6">
+          <h3 class="t-h4 mb-16">Featured</h3>
+          <div id="cardFeatured"></div>
+        </div>
+        <div class="col-6">
+          <h3 class="t-h4 mb-16">Default — the workhorse grid card</h3>
+          <div id="cardDefault"></div>
+        </div>
+        <div class="col-12">
+          <h3 class="t-h4 mb-16">Horizontal</h3>
+          <div id="cardHorizontal"></div>
+        </div>
+        <div class="col-4">
+          <h3 class="t-h4 mb-16">Compact</h3>
+          <div class="cards-list" id="cardCompact"></div>
+        </div>
+        <div class="col-4">
+          <h3 class="t-h4 mb-16">Numbered</h3>
+          <div class="cards-list" id="cardNumbered"></div>
+        </div>
+        <div class="col-4">
+          <h3 class="t-h4 mb-16">Minimal</h3>
+          <div class="cards-list" id="cardMinimal"></div>
+        </div>
+        <div class="col-6">
+          <h3 class="t-h4 mb-16">Opinion — author-forward, no image</h3>
+          <div class="cards-list" id="cardOpinion"></div>
+        </div>
+        <div class="col-6">
+          <h3 class="t-h4 mb-16">Video — play affordance and runtime</h3>
+          <div id="cardVideo"></div>
+        </div>
+        <div class="col-12">
+          <h3 class="t-h4 mb-16">Long read — immersive, inverted overlay</h3>
+          <div id="cardLongread"></div>
+        </div>
+      </div>
+
+      <p class="chart-note mt-32">Hover on every variant: the image scales 1.03 over 360ms and the headline's underline changes colour only — it is drawn transparent at rest, so a two-line headline never reflows. Focus reproduces the same treatment and adds a ring on the whole card.</p>
+    </div>
+  </section>
+
+  <!-- ========================================================== COMPONENTS -->
+  <section class="section" aria-labelledby="comp-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">07</span>
+        <h2 class="sec-head__title" id="comp-title">Components</h2>
+      </div>
+
+      <h3 class="t-h4 mb-16">Buttons — every state</h3>
+      <div class="row gap-12">
+        <button class="btn btn--primary" type="button">Primary</button>
+        <button class="btn btn--secondary" type="button">Secondary</button>
+        <button class="btn btn--accent" type="button">Accent</button>
+        <button class="btn btn--ghost" type="button">Ghost</button>
+        <button class="btn btn--danger" type="button">Danger</button>
+        <button class="btn btn--primary" type="button" disabled>Disabled</button>
+        <button class="btn btn--primary is-loading" type="button">Loading</button>
+        <button class="btn btn--secondary btn--sm" type="button">Small</button>
+      </div>
+      <p class="meta mt-16">Hover, focus-visible and active are defined for all five kinds. Loading is a class, not a swap, so the label never disappears and the button keeps its width.</p>
+
+      <h3 class="t-h4 mt-64 mb-16">Badges, tags, avatars</h3>
+      <div class="row gap-12">
+        <span class="badge">Technology</span>
+        <span class="badge badge--opinion">Opinion</span>
+        <span class="badge badge--boxed">Long read</span>
+        <a class="tag" href="topic.html?t=artificial-intelligence">Artificial intelligence</a>
+        <a class="tag" href="topic.html?t=work">Work</a>
+        <span class="avatar avatar--sm" aria-hidden="true">ED</span>
+        <span class="avatar" aria-hidden="true">MF</span>
+        <span class="avatar avatar--2" aria-hidden="true">HV</span>
+        <span class="avatar avatar--lg" aria-hidden="true">SL</span>
+      </div>
+      <p class="meta mt-16 measure-long">Avatars are typographic monograms. NOVA does not use stock photographs of people who are not the writer; where a commissioned portrait exists, the author page uses it and says so in the caption.</p>
+
+      <h3 class="t-h4 mt-64 mb-16">Form controls — default, focus, error, success, disabled</h3>
+      <div class="grid12 row-gap-32">
+        <div class="col-6">
+          <form class="stack gap-24" data-validate data-success="Saved." novalidate>
+            <div class="field">
+              <label class="field__label" for="dsEmail">Email address <span class="field__req" aria-hidden="true">required</span></label>
+              <input class="input" id="dsEmail" type="email" required data-label-name="Email address" placeholder="you@example.com" autocomplete="email">
+              <p class="field__hint">Validated on blur, never on every keystroke.</p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="dsNote">A note</label>
+              <textarea class="textarea" id="dsNote" placeholder="Optional"></textarea>
+            </div>
+            <label class="checkbox"><input type="checkbox"> <span>A checkbox, with the label as the hit target.</span></label>
+            <button class="btn btn--primary" type="submit">Submit to see the states</button>
+          </form>
+        </div>
+        <div class="col-6">
+          <div class="stack gap-24">
+            <div class="field">
+              <label class="field__label" for="dsErr">Field in error</label>
+              <input class="input is-error" id="dsErr" value="not-an-email" aria-invalid="true" aria-describedby="dsErrMsg">
+              <p class="field__error" id="dsErrMsg">Enter an email address in the form name@example.com — the cause and the remedy, next to the field.</p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="dsOk">Field accepted</label>
+              <input class="input is-success" id="dsOk" value="elena@nova.example">
+              <p class="field__success">Looks right.</p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="dsOff">Disabled</label>
+              <input class="input" id="dsOff" value="Unavailable on the free plan" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="t-h4 mt-64 mb-16">Navigation components</h3>
+      <div class="stack gap-32">
+        <div class="tabs" role="tablist" aria-label="Example tabs">
+          <button role="tab" type="button" aria-selected="true">Latest</button>
+          <button role="tab" type="button" aria-selected="false">Popular</button>
+          <button role="tab" type="button" aria-selected="false">Most discussed</button>
+        </div>
+        <nav class="pagination" aria-label="Example pagination">
+          <span class="is-disabled" aria-hidden="true">←</span>
+          <a href="#comp-title" aria-current="page">1</a>
+          <a href="#comp-title">2</a>
+          <a href="#comp-title">3</a>
+          <span>…</span>
+          <a href="#comp-title">12</a>
+          <a href="#comp-title" aria-label="Next page">→</a>
+        </nav>
+        <div class="dropdown" id="dsSort">
+          <button class="btn btn--ghost btn--sm" type="button" data-dropdown-trigger aria-expanded="false" aria-haspopup="true">Sort: <span data-dropdown-label>Relevance</span></button>
+          <div class="dropdown__menu" role="menu" aria-label="Sort">
+            <button role="menuitemradio" type="button" aria-checked="true" data-key="rel" data-value="Relevance">Relevance</button>
+            <button role="menuitemradio" type="button" aria-checked="false" data-key="new" data-value="Newest">Newest</button>
+            <button role="menuitemradio" type="button" aria-checked="false" data-key="pop" data-value="Most popular">Most popular</button>
+          </div>
+        </div>
+        <ol class="breadcrumbs">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="category.html?s=technology">Technology</a></li>
+          <li><span aria-current="page">A story</span></li>
+        </ol>
+      </div>
+
+      <h3 class="t-h4 mt-64 mb-16">Overlays and feedback</h3>
+      <div class="row gap-12">
+        <button class="btn btn--secondary" type="button" data-modal-open="dsModal">Open a modal</button>
+        <button class="btn btn--secondary" type="button" id="dsToast">Raise a toast</button>
+        <span class="tooltip"><button class="btn btn--ghost btn--sm" type="button" aria-describedby="dsTip">Hover for a tooltip</button><span class="tooltip__bubble" role="tooltip" id="dsTip">Tooltips are supplementary only — never the sole carrier of a meaning.</span></span>
+      </div>
+      <div class="stack gap-16 mt-32">
+        <div class="notice" data-icon-slot="info"><span>An informational notice.</span></div>
+        <div class="notice notice--success" data-icon-slot="check"><span>A success notice.</span></div>
+        <div class="notice notice--warning" data-icon-slot="alert"><span>A warning notice.</span></div>
+        <div class="notice notice--error" data-icon-slot="alert"><span>An error notice — an icon and a word, never colour alone.</span></div>
+      </div>
+
+      <h3 class="t-h4 mt-64 mb-16">Reading progress, share, bookmark</h3>
+      <div class="row gap-24">
+        <div class="share" role="group" aria-label="Share example">
+          <button class="share__btn" type="button" data-icon-slot="share" aria-label="Share"></button>
+          <button class="share__btn" type="button" data-icon-slot="link" aria-label="Copy link"></button>
+          <button class="share__btn" type="button" data-icon-slot="mail" aria-label="Email"></button>
+          <button class="share__btn bookmark-btn" type="button" data-toggle="bookmark" aria-pressed="false" data-label="this example" aria-label="Save for later" data-icon-slot="bookmark"></button>
+        </div>
+        <p class="meta">Bookmark is a real toggle: it writes to <code class="t-index">localStorage</code>, changes <code class="t-index">aria-pressed</code>, fills the glyph and raises a toast. The state survives a reload and shows up on the bookmarks page.</p>
+      </div>
+      <div class="panel panel--sunk mt-24">
+        <p class="t-index mb-8">Reading progress</p>
+        <div id="progressDemo"></div>
+        <p class="meta mt-12">3px, accent, fixed to the top of the viewport, updated on scroll and hidden from assistive technology — the article's own headings carry the structure.</p>
+      </div>
+
+      <h3 class="t-h4 mt-64 mb-16">Comment</h3>
+      <article class="comment">
+        <span class="avatar avatar--sm" aria-hidden="true">JR</span>
+        <div>
+          <div class="comment__head">
+            <span class="comment__author">Jamie Rowe</span>
+            <span class="comment__badge">Subscriber</span>
+            <span class="meta">2 hours ago</span>
+          </div>
+          <p class="comment__body">The default, with its reply, like, and report actions. Replies indent once and never further; a moderated comment keeps its slot and states why it was removed.</p>
+          <div class="comment__actions">
+            <button class="comment__action" type="button" data-toggle="like" aria-pressed="false" data-icon-slot="heart"> 12</button>
+            <button class="comment__action" type="button" data-icon-slot="reply"> Reply</button>
+            <button class="comment__action" type="button" data-icon-slot="flag"> Report</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================== STATES -->
+  <section class="section" aria-labelledby="states-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">08</span>
+        <h2 class="sec-head__title" id="states-title">States</h2>
+        <a class="sec-head__link" href="states.html">Full state catalogue</a>
+      </div>
+
+      <h3 class="t-h4 mb-16">Skeletons match the editorial shape they replace</h3>
+      <div class="cards-row cols-3 gap-32">
+        <div class="skeleton-card">
+          <div class="skeleton skeleton--media"></div>
+          <div class="skeleton skeleton--title"></div>
+          <div class="skeleton skeleton--line"></div>
+          <div class="skeleton skeleton--line is-short"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton skeleton--media"></div>
+          <div class="skeleton skeleton--title"></div>
+          <div class="skeleton skeleton--line"></div>
+          <div class="skeleton skeleton--line is-short"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton skeleton--media"></div>
+          <div class="skeleton skeleton--title"></div>
+          <div class="skeleton skeleton--line"></div>
+          <div class="skeleton skeleton--line is-short"></div>
+        </div>
+      </div>
+
+      <h3 class="t-h4 mt-64 mb-16">Empty</h3>
+      <div class="empty-state">
+        <span class="empty-state__mark" aria-hidden="true">∅</span>
+        <h3>Nothing saved yet</h3>
+        <p>Every empty state names the reason and offers the next action. None of them is a blank screen.</p>
+        <div class="row row--center gap-12">
+          <a class="btn btn--primary" href="index.html">Browse the front page</a>
+          <a class="btn btn--secondary" href="trending.html">See what is trending</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== UTILITY LAYER -->
+  <section class="section" aria-labelledby="util-title">
+    <div class="wrap">
+      <div class="sec-head sec-head--quiet">
+        <span class="sec-head__index" aria-hidden="true">09</span>
+        <h2 class="sec-head__title" id="util-title">The utility layer</h2>
+        <p class="sec-head__note">A closed, named set — section 21 of the stylesheet. These are the only classes allowed to carry layout values in markup, which is what keeps <code class="t-index">style</code> attributes out of the pages.</p>
+      </div>
+      <dl class="ledger" id="utilList"></dl>
+    </div>
+  </section>
+
+</main>
+
+<div class="modal-backdrop" id="dsModal" role="dialog" aria-modal="true" aria-labelledby="dsModalTitle" aria-hidden="true">
+  <div class="modal">
+    <h2 class="t-h3" id="dsModalTitle">A modal</h2>
+    <p class="t-body-sm mt-16">Focus is trapped while it is open, Escape closes it, and focus returns to the control that opened it. It never carries primary-flow navigation.</p>
+    <div class="row row--end mt-24">
+      <button class="btn btn--secondary" type="button" data-modal-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="assets/nova-data.js"></script>
+<script src="assets/nova.js"></script>
+<script>
+(function () {
+  var esc = NOVA.esc;
+
+  /* icons declared on markup rather than pasted per instance */
+  NOVA.qs('[data-icon-slot]').forEach(function (el) {
+    el.innerHTML = (NOVA.icons[el.getAttribute('data-icon-slot')] || '') + el.innerHTML;
+  });
+
+  function row(a, b, c) {
+    return '<li class="ledger__row"><span class="ledger__num" aria-hidden="true"></span>' +
+      '<span class="ledger__body"><span class="ledger__title">' + a + '</span>' +
+      '<span class="metabar">' + b + '</span></span>' +
+      '<span class="ledger__metric">' + (c || '') + '</span></li>';
+  }
+  function spec(list) { return list.map(function (r) { return row(r[0], r[1], r[2]); }).join(''); }
+
+  /* ---------------------------------------------------- type specimen */
+  var TYPE = [
+    ['Lead',      'Newsreader 600 · 40 → 64px · 1.02 · −0.028em', 't-lead'],
+    ['Display',   'Newsreader 600 · 48 → 72px · 1.02 · −0.022em', 'display'],
+    ['H1',        'Newsreader 600 · 36 → 56px · 1.06 · −0.018em', 't-h1 t-serif'],
+    ['H2',        'Newsreader 600 · 28 → 40px · 1.10 · −0.014em', 't-h2 t-serif'],
+    ['H3',        'Newsreader 600 · 24 → 32px · 1.18 · −0.011em', 't-h3 t-serif'],
+    ['H4',        'Newsreader 600 · 19 → 22px · 1.28 · −0.006em', 't-h4 t-serif'],
+    ['Body large','Inter 400 · 20px · 1.6', 'lead'],
+    ['Body',      'Inter 400 · 18px · 1.7 — the article measure', ''],
+    ['Body small','Inter 400 · 16px · 1.6', 't-body-sm'],
+    ['Caption',   'Inter 400 · 14px · 1.4 — metadata and captions', 'meta'],
+    ['Overline',  'Inter 650 · 12px · 0.13em · uppercase', 'overline'],
+    ['Index',     'Mono 500 · 11px · 0.1em · uppercase · tabular', 't-index']
+  ];
+  document.getElementById('typeSpecimen').innerHTML = TYPE.map(function (t) {
+    return '<li class="ledger__row"><span class="ledger__num" aria-hidden="true"></span>' +
+      '<span class="ledger__body"><span class="' + t[2] + '">' + esc(t[0]) + ' — the quiet revolution</span>' +
+      '<span class="metabar"><span>' + esc(t[1]) + '</span></span></span></li>';
+  }).join('');
+
+  /* ------------------------------------------------------------ colour */
+  var SWATCH = ['bg','surface','surface-2','surface-sunk','fg','fg-soft','muted','muted-soft',
+                'border','border-strong','accent','accent-hover','accent-soft','accent-2',
+                'success','warning','error','skeleton'];
+  document.getElementById('swatches').innerHTML = SWATCH.map(function (name) {
+    return '<div class="spec-swatch"><span class="spec-swatch__chip" data-token="' + esc(name) + '"></span>' +
+      '<span class="spec-swatch__name">--' + esc(name) + '</span>' +
+      '<span class="spec-swatch__val" data-val="' + esc(name) + '"></span></div>';
+  }).join('');
+  function paintSwatches() {
+    var cs = getComputedStyle(document.documentElement);
+    NOVA.qs('[data-token]').forEach(function (el) {
+      el.style.background = cs.getPropertyValue('--' + el.getAttribute('data-token')).trim();
+    });
+    NOVA.qs('[data-val]').forEach(function (el) {
+      el.textContent = cs.getPropertyValue('--' + el.getAttribute('data-val')).trim();
+    });
+  }
+  paintSwatches();
+  new MutationObserver(paintSwatches).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  /* ----------------------------------------------------------- spacing */
+  document.getElementById('spaceScale').innerHTML = [4,8,12,16,24,32,48,64,80,96,128].map(function (n) {
+    return '<div class="spec-row"><span class="t-index">--s-' + n + '</span>' +
+      '<span class="spec-bar" data-w="' + n + '"></span>' +
+      '<span class="spec-row__note">' + n + 'px</span></div>';
+  }).join('');
+  NOVA.qs('.spec-bar').forEach(function (el) { el.style.width = el.getAttribute('data-w') + 'px'; });
+
+  document.getElementById('gridSpec').innerHTML = spec([
+    ['--content-max', 'The 12-column editorial grid', '1280px'],
+    ['--content-wide', 'Full-bleed bands and the long-form hero', '1440px'],
+    ['--page-gutter', '80 → 48 → 40 → 24 → 20px by breakpoint', '80px'],
+    ['--col-gap', 'Column gutter', '24px'],
+    ['--measure', 'Article column — ≈ 69 characters', '39rem'],
+    ['--measure-wide', 'Long-form figures and annotations', '46rem'],
+    ['Breakpoints', '1440 · 1280 · 1024 · 768 · 480 · 390', '6']
+  ]);
+
+  document.getElementById('radiusScale').innerHTML = ['0','2','4','8','full'].map(function (r) {
+    return '<div class="stack gap-8"><span class="spec-radius" data-r="' + r + '"></span>' +
+      '<span class="t-index">--r-' + r + '</span></div>';
+  }).join('');
+  NOVA.qs('.spec-radius').forEach(function (el) {
+    el.style.borderRadius = 'var(--r-' + el.getAttribute('data-r') + ')';
+  });
+  document.getElementById('shadowOverlay').style.boxShadow = 'var(--shadow-overlay)';
+
+  document.getElementById('motionSpec').innerHTML = spec([
+    ['--dur-micro', 'Colour and opacity changes', '120ms'],
+    ['--dur-fast', 'Hover, focus, small reveals', '180ms'],
+    ['--dur-normal', 'Header transform, theme change', '240ms'],
+    ['--dur-slow', 'Card image zoom', '360ms'],
+    ['--ease-out', 'cubic-bezier(.16, 1, .3, 1) — entering', 'enter'],
+    ['--ease-in', 'cubic-bezier(.4, 0, 1, 1) — leaving', 'exit'],
+    ['prefers-reduced-motion', 'All of the above reduced to 0.01ms', 'honoured']
+  ]);
+
+  document.getElementById('progressDemo').innerHTML =
+    '<div class="spec-progress"><span class="spec-progress__bar"></span></div>';
+
+  /* ------------------------------------------------------ the ledger */
+  var byViews = window.NOVA_ARTICLES.slice().sort(function (a, b) { return b.views - a.views; });
+  document.getElementById('ledgerDemo').innerHTML = NOVA.ledger(byViews.slice(0, 5), { metric: 'views', move: true });
+
+  /* --------------------------------------------------- the rank ladder */
+  document.getElementById('rankLadder').innerHTML = spec([
+    ['Lead', 'One per page — the dominant story', '40 → 64px'],
+    ['Featured', 'Section hero', '28 → 40px'],
+    ['Default', 'The workhorse grid card', '24 → 32px'],
+    ['Horizontal', 'Same rank, different composition', '24 → 32px'],
+    ['Minimal', 'Text-only rail', '19 → 22px'],
+    ['Opinion', 'Author-forward, serif italic', '19 → 22px'],
+    ['Compact', 'Thumbnail list — 1 : 1 media', '16px'],
+    ['Numbered', 'Ranked list inside a rail', '16px']
+  ]);
+
+  /* ------------------------------------------------------ card variants */
+  function pick(slug) { return NOVA.find(slug); }
+  var lead = pick('context-software');
+  document.getElementById('cardLead').innerHTML = NOVA.card(lead, 'featured');
+  document.getElementById('cardFeatured').innerHTML = NOVA.card(pick('grid-rebuild'), 'featured');
+  document.getElementById('cardDefault').innerHTML = NOVA.card(pick('human-brain'), 'default');
+  document.getElementById('cardHorizontal').innerHTML = NOVA.card(pick('open-source-money'), 'horizontal');
+  document.getElementById('cardCompact').innerHTML =
+    ['type-revival','ocean-floor','public-transit'].map(function (s) { return NOVA.card(pick(s), 'compact'); }).join('');
+  document.getElementById('cardNumbered').innerHTML =
+    ['ai-labour','founder-mode','attention-economy'].map(function (s, i) { return NOVA.card(pick(s), 'numbered', { rank: i + 1 }); }).join('');
+  document.getElementById('cardMinimal').innerHTML =
+    ['battery-chemistry','slow-fashion','remote-labs'].map(function (s) { return NOVA.card(pick(s), 'minimal'); }).join('');
+  document.getElementById('cardOpinion').innerHTML =
+    ['think-better','interview-rasmussen'].map(function (s) { return NOVA.card(pick(s), 'opinion'); }).join('');
+  document.getElementById('cardVideo').innerHTML = NOVA.card(pick('city-night'), 'video');
+  document.getElementById('cardLongread').innerHTML = NOVA.card(pick('grid-rebuild'), 'longread');
+
+  /* ------------------------------------------------------ utility layer */
+  document.getElementById('utilList').innerHTML = spec([
+    ['.col-3 … .col-12', 'Column spans on .grid12; all collapse to 12 below 768px', '8'],
+    ['.row-gap-24 … -64', 'Row gap on a grid band', '3'],
+    ['.stack / .stack-8 … -48', 'Vertical rhythm in markup', '6'],
+    ['.row + .row--between/center/end/top/bottom/baseline', 'Horizontal composition', '7'],
+    ['.gap-4 … .gap-64', 'Drives CSS gap and the OD primitive variable together', '8'],
+    ['.mt-8 … .mt-64 / .mb-8 … .mb-48', 'Single-axis spacing on the token scale', '12'],
+    ['.measure / -wide / -mid / -short / -long / -note', 'Line-length caps', '6'],
+    ['.t-lead / -display / -h1 … -h4 / -index / -body-sm / -serif', 'Type roles, not size overrides', '10'],
+    ['.t-accent / -muted / -fg / -inherit / -soft', 'Semantic colour roles', '5'],
+    ['.ruled-top / -under / -row', 'Rules used as structure', '3'],
+    ['.cols-1 … .cols-4', 'Card row columns', '4'],
+    ['.big-num (+ --xl / --sm / --muted / --warning / --error)', 'Display numerals for states and 404', '6'],
+    ['.frame + ratio modifiers', 'Signature S5 — see section 05', '7'],
+    ['.full-bleed / .flush / .h-full / .scroll-x / .no-underline', 'Escape hatches, deliberately few', '5']
+  ]);
+
+  document.getElementById('dsToast').addEventListener('click', function () {
+    NOVA.toast('Toasts announce politely and dismiss themselves after 4 seconds.', 'success');
+  });
+
+  NOVA.initToggles(document);
+  NOVA.initForms(document);
+})();
+</script>
+</body>
+</html>

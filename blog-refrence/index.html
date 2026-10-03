@@ -21,40 +21,48 @@
 
 <main id="main">
 
-  <!-- ===================================================== HERO EDITORIAL -->
-  <section class="hero" aria-labelledby="lead-story">
+  <!-- ==================================================== LARGE · FRONT PAGE -->
+  <section class="frontpage" aria-labelledby="lead-story">
     <div class="wrap">
-      <div class="hero__grid">
 
-        <article class="card card--featured">
-          <div class="card__media">
-            <img src="assets/img/context-software.jpg" width="1600" height="1067"
-                 alt="A long exposure of a server hall corridor, racks receding into low blue light."
-                 fetchpriority="high" decoding="async">
-          </div>
-          <div class="card__kicker">
-            <span class="badge">Technology</span>
-            <span class="card__meta od-nowrap">The lead story</span>
-          </div>
-          <h1 class="card__title" id="lead-story" style="font-size:clamp(2rem,1.1rem + 2.6vw,3rem);line-height:1.06">
-            <a class="card__link" href="article.html?a=context-software">Why the Next Generation of Software Will Be Built Around Context</a>
-          </h1>
-          <p class="card__standfirst">For forty years we built software that waits to be told what to do. The systems arriving now assume the opposite — and that changes what a product is.</p>
-          <div class="od-row" style="--od-gap:16px;flex-wrap:wrap">
-            <div class="byline">
-              <span class="avatar" aria-hidden="true">ED</span>
-              <span class="byline__text">
-                <span class="byline__name">Elena Duarte</span>
-                <span class="byline__meta"><span class="od-nowrap">Sep 12, 2026</span><span class="dot-sep od-nowrap">14 min read</span></span>
+      <p class="edition-line">
+        <span><strong>Saturday edition</strong> &middot; September 12, 2026</span>
+        <span class="od-nowrap">Nº 412 &middot; Independent since 2019</span>
+      </p>
+
+      <div class="grid12 row-gap-48">
+
+        <div class="col-8">
+          <article class="card frontpage__lead">
+            <figure class="frame frame--3x2 card__media">
+              <span class="frame__media">
+                <img src="assets/img/context-software.jpg" width="1600" height="1067"
+                     alt="A long exposure of a server hall corridor, racks receding into low blue light."
+                     fetchpriority="high" decoding="async">
               </span>
+            </figure>
+            <div class="card__kicker">
+              <span class="badge">Technology</span>
+              <span class="t-index t-muted">The lead story</span>
             </div>
-          </div>
-        </article>
+            <h1 class="card__title" id="lead-story">
+              <a class="card__link" href="article.html?a=context-software">Why the Next Generation of Software Will Be Built Around Context</a>
+            </h1>
+            <p class="card__standfirst">For forty years we built software that waits to be told what to do. The systems arriving now assume the opposite — and that changes what a product is.</p>
+            <p class="metabar metabar--strong">
+              <span class="metabar__by od-nowrap">Elena Duarte</span>
+              <span class="dot-sep od-nowrap">Sep 12, 2026</span>
+              <span class="dot-sep od-nowrap">14 min read</span>
+            </p>
+          </article>
 
-        <aside class="hero__aside" aria-labelledby="brief-title">
-          <div class="hero__rail">
-            <h2 class="section-head__title" id="brief-title" style="margin-block-end:var(--s-8)">The Brief</h2>
-            <p class="meta">Four things worth your morning, chosen by the editors.</p>
+          <div class="frontpage__secondary" id="secondaryList"></div>
+        </div>
+
+        <aside class="col-4 frontpage__rail" aria-labelledby="brief-title">
+          <div>
+            <h2 class="sec-head__title" id="brief-title">The Brief</h2>
+            <p class="meta mt-8">Four things worth your morning, chosen by the editors.</p>
           </div>
           <div class="cards-list" id="briefList"></div>
           <a class="btn btn--secondary" href="category.html?s=latest">Read everything from today</a>
@@ -64,49 +72,68 @@
     </div>
   </section>
 
-  <!-- ======================================================= LATEST STORIES -->
+  <!-- ========================================================= DENSE · LATEST -->
   <section class="section" aria-labelledby="latest-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="latest-title">Latest stories</h2>
-        <a class="section-head__link" href="category.html?s=latest">All stories</a>
+      <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">01</span>
+        <h2 class="sec-head__title" id="latest-title">Latest stories</h2>
+        <a class="sec-head__link" href="category.html?s=latest">All stories</a>
       </div>
-      <div class="cards-row" id="latestGrid" style="--cols:3"></div>
-      <div style="display:flex;justify-content:center;padding-block-start:var(--s-48)">
+      <div class="cards-row" id="latestGrid"></div>
+      <div class="row row--center mt-48">
         <button class="btn btn--secondary" type="button" id="loadMore">Load more stories</button>
       </div>
     </div>
   </section>
 
-  <!-- ============================================== TRENDING + EDITOR'S PICKS -->
-  <section class="section" aria-labelledby="trending-title">
-    <div class="wrap grid12" style="row-gap:var(--s-48)">
+  <!-- ============================================================ QUIET · MARK -->
+  <div class="wrap">
+    <p class="sec-mark" aria-hidden="true"><span>NOVA</span></p>
+  </div>
 
-      <div style="grid-column:span 4">
-        <div class="section-head">
-          <h2 class="section-head__title" id="trending-title">Trending now</h2>
-          <a class="section-head__link" href="trending.html">Full board</a>
+  <!-- ============================================ DENSE · THE BOARD + PICKS -->
+  <section class="section" aria-labelledby="trending-title">
+    <div class="wrap grid12 row-gap-64">
+
+      <div class="col-5">
+        <div class="sec-head">
+          <span class="sec-head__index" aria-hidden="true">02</span>
+          <h2 class="sec-head__title" id="trending-title">The board</h2>
+          <a class="sec-head__link" href="trending.html">Full board</a>
+          <p class="sec-head__note">Ranked by completed reads, not clicks.</p>
         </div>
-        <div class="cards-list" id="trendingList"></div>
+        <ol class="ledger" id="trendingList"></ol>
       </div>
 
-      <div style="grid-column:span 8">
-        <div class="section-head">
-          <h2 class="section-head__title" id="picks-title">Editor’s picks</h2>
-          <a class="section-head__link" href="category.html?s=latest">More</a>
+      <div class="col-7">
+        <div class="sec-head">
+          <span class="sec-head__index" aria-hidden="true">03</span>
+          <h2 class="sec-head__title" id="picks-title">Editor’s picks</h2>
+          <a class="sec-head__link" href="category.html?s=latest">More</a>
         </div>
-        <div class="cards-list" id="picksList" style="gap:var(--s-32)"></div>
+        <div class="cards-list stack-32" id="picksList"></div>
       </div>
 
     </div>
   </section>
 
-  <!-- ====================================================== FEATURED TOPICS -->
+  <!-- ================================================ IMMERSIVE · THE BREAK -->
+  <aside class="brk" aria-labelledby="brk-title">
+    <div class="wrap brk__inner">
+      <p class="brk__kicker" id="brk-title">From the editor</p>
+      <blockquote class="brk__quote">We are not short of information. We are short of the patience it takes to decide what any of it <em>means</em> — which is the whole of the job.</blockquote>
+      <p class="brk__cite"><b>Marcus Feldt</b>, Business Editor &middot; <a href="newsletter.html">Read this week’s Dispatch</a></p>
+    </div>
+  </aside>
+
+  <!-- ====================================================== QUIET · TOPICS -->
   <section class="section" aria-labelledby="topics-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="topics-title">Featured topics</h2>
-        <a class="section-head__link" href="topic.html?t=artificial-intelligence">All topics</a>
+      <div class="sec-head sec-head--quiet">
+        <span class="sec-head__index" aria-hidden="true">04</span>
+        <h2 class="sec-head__title" id="topics-title">Where to start</h2>
+        <a class="sec-head__link" href="topic.html?t=artificial-intelligence">All topics</a>
       </div>
       <div class="topics-row">
         <a class="topic-tile" href="category.html?s=technology">
@@ -133,45 +160,47 @@
     </div>
   </section>
 
-  <!-- ============================================================ LONG READ -->
+  <!-- ================================================= IMMERSIVE · LONG READ -->
   <section class="section" aria-labelledby="longread-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="longread-title">The long read</h2>
-        <a class="section-head__link" href="longform.html">Open the full feature</a>
+      <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">05</span>
+        <h2 class="sec-head__title" id="longread-title">The long read</h2>
+        <a class="sec-head__link" href="longform.html">Open the full feature</a>
       </div>
       <div id="longRead"></div>
     </div>
   </section>
 
-  <!-- ============================================================== OPINION -->
+  <!-- ========================================================= DENSE · OPINION -->
   <section class="section" aria-labelledby="opinion-title">
-    <div class="wrap grid12" style="row-gap:var(--s-32)">
-      <div style="grid-column:span 4">
-        <div class="section-head" style="border-top-color:var(--accent-2)">
-          <h2 class="section-head__title" id="opinion-title">Opinion &amp; interviews</h2>
+    <div class="wrap grid12 row-gap-32">
+      <div class="col-4">
+        <div class="sec-head sec-head--accent">
+          <span class="sec-head__index" aria-hidden="true">06</span>
+          <h2 class="sec-head__title" id="opinion-title">Opinion &amp; interviews</h2>
         </div>
-        <p class="meta" style="max-width:34ch">Signed arguments from NOVA writers and outside contributors. Every piece is open to reply in the comments.</p>
-        <a class="btn btn--ghost" href="category.html?s=opinion" style="margin-block-start:var(--s-16);padding-inline:0">All opinion →</a>
+        <p class="meta measure-short">Signed arguments from NOVA writers and outside contributors. Every piece is open to reply in the comments.</p>
+        <a class="btn btn--ghost flush mt-16" href="category.html?s=opinion">All opinion →</a>
       </div>
-      <div style="grid-column:span 8">
+      <div class="col-8">
         <div class="cards-list" id="opinionList"></div>
       </div>
     </div>
   </section>
 
-  <!-- ======================================================= NEWSLETTER CTA -->
+  <!-- ====================================================== LARGE · NEWSLETTER -->
   <section class="newsletter-band" aria-labelledby="nl-title">
     <div class="wrap newsletter-band__grid">
       <div>
-        <p class="overline" style="color:var(--accent);margin-block-end:var(--s-16)">The NOVA Dispatch</p>
-        <h2 id="nl-title" style="font-size:var(--fs-h2)">One email. Six stories. No noise.</h2>
-        <p class="lead" style="margin-block-start:var(--s-16)">Every Tuesday and Friday our editors write up what mattered and why — the reporting behind the headline, not a link dump. Free, and you can leave in one click.</p>
-        <p class="meta" style="margin-block-start:var(--s-24);color:inherit;opacity:.7">Joined by 214,000 readers · <a href="newsletter.html" style="color:inherit">See a sample issue</a></p>
+        <p class="t-index t-accent">The NOVA Dispatch</p>
+        <h2 class="t-h2 mt-16" id="nl-title">One email. Six stories. No noise.</h2>
+        <p class="lead mt-16">Every Tuesday and Friday our editors write up what mattered and why — the reporting behind the headline, not a link dump. Free, and you can leave in one click.</p>
+        <p class="meta t-soft mt-24">Joined by 214,000 readers · <a class="t-inherit" href="newsletter.html">See a sample issue</a></p>
       </div>
       <form class="newsletter-form" data-validate data-success="You're subscribed. Check your inbox to confirm." novalidate>
         <div class="field">
-          <label class="field__label" for="nlEmail" style="color:inherit">Email address <span class="field__req" aria-hidden="true">required</span></label>
+          <label class="field__label t-inherit" for="nlEmail">Email address <span class="field__req" aria-hidden="true">required</span></label>
           <input class="input" id="nlEmail" name="email" type="email" required data-label-name="Email address" placeholder="you@example.com" autocomplete="email">
         </div>
         <button class="btn btn--primary" type="submit">Subscribe free</button>
@@ -179,7 +208,7 @@
           <input type="checkbox" name="offers">
           <span>Also send me occasional subscriber offers. Optional, and separate from the Dispatch.</span>
         </label>
-        <p class="meta" style="color:inherit;opacity:.65">We never sell reader data. Unsubscribe from any issue — one click, no survey.</p>
+        <p class="meta t-inherit t-soft">We never sell reader data. Unsubscribe from any issue — one click, no survey.</p>
       </form>
     </div>
   </section>
@@ -194,14 +223,22 @@ window.novaPage = function () {
   var A = window.NOVA_ARTICLES;
   var by = function (slug) { return NOVA.find(slug); };
 
-  /* The Brief — text-only minimal cards beside the lead story */
-  document.getElementById('briefList').innerHTML =
-    ['human-brain', 'small-powerful-companies', 'think-better', 'battery-chemistry']
+  /* Front page — two secondaries sharing the lead's measure */
+  document.getElementById('secondaryList').innerHTML =
+    ['human-brain', 'ai-labour']
       .map(function (s) { return NOVA.card(by(s), 'minimal'); }).join('');
 
-  /* Latest — newest first, excluding the lead and the long read */
+  /* The Brief — text-only minimal cards in the ruled rail */
+  document.getElementById('briefList').innerHTML =
+    ['small-powerful-companies', 'think-better', 'battery-chemistry', 'internet-remember']
+      .map(function (s) { return NOVA.card(by(s), 'minimal'); }).join('');
+
+  /* Latest — newest first, excluding everything already placed above */
+  var placed = ['context-software', 'human-brain', 'ai-labour',
+                'small-powerful-companies', 'think-better', 'battery-chemistry',
+                'internet-remember'];
   var latestPool = A.filter(function (a) {
-    return a.slug !== 'context-software' && a.kind !== 'longread';
+    return placed.indexOf(a.slug) === -1 && a.kind !== 'longread';
   });
   var shown = 6;
   var renderLatest = function () {
@@ -232,10 +269,9 @@ window.novaPage = function () {
     }, 700);
   });
 
-  /* Trending — ranked by reads */
+  /* The board — broadsheet ledger, ranked by completed reads */
   var trending = A.slice().sort(function (a, b) { return b.views - a.views; }).slice(0, 5);
-  document.getElementById('trendingList').innerHTML = trending
-    .map(function (a, i) { return NOVA.card(a, 'numbered', { rank: i + 1 }); }).join('');
+  document.getElementById('trendingList').innerHTML = NOVA.ledger(trending, { metric: 'views' });
 
   /* Editor's picks — horizontal cards */
   document.getElementById('picksList').innerHTML =

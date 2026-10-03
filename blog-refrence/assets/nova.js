@@ -88,7 +88,9 @@
     var sec = section(a.section);
     var href = articleHref(a);
     var kicker = '<span class="badge' + (a.section === 'opinion' ? ' badge--opinion' : '') + '">' + esc(sec.name) + '</span>';
-    var meta = '<p class="card__meta"><span class="od-nowrap">' + esc(au.name) + '</span>' +
+    /* One metadata lockup (signature S3) on every surface: author in ink,
+       everything after it muted and separated by a hairline stroke. */
+    var meta = '<p class="card__meta metabar"><span class="metabar__by od-nowrap">' + esc(au.name) + '</span>' +
                '<span class="dot-sep od-nowrap">' + esc(fmtDate(a.date)) + '</span>' +
                '<span class="dot-sep od-nowrap">' + a.mins + ' min read</span></p>';
     var title = '<h3 class="card__title"><a class="card__link" href="' + href + '">' + esc(a.title) + '</a></h3>';
@@ -141,6 +143,46 @@
     /* default standard card */
     return '<article class="card">' + media +
       '<div class="card__kicker">' + kicker + '</div>' + title + stand + meta + '</article>';
+  };
+
+  /* ----------------------------------------------- ledger (signature S2) */
+  /* A broadsheet ranking table. opts:
+       start   first rank number (default 1)
+       metric  'views' | 'comments' | 'none'  — the right-hand column
+       move    true to render the movement column (.ledger--board)         */
+  NOVA.ledger = function (list, opts) {
+    opts = opts || {};
+    var start = opts.start || 1;
+    var metricKind = opts.metric || 'views';
+    return list.map(function (a, i) {
+      var au = author(a.author);
+      var n = start + i;
+      var metric = '';
+      if (metricKind === 'views') {
+        metric = '<span class="ledger__metric"><b>' + fmtNum(a.views) + '</b>reads</span>';
+      } else if (metricKind === 'comments') {
+        metric = '<span class="ledger__metric"><b>' + fmtNum(a.comments || 0) + '</b>replies</span>';
+      }
+      var move = '';
+      if (opts.move) {
+        /* Direction comes from the record's own trend field. Phase 1 printed
+           a places figure computed from the loop index — a number the data
+           never held — so it is gone: direction is what we actually know. */
+        var dir = a.trend === 'up' ? ['is-up', 'Rising']
+                : a.trend === 'down' ? ['is-down', 'Falling']
+                : ['is-flat', 'Level'];
+        move = '<span class="ledger__move ' + dir[0] + '">' + dir[1] + '</span>';
+      }
+      return '<li class="ledger__row">' +
+        '<span class="ledger__num" aria-hidden="true">' + (n < 10 ? '0' : '') + n + '</span>' +
+        '<span class="ledger__body">' +
+          '<a class="ledger__title" href="' + articleHref(a) + '">' + esc(a.title) + '</a>' +
+          '<span class="metabar"><span class="metabar__by od-nowrap">' + esc(au.name) + '</span>' +
+          '<span class="dot-sep od-nowrap">' + esc(section(a.section).name) + '</span>' +
+          '<span class="dot-sep od-nowrap">' + a.mins + ' min</span></span>' +
+        '</span>' + move + metric +
+      '</li>';
+    }).join('');
   };
 
   NOVA.autoVariant = function (a) {

@@ -94,60 +94,92 @@
   --font-sans:  "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono:  ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
 
+  /* Scale steps are deliberately non-adjacent: every level clears the one
+     below it by ≥ 1.2× at the same breakpoint, so a featured card and a
+     standard card never read as the same rank. Serif carries Display→H4,
+     sans carries Body→Label; family is the second axis of separation. */
+  --fs-lead:       clamp(2.5rem, 1.15rem + 4.4vw, 4rem);  /* 40 → 64 · the one dominant story */
   --fs-display:    clamp(3rem, 1.4rem + 5.2vw, 4.5rem);   /* 48 → 72 */
   --fs-h1:         clamp(2.25rem, 1.2rem + 3.4vw, 3.5rem);/* 36 → 56 */
   --fs-h2:         clamp(1.75rem, 1.1rem + 2.1vw, 2.5rem);/* 28 → 40 */
-  --fs-h3:         clamp(1.375rem, 1.05rem + 1vw, 1.75rem);
-  --fs-h4:         1.25rem;
+  --fs-h3:         clamp(1.5rem, 1.15rem + 1.2vw, 2rem);  /* 24 → 32 */
+  --fs-h4:         clamp(1.1875rem, 1.08rem + 0.35vw, 1.375rem); /* 19 → 22 */
   --fs-body-lg:    1.25rem;
   --fs-body:       1.125rem;
   --fs-body-sm:    1rem;
   --fs-caption:    0.875rem;
   --fs-overline:   0.75rem;
   --fs-label:      0.875rem;
+  --fs-index:      0.6875rem;  /* section index · tabular mono */
 
+  --lh-lead: 1.02;
   --lh-display: 1.02;
   --lh-h1: 1.06;
   --lh-h2: 1.1;
-  --lh-h3: 1.2;
-  --lh-h4: 1.3;
+  --lh-h3: 1.18;
+  --lh-h4: 1.28;
   --lh-body: 1.7;
   --lh-tight: 1.4;
 
+  --ls-lead: -0.028em;
   --ls-display: -0.022em;
   --ls-h1: -0.018em;
   --ls-h2: -0.014em;
-  --ls-h3: -0.01em;
+  --ls-h3: -0.011em;
+  --ls-h4: -0.006em;
   --ls-overline: 0.13em;
+  --ls-index: 0.1em;
 
   /* — Spacing scale ----------------------------------------------------- */
   --s-4: 4px;    --s-8: 8px;    --s-12: 12px;  --s-16: 16px;
   --s-24: 24px;  --s-32: 32px;  --s-48: 48px;  --s-64: 64px;
   --s-80: 80px;  --s-96: 96px;  --s-128: 128px;
 
-  /* — Grid -------------------------------------------------------------- */
-  --content-max: 1280px;
+  /* — Grid & containers -------------------------------------------------- */
+  --content-max: 1280px;    /* 12-column editorial grid */
+  --content-wide: 1440px;   /* full-bleed bands and long-form hero */
   --page-gutter: 80px;
   --col-gap: 24px;
-  --measure: 42rem;         /* ≈ 68ch at 18px body */
+  --measure: 39rem;         /* ≈ 69ch at 18px body — inside the 60–75 band */
+  --measure-wide: 46rem;    /* long-form figures and annotations */
   --section-gap: var(--s-96);
 
-  /* — Radius ------------------------------------------------------------ */
-  --r-0: 0px; --r-4: 4px; --r-8: 8px; --r-12: 12px; --r-16: 16px; --r-24: 24px; --r-full: 999px;
+  /* — Rules · the surface language is hairlines, not card chrome ---------- */
+  --rule-hair:   1px solid var(--border);
+  --rule-mid:    1px solid var(--border-strong);
+  --rule-heavy:  2px solid var(--fg);
+
+  /* — Radius · editorial, near-square. 8px is the ceiling. ---------------- */
+  --r-0: 0px; --r-2: 2px; --r-4: 4px; --r-8: 8px; --r-full: 999px;
 
   /* — Elevation --------------------------------------------------------- */
   --shadow-raised: 0 1px 2px rgba(17,17,17,.04), 0 6px 16px rgba(17,17,17,.06);
   --shadow-overlay: 0 12px 48px rgba(17,17,17,.18);
 
   /* — Motion ------------------------------------------------------------ */
-  --dur-fast: 150ms;
+  --dur-micro: 120ms;
+  --dur-fast: 180ms;
   --dur-normal: 240ms;
   --dur-slow: 360ms;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-mid: cubic-bezier(0.4, 0, 0.2, 1);
 
-  --header-h: 72px;
+  --header-h: 84px;
+  --header-h-compact: 60px;
+
+  /* — Breakpoints · declared so the documented system and the media queries
+       below read from one list. Media queries cannot consume custom
+       properties, so these are the reference values, not the switches. ----- */
+  --bp-xl: 1440px; --bp-lg: 1280px; --bp-md: 1024px; --bp-sm: 768px; --bp-xs: 390px;
+
+  /* — Editorial signatures ---------------------------------------------- */
+  --sig-index:      var(--accent);      /* section index numerals */
+  --sig-rule-major: 2px solid var(--fg);
+  --sig-rule-mid:   1px solid var(--border-strong);
+  --sig-rule-quiet: 1px solid var(--border);
+  --break-bg:       var(--ink-invert-bg);
+  --break-fg:       var(--ink-invert-fg);
 
   color-scheme: light;
 }
@@ -215,7 +247,7 @@ h1, h2, h3, h4 {
 h1 { font-size: var(--fs-h1); line-height: var(--lh-h1); letter-spacing: var(--ls-h1); }
 h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); letter-spacing: var(--ls-h2); }
 h3 { font-size: var(--fs-h3); line-height: var(--lh-h3); letter-spacing: var(--ls-h3); }
-h4 { font-size: var(--fs-h4); line-height: var(--lh-h4); }
+h4 { font-size: var(--fs-h4); line-height: var(--lh-h4); letter-spacing: var(--ls-h4); }
 p { margin: 0; }
 
 a { color: inherit; text-decoration: none; }
@@ -275,33 +307,9 @@ ul, ol { margin: 0; padding: 0; }
 .section + .section { padding-block-start: 0; }
 .section--tight { padding-block: var(--s-48); }
 
-/* Section masthead: a rule, a label, an optional action */
-.section-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--s-24);
-  padding-block-start: var(--s-16);
-  border-top: 2px solid var(--fg);
-  margin-block-end: var(--s-32);
-}
-.section-head__title {
-  font-family: var(--font-sans);
-  font-size: var(--fs-label);
-  font-weight: 650;
-  letter-spacing: var(--ls-overline);
-  text-transform: uppercase;
-  color: var(--fg);
-}
-.section-head__link {
-  font-size: var(--fs-caption);
-  font-weight: 550;
-  color: var(--muted);
-  white-space: nowrap;
-  transition: color var(--dur-fast) var(--ease-mid);
-}
-.section-head__link:hover { color: var(--accent); }
-.section-head__link::after { content: " →"; }
+/* .section-head retired in Phase 2 — one repeated masthead was the main
+   source of the template feel. The indexed divider system (section 20,
+   signature S1) replaces it with four weights. */
 
 .rule { border: 0; border-top: 1px solid var(--border); margin: 0; }
 .rule--strong { border-top-color: var(--fg); border-top-width: 2px; }
@@ -350,18 +358,56 @@ ul, ol { margin: 0; padding: 0; }
    5. HEADER / NAVIGATION
    ========================================================================== */
 
+/* The masthead is two tiers: a thin edition strip that retracts on scroll,
+   and the bar itself. Nothing fades or slides — the strip closes, the
+   wordmark steps down one size. One gesture, 240ms. */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: saturate(180%) blur(12px);
-  -webkit-backdrop-filter: saturate(180%) blur(12px);
-  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: var(--rule-hair);
   transition: box-shadow var(--dur-normal) var(--ease-mid),
+              border-color var(--dur-normal) var(--ease-mid),
               background-color var(--dur-normal) var(--ease-mid);
 }
-.site-header.is-scrolled { box-shadow: var(--shadow-raised); }
+.site-header.is-scrolled {
+  box-shadow: var(--shadow-raised);
+  border-bottom-color: var(--border-strong);
+}
+
+/* Edition strip — the publication speaking in its own voice */
+.header-meta {
+  display: grid;
+  grid-template-rows: 1fr;
+  border-bottom: var(--rule-hair);
+  transition: grid-template-rows var(--dur-normal) var(--ease-mid),
+              opacity var(--dur-fast) var(--ease-mid),
+              border-color var(--dur-fast) var(--ease-mid);
+}
+.header-meta > * { overflow: hidden; }
+.site-header.is-scrolled .header-meta {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  border-bottom-color: transparent;
+}
+.header-meta__bar {
+  display: flex; align-items: center; gap: var(--s-16);
+  padding-block: var(--s-8);
+  font-family: var(--font-sans);
+  font-size: var(--fs-index);
+  letter-spacing: var(--ls-index);
+  text-transform: uppercase;
+  font-weight: 550;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.header-meta__rule { flex: 1 1 0; height: 1px; background: var(--border); min-width: var(--s-16); }
+.header-meta__link { color: var(--fg); transition: color var(--dur-micro) var(--ease-mid); }
+.header-meta__link:hover { color: var(--accent); }
+.header-meta__link::after { content: " →"; }
 
 .header-bar {
   display: flex;
@@ -370,49 +416,54 @@ ul, ol { margin: 0; padding: 0; }
   height: var(--header-h);
   transition: height var(--dur-normal) var(--ease-out);
 }
-.site-header.is-scrolled .header-bar { height: 60px; }
+.site-header.is-scrolled .header-bar { height: var(--header-h-compact); }
 
 .wordmark {
   font-family: var(--font-serif);
   font-weight: 700;
-  font-size: 1.75rem;
-  letter-spacing: -0.02em;
+  font-size: 2.125rem;
+  letter-spacing: -0.03em;
   line-height: 1;
   display: inline-flex;
   align-items: center;
   gap: var(--s-8);
   flex: none;
+  transition: font-size var(--dur-normal) var(--ease-out);
 }
 .wordmark::after {
   content: "";
   width: 5px; height: 5px;
   border-radius: var(--r-full);
   background: var(--accent);
-  transform: translateY(4px);
+  transform: translateY(6px);
 }
 .site-header.is-scrolled .wordmark { font-size: 1.5rem; }
 
-.header-sections { display: flex; align-items: center; gap: var(--s-24); margin-inline-start: var(--s-16); }
+.header-sections {
+  display: flex; align-items: stretch; gap: var(--s-24);
+  margin-inline-start: var(--s-32);
+  align-self: stretch;
+}
 .header-sections a {
+  display: flex; align-items: center;
   font-size: var(--fs-label);
   font-weight: 500;
   color: var(--muted);
-  padding-block: var(--s-8);
   position: relative;
-  transition: color var(--dur-fast) var(--ease-mid);
+  transition: color var(--dur-micro) var(--ease-mid);
   white-space: nowrap;
 }
 .header-sections a:hover { color: var(--fg); }
 .header-sections a::after {
   content: "";
-  position: absolute; left: 0; right: 0; bottom: 0;
-  height: 2px; background: var(--accent);
+  position: absolute; left: 0; right: 0; bottom: max(0px, calc(50% - 0.9em));
+  height: 2px; background: var(--border-strong);
   transform: scaleX(0); transform-origin: left;
-  transition: transform var(--dur-fast) var(--ease-out);
+  transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-micro) var(--ease-mid);
 }
-.header-sections a:hover::after { transform: scaleX(0.35); }
+.header-sections a:hover::after { transform: scaleX(1); }
 .header-sections a[aria-current="page"] { color: var(--fg); font-weight: 600; }
-.header-sections a[aria-current="page"]::after { transform: scaleX(1); }
+.header-sections a[aria-current="page"]::after { transform: scaleX(1); background: var(--accent); }
 
 .header-actions { display: flex; align-items: center; gap: var(--s-8); margin-inline-start: auto; }
 
@@ -611,7 +662,8 @@ ul, ol { margin: 0; padding: 0; }
 .field__success { font-size: var(--fs-caption); color: var(--success); font-weight: 500; }
 
 .checkbox { display: flex; align-items: flex-start; gap: var(--s-12); font-size: var(--fs-caption); color: var(--muted); }
-.checkbox input { width: 20px; height: 20px; margin: 0; accent-color: var(--accent); flex: none; }
+.checkbox input { width: 20px; height: 20px; margin: 0; flex: none; }
+input[type="checkbox"], input[type="radio"] { accent-color: var(--accent); }
 
 .form-error-summary {
   border: 1px solid var(--error);
@@ -686,6 +738,18 @@ ul, ol { margin: 0; padding: 0; }
 
 /* ==========================================================================
    9. ARTICLE CARD SYSTEM — 8 variants, one grammar
+
+   Rank ladder — every variant sits one clear step from its neighbours:
+     lead      --fs-lead     40 → 64   one per page, the dominant story
+     featured  --fs-h2       28 → 40   section hero
+     default   --fs-h3       24 → 32   the workhorse grid card
+     horizontal--fs-h3       24 → 32   same rank, different composition
+     minimal   --fs-h4       19 → 22   text-only rail
+     opinion   --fs-h4 ital  19 → 22   author-forward
+     compact   --fs-body-sm  16        thumbnail list
+     numbered  --fs-body-sm  16        ranked list
+
+   Image ratio is a per-variant token (--card-ratio), never a local override.
    ========================================================================== */
 
 .card { display: block; position: relative; }
@@ -696,11 +760,10 @@ ul, ol { margin: 0; padding: 0; }
 }
 .card__media img {
   display: block; width: 100%; height: auto;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: var(--card-ratio, 3 / 2);
   object-fit: cover;
   transition: transform var(--dur-slow) var(--ease-out);
 }
-.card:hover .card__media img { transform: scale(1.04); }
 .card__kicker { margin-block-end: var(--s-8); display: flex; align-items: center; gap: var(--s-8); }
 .card__title {
   font-family: var(--font-serif);
@@ -710,16 +773,45 @@ ul, ol { margin: 0; padding: 0; }
   text-wrap: balance;
   margin-block-end: var(--s-8);
 }
+/* The underline is always drawn, transparent at rest — hover changes colour
+   only, so a two-line headline never reflows on hover. */
+.card__title a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.16em;
+  transition: text-decoration-color var(--dur-fast) var(--ease-mid),
+              color var(--dur-micro) var(--ease-mid);
+}
 .card a.card__link::after { content: ""; position: absolute; inset: 0; }
-.card:hover .card__title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--accent); }
-.card__standfirst { color: var(--muted); font-size: var(--fs-body-sm); line-height: 1.55; margin-block-end: var(--s-12); }
-.card__meta { font-size: var(--fs-caption); color: var(--muted); }
 .card:focus-within { outline: 2px solid var(--focus-ring); outline-offset: 8px; border-radius: var(--r-4); }
 .card:focus-within a.card__link:focus-visible { outline: none; }
 
-/* Featured — large image, display headline */
-.card--featured .card__title { font-size: clamp(2rem, 1.1rem + 2.6vw, 3rem); line-height: 1.06; letter-spacing: var(--ls-h1); }
-.card--featured .card__standfirst { font-size: var(--fs-body-lg); color: var(--fg-soft); max-width: 44ch; }
+@media (hover: hover) {
+  .card:hover .card__media img { transform: scale(1.03); }
+  .card:hover .card__title a { text-decoration-color: var(--accent); }
+}
+.card:focus-within .card__title a { text-decoration-color: var(--accent); }
+
+.card__standfirst { color: var(--muted); font-size: var(--fs-body-sm); line-height: 1.55; margin-block-end: var(--s-12); }
+.card__meta { font-size: var(--fs-caption); color: var(--muted); }
+
+/* Lead — the single dominant story of a page */
+.card--lead .card__title {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  letter-spacing: var(--ls-lead);
+  margin-block-end: var(--s-16);
+}
+.card--lead .card__standfirst {
+  font-size: var(--fs-body-lg); line-height: 1.5;
+  color: var(--fg-soft); max-width: 46ch;
+  margin-block-end: var(--s-24);
+}
+
+/* Featured — large image, section-hero headline */
+.card--featured .card__title { font-size: var(--fs-h2); line-height: var(--lh-h2); letter-spacing: var(--ls-h2); }
+.card--featured .card__standfirst { font-size: var(--fs-body-lg); color: var(--fg-soft); max-width: 46ch; }
 
 /* Horizontal — image beside text */
 .card--horizontal { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-24); align-items: start; }
@@ -727,13 +819,12 @@ ul, ol { margin: 0; padding: 0; }
 .card--horizontal .card__title { font-size: var(--fs-h3); }
 
 /* Compact — small thumbnail + metadata */
-.card--compact { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--s-16); align-items: start; }
+.card--compact { --card-ratio: 1 / 1; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--s-16); align-items: start; }
 .card--compact .card__media { margin-block-end: 0; }
-.card--compact .card__media img { aspect-ratio: 1 / 1; }
 .card--compact .card__title { font-size: var(--fs-body-sm); line-height: 1.35; margin-block-end: var(--s-4); }
 
 /* Numbered — ranking */
-.card--numbered { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-16); padding-block: var(--s-16); border-top: 1px solid var(--border); align-items: start; }
+.card--numbered { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-16); padding-block: var(--s-16); border-top: var(--rule-hair); align-items: start; }
 .card--numbered .card__rank {
   font-family: var(--font-serif);
   font-size: 1.75rem;
@@ -748,26 +839,29 @@ ul, ol { margin: 0; padding: 0; }
 .card--numbered .card__title { font-size: var(--fs-body-sm); line-height: 1.35; }
 
 /* Minimal — text only */
-.card--minimal { padding-block: var(--s-24) var(--s-16); border-top: 1px solid var(--border); }
+.card--minimal { padding-block: var(--s-24) var(--s-16); border-top: var(--rule-hair); }
 .card--minimal .card__title { font-size: var(--fs-h4); }
 
 /* Long read — immersive image, inverted overlay */
-.card--longread { position: relative; color: var(--ink-invert-fg); }
+.card--longread { --card-ratio: 20 / 9; position: relative; color: var(--ink-invert-fg); }
 .card--longread .card__media { margin-block-end: 0; background: var(--ink-invert-bg); }
-.card--longread .card__media img { aspect-ratio: 20 / 9; opacity: 0.72; }
+.card--longread .card__media img { opacity: 0.72; }
 .card--longread .card__body {
   position: absolute; inset-inline: 0; inset-block-end: 0;
-  padding: var(--s-48) var(--s-48) var(--s-32);
-  background: linear-gradient(to top, rgba(10,10,12,.88), rgba(10,10,12,0));
+  padding: var(--s-64) var(--s-48) var(--s-32);
+  background: linear-gradient(to top, rgba(10,10,12,.9) 12%, rgba(10,10,12,.55) 52%, rgba(10,10,12,0));
   color: #F7F6F2;
+  max-width: 62ch;
 }
 .card--longread .card__title { font-size: clamp(1.75rem, 1rem + 2.4vw, 2.75rem); color: inherit; }
+.card--longread .card__title a { text-decoration-color: transparent; }
+.card--longread:hover .card__title a { text-decoration-color: rgba(247,246,242,.75); }
 .card--longread .card__standfirst,
 .card--longread .card__meta { color: rgba(247,246,242,.82); }
 .card--longread .badge { color: #FFFFFF; }
 
 /* Opinion — author-forward, no image */
-.card--opinion { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-16); padding-block: var(--s-24); border-top: 1px solid var(--border); align-items: start; }
+.card--opinion { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-16); padding-block: var(--s-24); border-top: var(--rule-hair); align-items: start; }
 .card--opinion .card__title { font-family: var(--font-serif); font-style: italic; font-size: var(--fs-h4); }
 
 /* Video — play affordance */
@@ -868,16 +962,8 @@ ul, ol { margin: 0; padding: 0; }
 .share__btn:hover { color: var(--fg); border-color: var(--fg); transform: translateY(-2px); }
 .share__btn svg { width: 16px; height: 16px; }
 
-.figure-full { margin-block: var(--s-32); }
-.figure-full img { display: block; width: 100%; height: auto; }
-.figcaption {
-  display: flex; gap: var(--s-12);
-  font-size: var(--fs-caption); color: var(--muted);
-  padding-block-start: var(--s-12);
-  border-top: 1px solid var(--border);
-  margin-block-start: var(--s-12);
-}
-.figcaption__credit { margin-inline-start: auto; color: var(--muted-soft); white-space: nowrap; font-size: var(--fs-overline); letter-spacing: 0.06em; text-transform: uppercase; }
+/* .figure-full / .figcaption retired in Phase 2 — the ratio-locked frame
+   (section 20, signature S5) is now the one image component. */
 
 .prose { max-width: var(--measure); margin-inline: auto; font-size: var(--fs-body); line-height: var(--lh-body); color: var(--fg-soft); }
 .prose > * + * { margin-block-start: var(--s-24); }
@@ -889,16 +975,7 @@ ul, ol { margin: 0; padding: 0; }
 .prose ul, .prose ol { padding-inline-start: var(--s-24); display: grid; gap: var(--s-12); }
 .prose li::marker { color: var(--muted-soft); }
 .prose strong { color: var(--fg); font-weight: 650; }
-.prose > p:first-of-type::first-letter {
-  font-family: var(--font-serif);
-  float: left;
-  font-size: 4.25rem;
-  line-height: 0.82;
-  font-weight: 600;
-  padding-inline-end: var(--s-12);
-  padding-block-start: var(--s-8);
-  color: var(--fg);
-}
+/* Drop cap: see .prose--dropcap in section 24 — opt-in, not blanket. */
 
 .pullquote {
   margin-block: var(--s-48);
@@ -1305,24 +1382,8 @@ ul, ol { margin: 0; padding: 0; }
 .search-big input::placeholder { color: var(--muted-soft); }
 .search-big svg { width: 28px; height: 28px; color: var(--muted); }
 
-.rank-board { display: grid; gap: 0; }
-.rank-row {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--s-24);
-  align-items: center;
-  padding-block: var(--s-24);
-  border-top: 1px solid var(--border);
-  position: relative;
-}
-.rank-row__num {
-  font-family: var(--font-serif); font-size: 3rem; line-height: 1; font-weight: 600;
-  color: var(--border-strong); font-variant-numeric: tabular-nums; min-width: 2.4ch;
-  transition: color var(--dur-fast) var(--ease-mid);
-}
-.rank-row:hover .rank-row__num { color: var(--accent); }
-.rank-row__trend { font-size: var(--fs-caption); font-weight: 650; white-space: nowrap; display: flex; align-items: center; gap: var(--s-4); }
-.rank-row__trend.is-up { color: var(--success); }
-.rank-row__trend.is-down { color: var(--error); }
-.rank-row__trend.is-flat { color: var(--muted); }
+/* .rank-board / .rank-row retired in Phase 2 — the broadsheet ledger
+   (section 20, signature S2) is now the one ranking component. */
 
 .bookmark-btn { position: relative; }
 .bookmark-btn svg { transition: transform var(--dur-fast) var(--ease-out); }
@@ -1424,7 +1485,6 @@ ul, ol { margin: 0; padding: 0; }
   .article-byline { justify-content: flex-start; }
   .article-head { text-align: start; }
   .article-head .lead { text-align: start; margin-inline: 0; }
-  .prose > p:first-of-type::first-letter { font-size: 3.25rem; }
   .timeline__item { grid-template-columns: minmax(0, 1fr); gap: var(--s-8); }
   .bar-row { grid-template-columns: 4.5rem minmax(0, 1fr) auto; gap: var(--s-8); }
   .comment--reply { margin-inline-start: var(--s-24); }
@@ -1490,4 +1550,748 @@ ul, ol { margin: 0; padding: 0; }
   .mobile-article-bar, .share, .toast-region { display: none !important; }
   body { background: #fff; color: #000; }
   .prose { max-width: none; }
+  .brk { background: #fff !important; color: #000 !important; }
+}
+
+
+/* ==========================================================================
+   20. EDITORIAL SIGNATURES
+   Five marks that make a NOVA page recognisable as NOVA before a word is
+   read. Every one is additive: the Phase 1 components keep working while
+   pages migrate onto them.
+
+     S1  .sec-head      indexed section divider, four weights
+     S2  .ledger        broadsheet ranking table
+     S3  .metabar       the one metadata lockup, used on every surface
+     S4  .brk           full-bleed inverted editorial break, once per page
+     S5  .frame         ratio-locked image frame with hairline caption rule
+   ========================================================================== */
+
+/* — S1 · Indexed section divider ---------------------------------------- */
+/* The index numeral is the publication speaking: a broadsheet section mark,
+   tabular, letterspaced, sitting on the rule rather than beside the title.
+   Four weights give a page its rhythm without four different components. */
+.sec-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: var(--s-16);
+  row-gap: var(--s-4);
+  border-top: var(--sig-rule-mid);
+  padding-block-start: var(--s-12);
+  margin-block-end: var(--s-32);
+}
+.sec-head__index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-index);
+  font-weight: 500;
+  letter-spacing: var(--ls-index);
+  font-variant-numeric: tabular-nums;
+  color: var(--sig-index);
+  text-transform: uppercase;
+  align-self: start;
+  padding-block-start: 0.35em;
+}
+.sec-head__index::before { content: "\00a7"; margin-inline-end: 0.35em; opacity: .55; }
+.sec-head__title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: 650;
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  color: var(--fg);
+  line-height: 1.3;
+}
+.sec-head__note {
+  grid-column: 2;
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: 52ch;
+  margin-block-start: var(--s-4);
+}
+.sec-head__link {
+  font-size: var(--fs-caption);
+  font-weight: 550;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-mid);
+}
+a.sec-head__link::after { content: " \2192"; }
+a.sec-head__link:hover { color: var(--accent); }
+/* A span in the link slot is a note, not an action — no arrow, no hover. */
+span.sec-head__link { color: var(--muted-soft); }
+
+/* Major — the band that owns the screen. Serif title, heavy rule. */
+.sec-head--major { border-top: var(--sig-rule-major); padding-block-start: var(--s-16); margin-block-end: var(--s-48); }
+.sec-head--major .sec-head__title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  letter-spacing: var(--ls-h3);
+  text-transform: none;
+}
+/* Quiet — a hairline breather between two dense bands. */
+.sec-head--quiet { border-top: var(--sig-rule-quiet); margin-block-end: var(--s-24); }
+.sec-head--quiet .sec-head__title { color: var(--muted); font-weight: 600; }
+.sec-head--quiet .sec-head__index { color: var(--muted-soft); }
+/* Accent — opinion and interviews, the signed voice of the publication. */
+.sec-head--accent { border-top-color: var(--accent-2); }
+.sec-head--accent .sec-head__index { color: var(--accent-2); }
+
+/* Mark — no rule, no title: a centred typographic breath between movements. */
+.sec-mark {
+  display: grid;
+  place-items: center;
+  gap: var(--s-12);
+  padding-block: var(--s-48);
+  color: var(--muted-soft);
+}
+.sec-mark::before,
+.sec-mark::after { content: ""; width: 1px; height: var(--s-24); background: var(--border-strong); }
+.sec-mark span {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h4);
+  line-height: 1;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+}
+
+/* — S2 · Broadsheet ledger ---------------------------------------------- */
+/* Ranking as a printed table: a heavy rule on top, hairlines between, a
+   serif tabular numeral holding the left column and the metric right-aligned
+   so the eye can read down the figures as a column. */
+.ledger { display: grid; gap: 0; border-top: var(--sig-rule-major); list-style: none; }
+.ledger__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--s-8) var(--s-24);
+  padding-block: var(--s-16);
+  border-bottom: var(--sig-rule-quiet);
+}
+.ledger__num {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem);
+  font-weight: 600;
+  line-height: .9;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-soft);
+  min-width: 2.4ch;
+  transition: color var(--dur-fast) var(--ease-mid);
+}
+.ledger__body { display: grid; gap: var(--s-4); }
+.ledger__title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h4);
+  font-weight: 600;
+  line-height: var(--lh-h4);
+  letter-spacing: var(--ls-h4);
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.16em;
+  transition: text-decoration-color var(--dur-fast) var(--ease-mid);
+}
+.ledger__title::after { content: ""; position: absolute; inset: 0; }
+.ledger__metric {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  white-space: nowrap;
+  text-align: end;
+}
+.ledger__metric b { display: block; font-weight: 600; color: var(--fg); }
+.ledger__row:focus-within { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
+.ledger__row:focus-within .ledger__title:focus-visible { outline: none; }
+@media (hover: hover) {
+  .ledger__row:hover .ledger__num { color: var(--sig-index); }
+  .ledger__row:hover .ledger__title { text-decoration-color: var(--accent); }
+}
+.ledger__row:focus-within .ledger__num { color: var(--sig-index); }
+/* Ledger carrying movement (the trending board) */
+.ledger--board .ledger__row { grid-template-columns: auto minmax(0, 1fr) auto auto; }
+.ledger__move { font-size: var(--fs-caption); font-weight: 650; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ledger__move.is-up { color: var(--success); }
+.ledger__move.is-down { color: var(--error); }
+.ledger__move.is-flat { color: var(--muted); }
+.ledger__move::before { margin-inline-end: 0.35em; font-size: .7em; }
+.ledger__move.is-up::before { content: "\25b2"; }
+.ledger__move.is-down::before { content: "\25bc"; }
+.ledger__move.is-flat::before { content: "\2014"; font-size: 1em; }
+
+/* — S3 · The metadata lockup -------------------------------------------- */
+/* One lockup, one rhythm, everywhere: author in ink, everything after it in
+   muted sans, separated by a hairline stroke rather than a dot. Dates and
+   durations are tabular so stacked cards align down the column. */
+.metabar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-8) 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-tight);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.metabar__by { color: var(--fg); font-weight: 600; font-variant-numeric: normal; }
+.metabar__by a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.metabar > .dot-sep,
+.card__meta > .dot-sep { position: relative; padding-inline-start: var(--s-16); }
+.metabar > .dot-sep::before,
+.card__meta > .dot-sep::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: var(--s-8);
+  inset-block: 0.15em;
+  width: 1px;
+  margin-inline: 0;
+  background: var(--border-strong);
+}
+.card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-8) 0;
+  font-variant-numeric: tabular-nums;
+}
+.metabar--strong { font-size: var(--fs-body-sm); }
+.metabar--invert { color: color-mix(in srgb, var(--break-fg) 72%, transparent); }
+.metabar--invert .metabar__by { color: var(--break-fg); }
+.metabar--invert > .dot-sep::before { background: color-mix(in srgb, var(--break-fg) 40%, transparent); }
+
+/* — S4 · Full-bleed editorial break ------------------------------------- */
+/* One per page, never two. The page goes to ink, a single sentence carries
+   the whole band, and the reader comes back out onto paper. This is the
+   pause that stops a page reading as a card feed. */
+.brk {
+  background: var(--break-bg);
+  color: var(--break-fg);
+  padding-block: clamp(4rem, 7vw, 8rem);
+  margin-block: var(--s-64);
+}
+.brk__inner { display: grid; gap: var(--s-24); max-width: 60rem; }
+.brk__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--fs-index);
+  letter-spacing: var(--ls-index);
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--break-fg) 62%, transparent);
+  padding-block-end: var(--s-16);
+  border-bottom: 1px solid color-mix(in srgb, var(--break-fg) 22%, transparent);
+}
+.brk__quote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 1rem + 2.6vw, 3rem);
+  line-height: 1.16;
+  letter-spacing: var(--ls-h2);
+  font-weight: 500;
+  color: var(--break-fg);
+  text-wrap: balance;
+  margin: 0;
+}
+.brk__quote em { font-style: italic; }
+.brk__cite {
+  font-size: var(--fs-caption);
+  color: color-mix(in srgb, var(--break-fg) 70%, transparent);
+  font-style: normal;
+}
+.brk__cite b { color: var(--break-fg); font-weight: 600; }
+.brk a { color: var(--break-fg); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.brk a:hover { text-decoration-thickness: 2px; }
+/* An editorial break carrying a story rather than a sentence */
+.brk--story .brk__inner { max-width: none; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-64); align-items: center; }
+
+/* Inverted heroes — category, topic and subscribe open on ink, so the
+   components inside them take the inverted treatment from one place rather
+   than from a colour typed into each page. */
+.category-hero .breadcrumbs { color: rgba(247, 246, 242, .75); }
+.category-hero .breadcrumbs a:hover { color: #FFFFFF; }
+.category-hero .breadcrumbs [aria-current] { color: #F7F6F2; }
+.category-hero .breadcrumbs li + li::before { color: rgba(247, 246, 242, .45); }
+.category-hero .overline { color: #B9C2FF; }
+.category-hero .meta,
+.category-hero .metabar { color: rgba(247, 246, 242, .7); }
+.category-hero .btn--secondary { color: #F7F6F2; border-color: rgba(247, 246, 242, .4); }
+.category-hero .btn--secondary:hover { background: rgba(247, 246, 242, .1); border-color: #F7F6F2; }
+
+/* Small inline button — sits inside a sentence without breaking its line box */
+.btn--inline { padding-inline: 4px; min-height: 0; }
+
+.wordmark--sm { font-size: 1.25rem; }
+
+/* Skeletons that match real editorial shapes */
+.skeleton--display { height: 42px; }
+.skeleton--thumb { width: 96px; height: 96px; }
+
+/* — S5 · Ratio-locked image frame --------------------------------------- */
+/* The container takes the ratio; the image never negotiates. Ratios are
+   modifiers, never inline values, so a page cannot invent a ninth crop. */
+.frame { display: block; margin: 0; }
+.frame__media { display: block; overflow: hidden; background: var(--skeleton); }
+.frame__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--frame-ratio, auto);
+  object-fit: cover;
+  object-position: var(--frame-focus, 50% 50%);
+}
+.frame--3x2  { --frame-ratio: 3 / 2; }
+.frame--4x5  { --frame-ratio: 4 / 5; }
+.frame--1x1  { --frame-ratio: 1 / 1; }
+.frame--16x9 { --frame-ratio: 16 / 9; }
+.frame--20x9 { --frame-ratio: 20 / 9; }
+/* Full-frame content — covers, artwork, portraits that must not be cropped */
+.frame--natural .frame__media img { aspect-ratio: auto; object-fit: contain; }
+.frame--top    { --frame-focus: 50% 22%; }
+.frame--bottom { --frame-focus: 50% 78%; }
+.frame__cap {
+  display: flex;
+  gap: var(--s-12);
+  align-items: baseline;
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--muted);
+  padding-block-start: var(--s-12);
+  margin-block-start: var(--s-12);
+  border-top: var(--sig-rule-quiet);
+}
+.frame__credit {
+  margin-inline-start: auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-index);
+  letter-spacing: var(--ls-index);
+  text-transform: uppercase;
+  color: var(--muted-soft);
+  white-space: nowrap;
+}
+/* Break the frame out of the measure without leaving the grid */
+.frame--wide { width: min(var(--measure-wide), 100%); margin-inline: auto; }
+.frame--bleed { width: 100vw; margin-inline: calc(50% - 50vw); }
+.frame--bleed .frame__cap { width: min(var(--content-max), 100% - (var(--page-gutter) * 2)); margin-inline: auto; }
+
+
+/* ==========================================================================
+   21. UTILITY LAYER
+   A closed, named set — the only classes allowed to carry layout values in
+   markup. Pages use these instead of style="" so every spacing and span
+   decision stays inside the token system and stays greppable.
+   ========================================================================== */
+
+/* Column spans on .grid12 */
+.col-3 { grid-column: span 3; } .col-4 { grid-column: span 4; }
+.col-5 { grid-column: span 5; } .col-6 { grid-column: span 6; }
+.col-7 { grid-column: span 7; } .col-8 { grid-column: span 8; }
+.col-9 { grid-column: span 9; } .col-12 { grid-column: span 12; }
+.row-gap-32 { row-gap: var(--s-32); }
+.row-gap-48 { row-gap: var(--s-48); }
+.row-gap-64 { row-gap: var(--s-64); }
+
+/* Stacks — the only vertical rhythm expressed in markup */
+.stack { display: grid; align-content: start; gap: var(--s-16); }
+.stack-8  { gap: var(--s-8); }  .stack-12 { gap: var(--s-12); }
+.stack-24 { gap: var(--s-24); } .stack-32 { gap: var(--s-32); }
+.stack-48 { gap: var(--s-48); }
+
+/* Rows */
+.row { display: flex; align-items: center; gap: var(--s-16); flex-wrap: wrap; }
+.row--between { justify-content: space-between; }
+.row--center { justify-content: center; }
+.row--end { justify-content: flex-end; }
+.row--baseline { align-items: baseline; }
+.row--top { align-items: flex-start; }
+.row--bottom { align-items: flex-end; }
+
+/* Single-axis spacing — top margins only, so rhythm always flows downward */
+.mt-8 { margin-block-start: var(--s-8); }   .mt-16 { margin-block-start: var(--s-16); }
+.mt-24 { margin-block-start: var(--s-24); } .mt-32 { margin-block-start: var(--s-32); }
+.mt-48 { margin-block-start: var(--s-48); } .mt-64 { margin-block-start: var(--s-64); }
+
+/* Measures */
+.measure { max-width: var(--measure); }
+.measure-wide { max-width: var(--measure-wide); }
+.measure-short { max-width: 34ch; }
+.measure-mid { max-width: 46ch; }
+
+/* Type role helpers — a role, never a one-off size override */
+.t-lead { font-family: var(--font-serif); font-size: var(--fs-lead); line-height: var(--lh-lead); letter-spacing: var(--ls-lead); font-weight: 600; text-wrap: balance; }
+.t-h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); letter-spacing: var(--ls-h2); }
+.t-h3 { font-size: var(--fs-h3); line-height: var(--lh-h3); letter-spacing: var(--ls-h3); }
+.t-index { font-family: var(--font-mono); font-size: var(--fs-index); letter-spacing: var(--ls-index); text-transform: uppercase; font-variant-numeric: tabular-nums; }
+.t-body-sm { font-size: var(--fs-body-sm); line-height: 1.6; color: var(--fg-soft); }
+.t-accent { color: var(--accent); }
+.t-muted { color: var(--muted); }
+.t-inherit { color: inherit; }
+.t-soft { color: inherit; opacity: .72; }
+
+/* Gaps — one class drives both the CSS gap and the OD primitive variable, so
+   .row / .od-row / .od-cluster / .cards-row all read from the same token. */
+.gap-4  { gap: var(--s-4);  --od-gap: var(--s-4); }
+.gap-8  { gap: var(--s-8);  --od-gap: var(--s-8); }
+.gap-12 { gap: var(--s-12); --od-gap: var(--s-12); }
+.gap-16 { gap: var(--s-16); --od-gap: var(--s-16); }
+.gap-24 { gap: var(--s-24); --od-gap: var(--s-24); }
+.gap-32 { gap: var(--s-32); --od-gap: var(--s-32); }
+.gap-48 { gap: var(--s-48); --od-gap: var(--s-48); }
+.gap-64 { gap: var(--s-64); --od-gap: var(--s-64); }
+
+/* Card row columns */
+.cols-1 { --cols: 1; } .cols-2 { --cols: 2; }
+.cols-3 { --cols: 3; } .cols-4 { --cols: 4; }
+.row-gap-24 { row-gap: var(--s-24); }
+
+/* Bottom margins are used only where a rule or band closes a block */
+.mb-8 { margin-block-end: var(--s-8); }   .mb-12 { margin-block-end: var(--s-12); }
+.mb-16 { margin-block-end: var(--s-16); } .mb-24 { margin-block-end: var(--s-24); }
+.mb-32 { margin-block-end: var(--s-32); } .mb-48 { margin-block-end: var(--s-48); }
+
+/* Split composition — the same 5/7 measure the horizontal card uses */
+.split-5-7 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-24); align-items: start; }
+@media (max-width: 768px) { .split-5-7 { grid-template-columns: minmax(0, 1fr); } }
+
+/* A display numeral: 404, an empty-state mark, a state label. Colour comes
+   from a semantic modifier so a state never hard-codes a hex. */
+.big-num {
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 10vw, 7rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+}
+.big-num--xl { font-size: clamp(6rem, 18vw, 11rem); line-height: .85; letter-spacing: -0.04em; }
+.big-num--sm { font-size: 3.5rem; }
+.big-num--muted { color: var(--muted-soft); }
+.big-num--warning { color: var(--warning); }
+.big-num--error { color: var(--error); }
+
+/* Portrait slot — an author image placeholder that keeps its 4:5 frame */
+.portrait-slot {
+  aspect-ratio: 4 / 5;
+  display: grid;
+  place-items: center;
+  background: var(--surface-sunk);
+  border: var(--sig-rule-quiet);
+}
+
+/* Rules as structure, not decoration */
+.ruled-top   { border-top: var(--sig-rule-quiet); padding-block-start: var(--s-24); }
+.ruled-under { border-bottom: var(--sig-rule-major); padding-block-end: var(--s-16); }
+.ruled-row   { border-top: var(--sig-rule-quiet); padding-block: var(--s-24); }
+
+/* Width caps used by panels and centred prose blocks */
+.w-28 { max-width: 28rem; } .w-42 { max-width: 42rem; } .w-52 { max-width: 52rem; }
+.measure-note { max-width: 52ch; }
+.h-full { height: 100%; }
+
+.t-serif { font-family: var(--font-serif); }
+.t-h1 { font-size: var(--fs-h1); line-height: var(--lh-h1); letter-spacing: var(--ls-h1); }
+.t-h4 { font-size: var(--fs-h4); line-height: var(--lh-h4); letter-spacing: var(--ls-h4); }
+.t-display { font-size: var(--fs-display); line-height: var(--lh-display); letter-spacing: var(--ls-display); }
+.t-fg { color: var(--fg); }
+.measure-long { max-width: 62ch; }
+.no-underline { text-decoration: none; }
+.fieldset-reset { border: 0; padding: 0; margin: 0; }
+.scroll-x { overflow-x: auto; }
+
+.full-bleed { width: 100vw; margin-inline: calc(50% - 50vw); }
+.flush { padding-inline: 0; }
+
+
+/* ==========================================================================
+   22. SIGNATURE RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .brk--story .brk__inner { grid-template-columns: minmax(0, 1fr); gap: var(--s-32); }
+  /* Below 1024 the measure already fills the column — nothing outsets. */
+  .prose .frame--wide, .lf-break { --outset: 0rem; }
+}
+
+@media (max-width: 768px) {
+  /* Mobile re-composition, not a collapse: the index numeral moves above the
+     title on its own line, and the section link drops under the rule so the
+     headline keeps the full measure. */
+  .sec-head { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--s-12); }
+  .sec-head__index { grid-column: 1 / -1; padding-block-start: 0; margin-block-end: var(--s-4); }
+  .sec-head__note { grid-column: 1 / -1; }
+  .sec-head--major { margin-block-end: var(--s-32); }
+  .ledger__row { grid-template-columns: auto minmax(0, 1fr); gap: var(--s-4) var(--s-16); }
+  .ledger__metric { grid-column: 2; text-align: start; }
+  .ledger--board .ledger__row { grid-template-columns: auto minmax(0, 1fr); }
+  .ledger--board .ledger__move { grid-column: 2; }
+  .brk { margin-block: var(--s-48); }
+  .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9 { grid-column: span 12; }
+  .sec-mark { padding-block: var(--s-32); }
+}
+
+@media (max-width: 480px) {
+  .ledger__num { font-size: 1.5rem; }
+  .frame__cap { flex-wrap: wrap; }
+  .frame__credit { margin-inline-start: 0; }
+}
+
+
+/* ==========================================================================
+   23. FRONT PAGE
+   The homepage opens as a front page, not a hero: one dominant story holding
+   eight columns, two secondaries beneath it sharing that measure, and a
+   ruled rail carrying the editors' short list. The rhythm of the page below
+   it is large → dense → quiet → dense → immersive → quiet → large.
+   ========================================================================== */
+
+.frontpage { padding-block: var(--s-32) var(--s-64); border-bottom: var(--sig-rule-major); }
+
+/* Edition line — the paper naming itself and the day */
+.edition-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-8) var(--s-24);
+  font-family: var(--font-mono);
+  font-size: var(--fs-index);
+  letter-spacing: var(--ls-index);
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-block-end: var(--s-12);
+  margin-block-end: var(--s-32);
+  border-bottom: var(--sig-rule-quiet);
+}
+.edition-line strong { color: var(--fg); font-weight: 600; }
+
+.frontpage__lead .card__title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  letter-spacing: var(--ls-lead);
+  margin-block: var(--s-16) var(--s-16);
+}
+.frontpage__lead .card__standfirst {
+  font-size: var(--fs-body-lg);
+  line-height: 1.5;
+  color: var(--fg-soft);
+  max-width: 52ch;
+  margin-block-end: var(--s-16);
+}
+
+/* Two secondaries share the lead's measure and sit under a heavy rule, so
+   the eye reads down from the lead rather than across to the rail. */
+.frontpage__secondary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--col-gap);
+  margin-block-start: var(--s-48);
+  padding-block-start: var(--s-24);
+  border-top: var(--sig-rule-major);
+}
+.frontpage__secondary .card__title { font-size: var(--fs-h4); }
+.frontpage__secondary .card__standfirst { font-size: var(--fs-caption); }
+
+/* The rail is separated by a rule, not a box */
+.frontpage__rail {
+  border-inline-start: var(--sig-rule-quiet);
+  padding-inline-start: var(--s-32);
+  display: grid;
+  gap: var(--s-24);
+  align-content: start;
+}
+.frontpage__rail .card--minimal:first-of-type { border-top: 0; padding-block-start: 0; }
+
+@media (max-width: 1024px) {
+  .frontpage__rail {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+    border-top: var(--sig-rule-major);
+    padding-block-start: var(--s-24);
+  }
+}
+@media (max-width: 768px) {
+  /* Mobile front page: the lead keeps its image and its full headline scale,
+     the secondaries become a single ruled column, the rail follows. */
+  .frontpage { padding-block: var(--s-16) var(--s-48); }
+  .frontpage__secondary { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .frontpage__secondary .card--minimal:first-of-type { border-top: 0; padding-block-start: var(--s-8); }
+  .edition-line { margin-block-end: var(--s-24); }
+}
+
+
+/* ==========================================================================
+   24. READING SURFACES — article & long-form refinement
+
+   The article is a narrow column in a wide, quiet page. The long read is the
+   opposite instinct: the page itself carries the story, chapters announce
+   themselves, and the reader is moved between them by full-bleed image bands
+   rather than by another heading.
+   ========================================================================== */
+
+/* — Article opening ----------------------------------------------------- */
+.article-head { max-width: 48rem; padding-block: var(--s-48) var(--s-32); }
+.article-head__kicker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--s-12);
+  margin-block-end: var(--s-24);
+}
+.article-head h1 { font-size: var(--fs-h1); }
+.article-head .lead { font-size: var(--fs-body-lg); line-height: 1.5; max-width: 42ch; }
+
+/* The byline is the metadata lockup, centred and ruled top and bottom */
+.article-byline { gap: var(--s-16) var(--s-32); }
+.article-byline .metabar { justify-content: center; }
+
+/* The drop cap is opt-in, not a blanket rule: a feature opens with one, a
+   news report does not. */
+.prose--dropcap > p:first-of-type::first-letter {
+  font-family: var(--font-serif);
+  float: left;
+  font-size: 4.25rem;
+  line-height: 0.82;
+  font-weight: 600;
+  padding-inline-end: var(--s-12);
+  padding-block-start: var(--s-8);
+  color: var(--fg);
+}
+
+/* Figures inside the column breathe wider than the measure but never bleed.
+   --outset is the single knob: how far past the measure a figure reaches. It
+   collapses to zero below 1024px, where the measure already fills the page. */
+.prose .frame { margin-block: var(--s-48); }
+.prose .frame--wide {
+  --outset: 4rem;
+  width: calc(100% + var(--outset) * 2);
+  margin-inline: calc(var(--outset) * -1);
+}
+
+/* Filed-under row */
+.tagrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-8);
+  padding-block: var(--s-24) var(--s-48);
+  border-top: var(--sig-rule-quiet);
+  margin-block-start: var(--s-24);
+}
+.tagrow__label { font-size: var(--fs-caption); color: var(--muted); margin-inline-end: var(--s-8); white-space: nowrap; }
+
+/* Comment composer */
+.comment-composer { margin-block-end: var(--s-32); }
+.comment-composer__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-12);
+  margin-block-end: var(--s-16);
+  padding-block-end: var(--s-16);
+  border-bottom: var(--sig-rule-quiet);
+}
+
+/* — Long form ----------------------------------------------------------- */
+/* Chapters announce themselves at display scale; the number is the mark. */
+.lf-hero h1 { font-size: clamp(2.75rem, 1.2rem + 5.4vw, 5rem); max-width: 18ch; }
+.lf-hero__body { padding-block: var(--s-80) var(--s-64); }
+.lf-hero .overline { color: #B9C2FF; }
+.lf-hero__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-24); margin-block-start: var(--s-32); }
+.lf-hero .byline__name { color: #F7F6F2; }
+.lf-hero .byline__meta,
+.lf-hero .metabar { color: rgba(247, 246, 242, .72); }
+.lf-hero .metabar > .dot-sep::before { background: rgba(247, 246, 242, .4); }
+.lf-hero .btn--secondary { color: #F7F6F2; border-color: rgba(247, 246, 242, .4); }
+.lf-hero .btn--secondary:hover { background: rgba(247, 246, 242, .1); border-color: #F7F6F2; }
+
+.chapter-mark {
+  gap: var(--s-8);
+  margin-block-start: var(--s-128);
+  padding-block-start: var(--s-24);
+  border-top: var(--sig-rule-major);
+}
+.chapter-mark:first-child { margin-block-start: 0; }
+.chapter-mark__num {
+  font-family: var(--font-mono);
+  font-size: var(--fs-index);
+  letter-spacing: var(--ls-index);
+  color: var(--accent);
+}
+.chapter-mark h2 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  letter-spacing: var(--ls-h1);
+  max-width: 20ch;
+  margin-block-start: 0;
+}
+
+/* Chapter nav actions */
+.lf-chapters__actions { display: grid; gap: var(--s-8); margin-block-start: var(--s-24); }
+.lf-chapters__actions .btn { justify-content: flex-start; padding-inline: 0; }
+
+/* The section transition that belongs to long-form and nowhere else: an
+   inverted image band, wider than the measure, closing one chapter before
+   the next is announced. --outset is the same knob the figures use. */
+.lf-break {
+  --outset: 4rem;
+  position: relative;
+  margin-block: var(--s-80);
+  width: calc(100% + var(--outset) * 2);
+  margin-inline: calc(var(--outset) * -1);
+  background: var(--ink-invert-bg);
+}
+.lf-break img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 20 / 9;
+  object-fit: cover;
+  opacity: .86;
+}
+.lf-break figcaption {
+  padding-inline: var(--s-24);
+  display: flex;
+  gap: var(--s-12);
+  align-items: baseline;
+  padding-block: var(--s-12) var(--s-16);
+  font-size: var(--fs-caption);
+  color: color-mix(in srgb, var(--ink-invert-fg) 70%, transparent);
+}
+.lf-break figcaption b { color: var(--ink-invert-fg); font-weight: 600; }
+.lf-break .frame__credit { color: color-mix(in srgb, var(--ink-invert-fg) 55%, transparent); }
+
+/* Editorial annotation — the reporter speaking beside the story, not in it */
+.lf-note {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-16);
+  margin-block: var(--s-48);
+  padding: var(--s-24);
+  background: var(--surface-sunk);
+  border-inline-start: 2px solid var(--accent);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--fg-soft);
+}
+.lf-note__label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-index);
+  letter-spacing: var(--ls-index);
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+  padding-block-start: 0.25em;
+}
+
+@media (max-width: 768px) {
+  .article-head { padding-block: var(--s-24) var(--s-24); }
+  .article-head .lead { max-width: none; }
+  .article-byline .metabar { justify-content: flex-start; }
+  .article-head__kicker { justify-content: flex-start; }
+  .prose--dropcap > p:first-of-type::first-letter { font-size: 3.25rem; }
+  .chapter-mark { margin-block-start: var(--s-64); }
+  .lf-hero__body { padding-block: var(--s-48) var(--s-32); }
+  .lf-break { margin-block: var(--s-48); }
+  .lf-break img { aspect-ratio: 4 / 3; }
+  .lf-note { grid-template-columns: minmax(0, 1fr); gap: var(--s-8); padding: var(--s-16); }
 }

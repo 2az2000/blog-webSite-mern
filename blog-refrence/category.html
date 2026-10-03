@@ -29,10 +29,10 @@
 
   <!-- ====================================================== CATEGORY HEADER -->
   <header class="wrap page-head">
-    <p class="overline text-accent" style="margin-block-end:var(--s-16)">NOVA Section</p>
+    <p class="overline text-accent mb-16">NOVA Section</p>
     <h1 class="display" id="sectionName">Technology</h1>
-    <p class="lead" style="margin-block-start:var(--s-24)" id="sectionBlurb"></p>
-    <div class="stat-strip" style="margin-block-start:var(--s-48)">
+    <p class="lead mt-24" id="sectionBlurb"></p>
+    <div class="stat-strip mt-48">
       <div class="stat od-stat">
         <span class="stat__value od-nowrap" id="statCount">0</span>
         <span class="stat__label">Stories in this section</span>
@@ -56,7 +56,7 @@
   <section class="section section--tight" aria-labelledby="filter-label">
     <div class="wrap">
       <h2 class="sr-only" id="filter-label">Filter and sort this section</h2>
-      <div class="od-row" style="--od-gap:24px;flex-wrap:wrap;justify-content:space-between">
+      <div class="od-row gap-24 row--between">
         <div class="tabs od-fill" role="tablist" aria-label="Article filters" data-tabs id="filterTabs">
           <button role="tab" type="button" data-tab-key="latest" aria-selected="true">Latest</button>
           <button role="tab" type="button" data-tab-key="popular" aria-selected="false">Popular</button>
@@ -79,8 +79,9 @@
   <!-- ==================================================== FEATURED ARTICLE -->
   <section class="section section--tight" aria-labelledby="featured-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="featured-title">Featured</h2>
+      <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">01</span>
+        <h2 class="sec-head__title" id="featured-title">Featured</h2>
       </div>
       <div id="featuredSlot"></div>
     </div>
@@ -88,21 +89,22 @@
 
   <!-- ================================================ ARTICLES + SIDE RAILS -->
   <section class="section" aria-labelledby="list-title">
-    <div class="wrap grid12" style="row-gap:var(--s-64)">
+    <div class="wrap grid12 row-gap-64">
 
-      <div style="grid-column:span 8">
-        <div class="section-head">
-          <h2 class="section-head__title" id="list-title">Latest in this section</h2>
-          <span class="section-head__link" style="text-decoration:none" id="resultCount"></span>
+      <div class="col-8">
+        <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">02</span>
+          <h2 class="sec-head__title" id="list-title">Latest in this section</h2>
+          <span class="sec-head__link no-underline" id="resultCount"></span>
         </div>
-        <div class="cards-row" id="articleGrid" style="--cols:2"></div>
+        <div class="cards-row cols-2" id="articleGrid"></div>
 
         <div id="emptySlot" hidden>
           <div class="empty-state">
             <span class="empty-state__mark" aria-hidden="true">∅</span>
             <h3>Nothing published here yet</h3>
             <p>This desk is new. Follow it and we will email you the moment the first story runs, or browse the sections that are already going.</p>
-            <div class="od-cluster" style="--od-gap:12px;justify-content:center">
+            <div class="od-cluster gap-12 row--center">
               <a class="btn btn--primary" href="newsletter.html">Follow this section</a>
               <a class="btn btn--secondary" href="category.html?s=latest">Browse everything</a>
             </div>
@@ -118,29 +120,31 @@
           <a href="#">12</a>
           <a href="#" aria-label="Next page">→</a>
         </nav>
-        <div style="display:flex;justify-content:center;padding-block-end:var(--s-32)">
+        <div class="row row--center mb-32">
           <button class="btn btn--secondary" type="button" id="loadMore">Load more</button>
         </div>
       </div>
 
-      <aside style="grid-column:span 4;display:grid;gap:var(--s-64);align-content:start">
+      <aside class="col-4 stack gap-64">
         <div>
-          <div class="section-head">
-            <h2 class="section-head__title">Trending in section</h2>
+          <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">03</span>
+            <h2 class="sec-head__title">Trending in section</h2>
           </div>
           <div class="cards-list" id="sideTrending"></div>
         </div>
         <div>
-          <div class="section-head">
-            <h2 class="section-head__title">Editors’ picks</h2>
+          <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">04</span>
+            <h2 class="sec-head__title">Editors’ picks</h2>
           </div>
-          <div class="cards-list" id="sidePicks" style="gap:var(--s-24)"></div>
+          <div class="cards-list gap-24" id="sidePicks"></div>
         </div>
         <div class="panel panel--sunk">
           <p class="overline text-accent">Section newsletter</p>
-          <h3 style="font-size:var(--fs-h4);margin-block:var(--s-12)">Get this desk by email</h3>
-          <p class="meta" style="margin-block-end:var(--s-16)">A weekly round-up from the editors who commission this section.</p>
-          <form class="od-stack" style="--od-gap:12px" data-validate data-success="You're following this section." novalidate>
+          <h3 class="t-h4 mt-12 mb-12">Get this desk by email</h3>
+          <p class="meta mb-16">A weekly round-up from the editors who commission this section.</p>
+          <form class="od-stack gap-12" data-validate data-success="You're following this section." novalidate>
             <div class="field">
               <label class="field__label" for="sideEmail">Email <span class="field__req" aria-hidden="true">required</span></label>
               <input class="input" id="sideEmail" type="email" required data-label-name="Email" placeholder="you@example.com" autocomplete="email">
@@ -152,6 +156,15 @@
 
     </div>
   </section>
+
+  <!-- ===================================================== EDITORIAL BREAK -->
+  <aside class="brk" aria-labelledby="cat-brk">
+    <div class="wrap brk__inner">
+      <p class="brk__kicker" id="cat-brk">How this desk works</p>
+      <blockquote class="brk__quote">A section is an argument about what deserves attention. Ours is that the <em>maintenance</em> of a thing is more revealing than its launch.</blockquote>
+      <p class="brk__cite">NOVA editorial standards &middot; <a href="newsletter.html">Get this desk by email</a></p>
+    </div>
+  </aside>
 
 </main>
 

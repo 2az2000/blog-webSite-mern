@@ -28,13 +28,13 @@
 
   <!-- ================================================================ HERO -->
   <header class="wrap section" aria-labelledby="nl-hero-title">
-    <div class="grid12" style="align-items:center;row-gap:var(--s-48)">
-      <div style="grid-column:span 7">
-        <p class="overline text-accent" style="margin-block-end:var(--s-16)">The NOVA Dispatch · free</p>
+    <div class="grid12 row-gap-48">
+      <div class="col-7">
+        <p class="overline text-accent mb-16">The NOVA Dispatch · free</p>
         <h1 class="display" id="nl-hero-title">One email.<br>Six stories.<br>No noise.</h1>
-        <p class="lead" style="margin-block-start:var(--s-24)">Tuesday and Friday, our editors write up what mattered and why — the reporting behind the headline, not a link dump. Two minutes to read, and nothing in it you have already seen four times.</p>
+        <p class="lead mt-24">Tuesday and Friday, our editors write up what mattered and why — the reporting behind the headline, not a link dump. Two minutes to read, and nothing in it you have already seen four times.</p>
 
-        <form class="panel" style="margin-block-start:var(--s-32);max-width:34rem"
+        <form class="panel mt-32 measure-mid"
               data-validate data-success="Almost there — confirm from the email we just sent."
               data-success-panel="nlDone" novalidate>
           <div class="field">
@@ -43,23 +43,23 @@
                    placeholder="you@example.com" autocomplete="email">
             <p class="field__hint">We send two issues a week. Nothing else, ever.</p>
           </div>
-          <div class="od-row" style="--od-gap:12px;margin-block-start:var(--s-16);flex-wrap:wrap">
+          <div class="od-row gap-12 mt-16">
             <button class="btn btn--accent od-fill" type="submit">Subscribe free</button>
             <a class="btn btn--ghost od-fixed" href="#sample">Read a sample first</a>
           </div>
-          <p class="meta" style="margin-block-start:var(--s-16)">By subscribing you agree to our privacy notice. We never sell reader data, and unsubscribing takes one click from any issue — no survey, no retention offer.</p>
+          <p class="meta mt-16">By subscribing you agree to our privacy notice. We never sell reader data, and unsubscribing takes one click from any issue — no survey, no retention offer.</p>
         </form>
 
-        <div class="panel panel--sunk" id="nlDone" hidden tabindex="-1" style="margin-block-start:var(--s-32);max-width:34rem">
+        <div class="panel panel--sunk mt-32 measure-mid" id="nlDone" hidden tabindex="-1">
           <p class="overline text-accent">Check your inbox</p>
-          <h2 style="font-size:var(--fs-h3);margin-block:var(--s-12)">One more step</h2>
-          <p style="font-size:var(--fs-body-sm);color:var(--fg-soft)">We have sent a confirmation link. Click it and the next Dispatch arrives Tuesday at 07:00 in your local time.</p>
-          <a class="btn btn--secondary btn--sm" href="index.html" style="margin-block-start:var(--s-16)">Back to the homepage</a>
+          <h2 class="t-h3 mt-12 mb-12">One more step</h2>
+          <p class="t-body-sm">We have sent a confirmation link. Click it and the next Dispatch arrives Tuesday at 07:00 in your local time.</p>
+          <a class="btn btn--secondary btn--sm mt-16" href="index.html">Back to the homepage</a>
         </div>
       </div>
 
-      <div style="grid-column:span 5">
-        <div class="stat-strip" style="grid-template-columns:minmax(0,1fr);gap:var(--s-24)">
+      <div class="col-5">
+        <div class="stat-strip cols-1 gap-24">
           <div class="stat od-stat"><span class="stat__value od-nowrap">214,000</span><span class="stat__label">Readers on the list</span></div>
           <div class="stat od-stat"><span class="stat__value od-nowrap">2×</span><span class="stat__label">Issues per week — Tuesday and Friday</span></div>
           <div class="stat od-stat"><span class="stat__value od-nowrap">2 min</span><span class="stat__label">Median reading time per issue</span></div>
@@ -72,21 +72,22 @@
   <!-- ============================================================ BENEFITS -->
   <section class="section" aria-labelledby="benefits-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="benefits-title">What you actually get</h2>
+      <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">01</span>
+        <h2 class="sec-head__title" id="benefits-title">What you actually get</h2>
       </div>
-      <div class="cards-row" style="--cols:3;gap:var(--s-32)">
+      <div class="cards-row cols-3 gap-32">
         <div>
-          <h3 style="font-size:var(--fs-h3)">Written, not generated</h3>
-          <p style="color:var(--muted);margin-block-start:var(--s-12)">Each issue is written by the editor who commissioned the stories in it, and signed. If a piece was wrong, the correction is in the next issue, at the top.</p>
+          <h3 class="t-h3">Written, not generated</h3>
+          <p class="t-muted mt-12">Each issue is written by the editor who commissioned the stories in it, and signed. If a piece was wrong, the correction is in the next issue, at the top.</p>
         </div>
         <div>
-          <h3 style="font-size:var(--fs-h3)">Six stories, ranked</h3>
-          <p style="color:var(--muted);margin-block-start:var(--s-12)">Ordered by what we think matters, not by what performed. Two of the six are always from outside the week's obvious news.</p>
+          <h3 class="t-h3">Six stories, ranked</h3>
+          <p class="t-muted mt-12">Ordered by what we think matters, not by what performed. Two of the six are always from outside the week's obvious news.</p>
         </div>
         <div>
-          <h3 style="font-size:var(--fs-h3)">Nothing hidden behind it</h3>
-          <p style="color:var(--muted);margin-block-start:var(--s-12)">Every story linked in the Dispatch is readable without a subscription. The newsletter is not a funnel with a paywall at the end of it.</p>
+          <h3 class="t-h3">Nothing hidden behind it</h3>
+          <p class="t-muted mt-12">Every story linked in the Dispatch is readable without a subscription. The newsletter is not a funnel with a paywall at the end of it.</p>
         </div>
       </div>
     </div>
@@ -94,34 +95,37 @@
 
   <!-- ====================================================== SAMPLE ISSUE -->
   <section class="section" id="sample" aria-labelledby="sample-title">
-    <div class="wrap grid12" style="row-gap:var(--s-48)">
-      <div style="grid-column:span 5">
-        <div class="section-head">
-          <h2 class="section-head__title" id="sample-title">A recent issue</h2>
+    <div class="wrap grid12 row-gap-48">
+      <div class="col-5">
+        <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">02</span>
+          <h2 class="sec-head__title" id="sample-title">A recent issue</h2>
         </div>
-        <figure>
-          <img class="od-media" src="assets/img/newsletter-sample.jpg" width="1200" height="800"
-               alt="A printed copy of the Dispatch on a desk beside a coffee cup and a notebook." loading="lazy" decoding="async">
-          <figcaption class="figcaption">
+        <figure class="frame frame--3x2">
+          <span class="frame__media">
+            <img src="assets/img/newsletter-sample.jpg" width="1200" height="800"
+                 alt="A printed copy of the Dispatch on a desk beside a coffee cup and a notebook." loading="lazy" decoding="async">
+          </span>
+          <figcaption class="frame__cap">
             <span>Issue 418, sent Friday 5 September 2026.</span>
-            <span class="figcaption__credit">Photograph for NOVA</span>
+            <span class="frame__credit">Photograph for NOVA</span>
           </figcaption>
         </figure>
       </div>
 
-      <div style="grid-column:span 7">
-        <div class="panel" style="height:100%">
-          <div class="od-row" style="--od-gap:12px;padding-block-end:var(--s-16);border-bottom:2px solid var(--fg)">
-            <span class="wordmark od-fixed" style="font-size:1.25rem">NOVA</span>
+      <div class="col-7">
+        <div class="panel h-full">
+          <div class="od-row gap-12 ruled-under">
+            <span class="wordmark od-fixed wordmark--sm">NOVA</span>
             <span class="meta od-fill">The Dispatch · Issue 418</span>
             <span class="meta od-nowrap od-fixed">Fri 5 Sep</span>
           </div>
-          <p style="font-family:var(--font-serif);font-size:var(--fs-h4);line-height:1.4;margin-block:var(--s-24);color:var(--fg)">
+          <p class="t-serif t-h4 mt-24 mb-24 t-fg">
             Two things this week that look unrelated and are not: the interconnection queue, and who is still paying to host the internet's archives. Both are maintenance stories. Both are being decided by people nobody elected to decide them.
           </p>
-          <p class="meta" style="margin-block-end:var(--s-16)">— Marcus Feldt, Business Editor</p>
+          <p class="meta mb-16">— Marcus Feldt, Business Editor</p>
           <div class="cards-list" id="sampleList"></div>
-          <p class="meta" style="margin-block-start:var(--s-24);padding-block-start:var(--s-16);border-top:1px solid var(--border)">
+          <p class="meta mt-24 tagrow">
             You are receiving this because you subscribed at nova.example. <a href="#sample">Unsubscribe</a> · <a href="#sample">Change frequency</a>
           </p>
         </div>
@@ -129,40 +133,51 @@
     </div>
   </section>
 
+  <!-- ===================================================== EDITORIAL BREAK -->
+  <aside class="brk" aria-labelledby="nl-brk">
+    <div class="wrap brk__inner">
+      <p class="brk__kicker" id="nl-brk">What the Dispatch is not</p>
+      <blockquote class="brk__quote">It is not a list of links. An editor writes it, signs it, and explains why six stories mattered — which takes longer and is the <em>whole point</em>.</blockquote>
+      <p class="brk__cite"><b>Hannah Vo</b>, Culture Writer &middot; writes the Friday issue</p>
+    </div>
+  </aside>
+
   <!-- ================================================== TOPICS + FREQUENCY -->
   <section class="section" aria-labelledby="prefs-title">
-    <div class="wrap grid12" style="row-gap:var(--s-48)">
-      <div style="grid-column:span 7">
-        <div class="section-head">
-          <h2 class="section-head__title" id="prefs-title">Pick your topics</h2>
+    <div class="wrap grid12 row-gap-48">
+      <div class="col-7">
+        <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">03</span>
+          <h2 class="sec-head__title" id="prefs-title">Pick your topics</h2>
         </div>
-        <p class="meta" style="margin-block-end:var(--s-24);max-width:52ch">Optional. Leaving everything off gets you the full Dispatch, which is what most readers do.</p>
-        <fieldset style="border:0;padding:0;margin:0">
+        <p class="meta mb-24 measure-note">Optional. Leaving everything off gets you the full Dispatch, which is what most readers do.</p>
+        <fieldset class="fieldset-reset">
           <legend class="sr-only">Newsletter topics</legend>
-          <div class="od-cluster" style="--od-gap:8px" id="topicToggles"></div>
+          <div class="od-cluster gap-8" id="topicToggles"></div>
         </fieldset>
       </div>
 
-      <div style="grid-column:span 5">
-        <div class="section-head">
-          <h2 class="section-head__title">Frequency</h2>
+      <div class="col-5">
+        <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">04</span>
+          <h2 class="sec-head__title">Frequency</h2>
         </div>
-        <fieldset style="border:0;padding:0;margin:0;display:grid;gap:var(--s-12)">
+        <fieldset class="fieldset-reset stack gap-12">
           <legend class="sr-only">How often to send the Dispatch</legend>
-          <label class="checkbox" style="align-items:center">
-            <input type="radio" name="freq" value="both" checked style="accent-color:var(--accent)">
-            <span><strong style="color:var(--fg)">Twice a week</strong> — Tuesday and Friday. The default.</span>
+          <label class="checkbox">
+            <input type="radio" name="freq" value="both" checked>
+            <span><strong class="t-fg">Twice a week</strong> — Tuesday and Friday. The default.</span>
           </label>
-          <label class="checkbox" style="align-items:center">
-            <input type="radio" name="freq" value="weekly" style="accent-color:var(--accent)">
-            <span><strong style="color:var(--fg)">Friday only</strong> — the week in one issue.</span>
+          <label class="checkbox">
+            <input type="radio" name="freq" value="weekly">
+            <span><strong class="t-fg">Friday only</strong> — the week in one issue.</span>
           </label>
-          <label class="checkbox" style="align-items:center">
-            <input type="radio" name="freq" value="monthly" style="accent-color:var(--accent)">
-            <span><strong style="color:var(--fg)">Monthly</strong> — long reads and investigations only.</span>
+          <label class="checkbox">
+            <input type="radio" name="freq" value="monthly">
+            <span><strong class="t-fg">Monthly</strong> — long reads and investigations only.</span>
           </label>
         </fieldset>
-        <div class="notice" style="margin-block-start:var(--s-24)">
+        <div class="notice mt-24">
           {{info}}
           <span>Frequency is changeable from the footer of any issue, and from your account settings.</span>
         </div>
@@ -173,41 +188,43 @@
   <!-- ========================================================= TESTIMONIALS -->
   <section class="section" aria-labelledby="quotes-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="quotes-title">What readers say</h2>
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">05</span>
+        <h2 class="sec-head__title" id="quotes-title">What readers say</h2>
       </div>
-      <div class="cards-row" style="--cols:3;gap:var(--s-32)">
+      <div class="cards-row cols-3 gap-32">
         <blockquote class="panel">
-          <p style="font-family:var(--font-serif);font-size:var(--fs-body-lg);line-height:1.45;color:var(--fg)">“It is the only newsletter I read on the day it arrives. Mostly because it is short enough that putting it off would take more effort.”</p>
-          <footer class="byline" style="margin-block-start:var(--s-24)">
+          <p class="t-serif lead t-fg">“It is the only newsletter I read on the day it arrives. Mostly because it is short enough that putting it off would take more effort.”</p>
+          <footer class="byline mt-24">
             <span class="avatar avatar--sm" aria-hidden="true">RK</span>
             <span class="byline__text"><span class="byline__name">Reader in Lisbon</span><span class="byline__meta">Subscriber since 2023</span></span>
           </footer>
         </blockquote>
         <blockquote class="panel">
-          <p style="font-family:var(--font-serif);font-size:var(--fs-body-lg);line-height:1.45;color:var(--fg)">“I forward roughly one story a week to my team. That has never once been because of a headline.”</p>
-          <footer class="byline" style="margin-block-start:var(--s-24)">
+          <p class="t-serif lead t-fg">“I forward roughly one story a week to my team. That has never once been because of a headline.”</p>
+          <footer class="byline mt-24">
             <span class="avatar avatar--sm avatar--2" aria-hidden="true">AT</span>
             <span class="byline__text"><span class="byline__name">Engineering lead</span><span class="byline__meta">Subscriber since 2022</span></span>
           </footer>
         </blockquote>
         <blockquote class="panel">
-          <p style="font-family:var(--font-serif);font-size:var(--fs-body-lg);line-height:1.45;color:var(--fg)">“They ran a correction at the top of an issue once. I have trusted the rest of it more ever since.”</p>
-          <footer class="byline" style="margin-block-start:var(--s-24)">
+          <p class="t-serif lead t-fg">“They ran a correction at the top of an issue once. I have trusted the rest of it more ever since.”</p>
+          <footer class="byline mt-24">
             <span class="avatar avatar--sm" aria-hidden="true">MB</span>
             <span class="byline__text"><span class="byline__name">Researcher</span><span class="byline__meta">Subscriber since 2024</span></span>
           </footer>
         </blockquote>
       </div>
-      <p class="meta" style="margin-block-start:var(--s-24)">Illustrative reader quotes written for this prototype.</p>
+      <p class="meta mt-24">Illustrative reader quotes written for this prototype.</p>
     </div>
   </section>
 
   <!-- ================================================================= FAQ -->
   <section class="section" aria-labelledby="faq-title">
     <div class="wrap wrap--narrow">
-      <div class="section-head">
-        <h2 class="section-head__title" id="faq-title">Questions</h2>
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">06</span>
+        <h2 class="sec-head__title" id="faq-title">Questions</h2>
       </div>
       <div class="accordion">
         <details open>

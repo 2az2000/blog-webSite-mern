@@ -28,13 +28,13 @@
   </div>
 
   <header class="wrap page-head">
-    <div class="od-row" style="--od-gap:24px;flex-wrap:wrap;align-items:flex-end">
+    <div class="od-row gap-24 row--bottom">
       <div class="od-fill">
-        <p class="overline text-accent" style="margin-block-end:var(--s-16)">Signed in as You · Subscriber</p>
+        <p class="overline text-accent mb-16">Signed in as You · Subscriber</p>
         <h1 class="display">Your reading</h1>
-        <p class="lead" style="margin-block-start:var(--s-16)">Everything you saved, in the order you saved it. Saved articles stay in your account whether or not your subscription is active.</p>
+        <p class="lead mt-16">Everything you saved, in the order you saved it. Saved articles stay in your account whether or not your subscription is active.</p>
       </div>
-      <div class="od-fixed od-cluster" style="--od-gap:12px">
+      <div class="od-fixed od-cluster gap-12">
         <button class="btn btn--secondary" type="button" id="exportList">Export list</button>
         <button class="btn btn--danger" type="button" data-modal-open="clearModal">Clear all saved</button>
       </div>
@@ -54,7 +54,7 @@
 
   <section class="section" aria-live="polite">
     <div class="wrap">
-      <div class="od-row" style="--od-gap:16px;flex-wrap:wrap;justify-content:space-between;margin-block-end:var(--s-24)">
+      <div class="od-row gap-16 row--between mb-24">
         <p class="meta od-fill" id="viewStatus"></p>
         <div class="dropdown od-fixed" id="savedSort">
           <button class="btn btn--ghost btn--sm" type="button" data-dropdown-trigger aria-expanded="false" aria-haspopup="true">
@@ -76,9 +76,9 @@
 
 <div class="modal-backdrop" id="clearModal" role="dialog" aria-modal="true" aria-labelledby="clearTitle" aria-hidden="true">
   <div class="modal">
-    <h2 id="clearTitle" style="font-size:var(--fs-h3)">Clear everything you have saved?</h2>
-    <p style="font-size:var(--fs-body-sm);color:var(--fg-soft)">This removes all saved articles and your reading list from this account. Collections and their names are removed too. It cannot be undone.</p>
-    <div class="od-row" style="--od-gap:12px;justify-content:flex-end;flex-wrap:wrap">
+    <h2 class="t-h3" id="clearTitle">Clear everything you have saved?</h2>
+    <p class="t-body-sm">This removes all saved articles and your reading list from this account. Collections and their names are removed too. It cannot be undone.</p>
+    <div class="od-row gap-12 row--end">
       <button class="btn btn--secondary" type="button" data-modal-close>Keep them</button>
       <button class="btn btn--danger" type="button" data-modal-close id="confirmClear">Yes, clear all saved</button>
     </div>
@@ -159,9 +159,9 @@ window.novaPage = function () {
   };
 
   var row = function (a, bucket) {
-    return '<div class="od-row-top" style="--od-gap:24px;padding-block:var(--s-24);border-top:1px solid var(--border)">' +
+    return '<div class="od-row-top gap-24 ruled-row">' +
       '<div class="od-fill">' + NOVA.card(a, 'horizontal') + '</div>' +
-      '<div class="od-fixed od-stack" style="--od-gap:8px">' +
+      '<div class="od-fixed od-stack gap-8">' +
         '<button class="btn btn--ghost btn--sm" type="button" data-remove="' + a.slug + '" data-bucket="' + bucket + '">Remove</button>' +
         (bucket === 'saved'
           ? '<button class="btn btn--ghost btn--sm" type="button" data-tolist="' + a.slug + '">Add to list</button>'
@@ -181,13 +181,13 @@ window.novaPage = function () {
     if (view === 'collections') {
       status.textContent = state.collections.length + ' collections';
       host.innerHTML = state.collections.length
-        ? '<div class="cards-row" style="--cols:3;gap:var(--s-24)">' + state.collections.map(function (c) {
+        ? '<div class="cards-row cols-3 gap-24">' + state.collections.map(function (c) {
             return '<div class="collection-tile">' +
               '<span class="overline text-accent">Collection</span>' +
-              '<span style="font-family:var(--font-serif);font-size:var(--fs-h3)">' + NOVA.esc(c.name) + '</span>' +
+              '<span class="t-serif t-h3">' + NOVA.esc(c.name) + '</span>' +
               '<span class="collection-tile__count od-nowrap">' + c.slugs.length + ' stories</span>' +
               (c.slugs.length
-                ? '<ul style="list-style:none;display:grid;gap:var(--s-8);margin-block-start:var(--s-8)">' +
+                ? '<ul class="stack gap-8 mt-8">' +
                   c.slugs.map(function (s) {
                     var a = NOVA.find(s);
                     return a ? '<li class="meta od-truncate"><a href="' + NOVA.articleHref(a) + '">' + NOVA.esc(a.title) + '</a></li>' : '';
@@ -195,9 +195,9 @@ window.novaPage = function () {
                 : '<p class="meta">Empty — drag a saved story here.</p>') +
               '</div>';
           }).join('') +
-          '<button class="collection-tile" type="button" id="newCollection" style="text-align:start;cursor:pointer">' +
+          '<button class="collection-tile" type="button" id="newCollection">' +
           '<span class="overline text-accent">New</span>' +
-          '<span style="font-family:var(--font-serif);font-size:var(--fs-h3)">Create a collection</span>' +
+          '<span class="t-serif t-h3">Create a collection</span>' +
           '<span class="collection-tile__count">Group saved stories by project, pitch or class.</span></button></div>'
         : emptyHtml('collections');
       var nc = document.getElementById('newCollection');

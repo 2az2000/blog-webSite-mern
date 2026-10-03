@@ -29,33 +29,39 @@
 
   <!-- =========================================================== AUTHOR HEAD -->
   <header class="wrap section section--tight">
-    <div class="grid12" style="align-items:end;row-gap:var(--s-32)">
+    <div class="grid12 row-gap-32">
 
-      <div style="grid-column:span 4">
-        <figure id="portraitSlot">
-          <img class="od-media" src="assets/img/author-duarte.jpg" width="900" height="1200"
-               alt="Elena Duarte, photographed in a stairwell, half-turned toward the camera."
-               decoding="async">
+      <div class="col-4">
+        <figure class="frame" id="portraitSlot">
+          <span class="frame__media">
+            <img src="assets/img/author-duarte.jpg" width="900" height="1200"
+                 alt="Elena Duarte, photographed in a stairwell, half-turned toward the camera."
+                 decoding="async">
+          </span>
+          <figcaption class="frame__cap">
+            <span>Commissioned portrait, 2025.</span>
+            <span class="frame__credit">Photograph for NOVA</span>
+          </figcaption>
         </figure>
       </div>
 
-      <div style="grid-column:span 8">
-        <p class="overline text-accent" style="margin-block-end:var(--s-16)">NOVA Writer</p>
+      <div class="col-8">
+        <p class="overline text-accent mb-16">NOVA Writer</p>
         <h1 class="display" id="authorName">Elena Duarte</h1>
-        <p class="lead" style="margin-block-start:var(--s-16)" id="authorRole">Senior Technology Correspondent</p>
-        <p style="margin-block-start:var(--s-24);max-width:62ch;color:var(--fg-soft)" id="authorBio"></p>
+        <p class="lead mt-16" id="authorRole">Senior Technology Correspondent</p>
+        <p class="mt-24 measure-long t-body-sm" id="authorBio"></p>
 
-        <div class="od-cluster" style="--od-gap:12px;margin-block-start:var(--s-32)">
+        <div class="od-cluster gap-12 mt-32">
           <button class="btn btn--primary" type="button" id="followAuthor" aria-pressed="false">Follow</button>
           <a class="btn btn--secondary" href="newsletter.html">Get their stories by email</a>
           <a class="btn btn--ghost" href="#archive">Jump to archive</a>
         </div>
 
-        <div class="od-cluster" style="--od-gap:8px;margin-block-start:var(--s-24)" id="socialLinks"></div>
+        <div class="od-cluster gap-8 mt-24" id="socialLinks"></div>
       </div>
     </div>
 
-    <div class="stat-strip" style="margin-block-start:var(--s-64)">
+    <div class="stat-strip mt-64">
       <div class="stat od-stat"><span class="stat__value od-nowrap" id="statArticles">0</span><span class="stat__label">Stories for NOVA</span></div>
       <div class="stat od-stat"><span class="stat__value od-nowrap" id="statReads">0</span><span class="stat__label">Total reads</span></div>
       <div class="stat od-stat"><span class="stat__value od-nowrap" id="statMins">0</span><span class="stat__label">Minutes published</span></div>
@@ -66,47 +72,60 @@
   <!-- ============================================================ EXPERTISE -->
   <section class="section section--tight" aria-labelledby="expertise-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="expertise-title">Covers</h2>
+      <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">01</span>
+        <h2 class="sec-head__title" id="expertise-title">Covers</h2>
       </div>
-      <div class="od-cluster" style="--od-gap:8px" id="expertise"></div>
+      <div class="od-cluster gap-8" id="expertise"></div>
     </div>
   </section>
 
   <!-- ====================================================== LATEST + POPULAR -->
   <section class="section" aria-labelledby="author-latest">
-    <div class="wrap grid12" style="row-gap:var(--s-64)">
-      <div style="grid-column:span 8">
-        <div class="section-head">
-          <h2 class="section-head__title" id="author-latest">Latest work</h2>
+    <div class="wrap grid12 row-gap-64">
+      <div class="col-8">
+        <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">02</span>
+          <h2 class="sec-head__title" id="author-latest">Latest work</h2>
         </div>
-        <div id="authorFeatured" style="margin-block-end:var(--s-48)"></div>
-        <div class="cards-list" id="authorLatest" style="gap:var(--s-32)"></div>
+        <div class="mb-48" id="authorFeatured"></div>
+        <div class="cards-list gap-32" id="authorLatest"></div>
       </div>
 
-      <aside style="grid-column:span 4;display:grid;gap:var(--s-64);align-content:start">
+      <aside class="col-4 stack gap-64">
         <div>
-          <div class="section-head">
-            <h2 class="section-head__title">Most read</h2>
+          <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">03</span>
+            <h2 class="sec-head__title">Most read</h2>
           </div>
           <div class="cards-list" id="authorPopular"></div>
         </div>
         <div class="panel panel--sunk">
           <p class="overline text-accent">Tip this desk</p>
-          <h3 style="font-size:var(--fs-h4);margin-block:var(--s-12)">Something we should look at?</h3>
+          <h3 class="t-h4 mt-12 mb-12">Something we should look at?</h3>
           <p class="meta">Encrypted drop and postal address are on the newsroom contact page. Do not send confidential material from a work device.</p>
-          <a class="btn btn--secondary btn--sm" href="index.html#about" style="margin-block-start:var(--s-16)">Contact the newsroom</a>
+          <a class="btn btn--secondary btn--sm mt-16" href="index.html#about">Contact the newsroom</a>
         </div>
       </aside>
     </div>
   </section>
 
+  <!-- ===================================================== EDITORIAL BREAK -->
+  <aside class="brk" aria-labelledby="author-brk">
+    <div class="wrap brk__inner">
+      <p class="brk__kicker" id="author-brk">On the beat</p>
+      <blockquote class="brk__quote">The interesting story is almost never the launch. It is the <em>procurement document</em> three years earlier, and whoever was in the room when it was signed.</blockquote>
+      <p class="brk__cite"><b><span id="brkAuthor">Elena Duarte</span></b> &middot; <a href="newsletter.html">Follow this writer by email</a></p>
+    </div>
+  </aside>
+
   <!-- ============================================================== ARCHIVE -->
   <section class="section" id="archive" aria-labelledby="archive-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="archive-title">Full archive</h2>
-        <span class="section-head__link" style="text-decoration:none" id="archiveCount"></span>
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">04</span>
+        <h2 class="sec-head__title" id="archive-title">Full archive</h2>
+        <span class="sec-head__link no-underline" id="archiveCount"></span>
       </div>
       <div class="cards-list" id="authorArchive"></div>
 
@@ -124,10 +143,11 @@
   <!-- ========================================================== OTHER WRITERS -->
   <section class="section" aria-labelledby="writers-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="writers-title">Other NOVA writers</h2>
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">05</span>
+        <h2 class="sec-head__title" id="writers-title">Other NOVA writers</h2>
       </div>
-      <div class="cards-row" id="otherWriters" style="--cols:4;gap:var(--s-24)"></div>
+      <div class="cards-row cols-4 gap-24" id="otherWriters"></div>
     </div>
   </section>
 
@@ -167,13 +187,18 @@ window.novaPage = function () {
      who is not the writer. */
   var slot = document.getElementById('portraitSlot');
   if (extra.portrait) {
-    slot.innerHTML = '<img class="od-media" src="assets/img/' + extra.portrait + '" width="900" height="1200" alt="' +
-      NOVA.esc(au.name) + ', photographed for NOVA." decoding="async">';
+    slot.innerHTML = '<span class="frame__media"><img src="assets/img/' + extra.portrait +
+      '" width="900" height="1200" alt="' + NOVA.esc(au.name) +
+      ', photographed for NOVA." decoding="async"></span>' +
+      '<figcaption class="frame__cap"><span>Commissioned portrait, 2025.</span>' +
+      '<span class="frame__credit">Photograph for NOVA</span></figcaption>';
   } else {
-    slot.innerHTML = '<div style="aspect-ratio:3/4;display:grid;place-items:center;background:var(--surface-sunk);border:1px solid var(--border)">' +
-      '<span style="font-family:var(--font-serif);font-size:clamp(4rem,10vw,7rem);line-height:1;color:var(--accent)" aria-hidden="true">' +
-      NOVA.esc(au.initials) + '</span><span class="sr-only">' + NOVA.esc(au.name) + '</span></div>';
+    slot.innerHTML = '<span class="frame__media portrait-slot">' +
+      '<span class="big-num" aria-hidden="true">' + NOVA.esc(au.initials) + '</span>' +
+      '<span class="sr-only">' + NOVA.esc(au.name) + '</span></span>' +
+      '<figcaption class="frame__cap"><span>No commissioned portrait on file — NOVA sets a typographic monogram rather than a stand-in photograph.</span></figcaption>';
   }
+  document.getElementById('brkAuthor').textContent = au.name;
 
   var reads = 0, mins = 0, tags = {};
   pool.forEach(function (x) { reads += x.views; mins += x.mins; x.tags.forEach(function (t) { tags[t] = 1; }); });
@@ -223,7 +248,7 @@ window.novaPage = function () {
       var n = window.NOVA_ARTICLES.filter(function (x) { return x.author === k; }).length;
       return '<a class="collection-tile" href="author.html?a=' + k + '">' +
         '<span class="avatar avatar--lg" aria-hidden="true">' + NOVA.esc(o.initials) + '</span>' +
-        '<span style="font-family:var(--font-serif);font-size:var(--fs-h4)">' + NOVA.esc(o.name) + '</span>' +
+        '<span class="t-serif t-h4">' + NOVA.esc(o.name) + '</span>' +
         '<span class="collection-tile__count">' + NOVA.esc(o.role) + '</span>' +
         '<span class="collection-tile__count od-nowrap">' + n + ' stories</span></a>';
     }).join('');

@@ -22,23 +22,24 @@
     <img src="assets/img/subscribe-hero.jpg" width="1600" height="1067" alt="" decoding="async">
     <div class="wrap category-hero__body">
       <nav aria-label="Breadcrumb">
-        <ol class="breadcrumbs" style="color:rgba(247,246,242,.75)">
+        <ol class="breadcrumbs">
           <li><a href="index.html">Home</a></li>
-          <li><span aria-current="page" style="color:#F7F6F2">Subscribe</span></li>
+          <li><span aria-current="page">Subscribe</span></li>
         </ol>
       </nav>
-      <p class="overline" style="color:#B9C2FF;margin-block:var(--s-24) var(--s-16)">Reader-funded since 2021</p>
-      <h1 style="font-size:var(--fs-display);line-height:var(--lh-display);letter-spacing:var(--ls-display);max-width:17ch">Journalism paid for by the people who read it</h1>
-      <p class="lead" style="margin-block-start:var(--s-24)">NOVA takes no advertising inside the edit and runs no sponsored articles. Subscriptions are the whole business model, which is why the reporting can take eleven months when it needs to.</p>
+      <p class="overline mt-24 mb-16">Reader-funded since 2021</p>
+      <h1 class="t-display measure-short">Journalism paid for by the people who read it</h1>
+      <p class="lead mt-24">NOVA takes no advertising inside the edit and runs no sponsored articles. Subscriptions are the whole business model, which is why the reporting can take eleven months when it needs to.</p>
     </div>
   </section>
 
   <!-- =============================================================== PLANS -->
   <section class="section" aria-labelledby="plans-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="plans-title">Choose how you read</h2>
-        <div class="tabs" role="tablist" aria-label="Billing period" data-tabs id="billingTabs" style="border:0">
+      <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">01</span>
+        <h2 class="sec-head__title" id="plans-title">Choose how you read</h2>
+        <div class="tabs fieldset-reset" role="tablist" aria-label="Billing period" data-tabs id="billingTabs">
           <button role="tab" type="button" data-tab-key="monthly" aria-selected="true">Monthly</button>
           <button role="tab" type="button" data-tab-key="annual" aria-selected="false">Annual</button>
         </div>
@@ -49,7 +50,7 @@
         <div class="plan">
           <div>
             <h3 class="plan__name">Free</h3>
-            <p class="meta" style="margin-block-start:var(--s-8)">For readers who arrive from the Dispatch</p>
+            <p class="meta mt-8">For readers who arrive from the Dispatch</p>
           </div>
           <div class="plan__price od-stat">
             <span class="plan__amount od-nowrap">£0</span>
@@ -67,7 +68,7 @@
         </div>
 
         <div class="plan plan--featured">
-          <div class="od-row" style="--od-gap:12px">
+          <div class="od-row gap-12">
             <h3 class="plan__name od-fill">Reader</h3>
             <span class="badge od-fixed">Most chosen</span>
           </div>
@@ -92,7 +93,7 @@
         <div class="plan">
           <div>
             <h3 class="plan__name">Premium</h3>
-            <p class="meta" style="margin-block-start:var(--s-8)">For readers who want to fund the slow work</p>
+            <p class="meta mt-8">For readers who want to fund the slow work</p>
           </div>
           <div class="plan__price od-stat">
             <span class="plan__amount od-nowrap" data-price-monthly="£18" data-price-annual="£180">£18</span>
@@ -112,9 +113,9 @@
 
       </div>
 
-      <div class="notice notice--success" style="margin-block-start:var(--s-32);max-width:62ch">
+      <div class="notice notice--success mt-32 measure-long">
         {{check}}
-        <span><strong style="color:var(--fg)">Secure checkout.</strong> Payments are processed by our provider over TLS; NOVA never sees or stores your card details. Cancel from account settings in two clicks — no phone call, no retention offer.</span>
+        <span><strong class="t-fg">Secure checkout.</strong> Payments are processed by our provider over TLS; NOVA never sees or stores your card details. Cancel from account settings in two clicks — no phone call, no retention offer.</span>
       </div>
     </div>
   </section>
@@ -122,10 +123,11 @@
   <!-- ========================================================== COMPARISON -->
   <section class="section" aria-labelledby="compare-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="compare-title">Compared side by side</h2>
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">02</span>
+        <h2 class="sec-head__title" id="compare-title">Compared side by side</h2>
       </div>
-      <div style="overflow-x:auto">
+      <div class="scroll-x">
         <table class="compare">
           <caption class="sr-only">Feature comparison across the Free, Reader and Premium plans</caption>
           <thead>
@@ -150,16 +152,17 @@
 
   <!-- ============================================================ EDITORIAL -->
   <section class="section" aria-labelledby="why-title">
-    <div class="wrap grid12" style="row-gap:var(--s-32)">
-      <div style="grid-column:span 5">
-        <div class="section-head">
-          <h2 class="section-head__title" id="why-title">Where the money goes</h2>
+    <div class="wrap grid12 row-gap-32">
+      <div class="col-5">
+        <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">03</span>
+          <h2 class="sec-head__title" id="why-title">Where the money goes</h2>
         </div>
       </div>
-      <div style="grid-column:span 7">
+      <div class="col-7">
         <p class="lead">Roughly three quarters of subscription revenue pays reporters, editors and the freelance photography budget. The rest covers hosting, legal review for investigations, and the access-request fees that a story like the grid rebuild runs up over eleven months.</p>
-        <p style="margin-block-start:var(--s-24);color:var(--muted);max-width:62ch">We publish the full breakdown once a year, audited, alongside the number of subscribers. Both figures go up and down; we print them either way.</p>
-        <p class="meta" style="margin-block-start:var(--s-24)">Figures described here are illustrative content for this prototype.</p>
+        <p class="mt-24 t-muted measure-long">We publish the full breakdown once a year, audited, alongside the number of subscribers. Both figures go up and down; we print them either way.</p>
+        <p class="meta mt-24">Figures described here are illustrative content for this prototype.</p>
       </div>
     </div>
   </section>
@@ -167,8 +170,9 @@
   <!-- ================================================================= FAQ -->
   <section class="section" aria-labelledby="sfaq-title">
     <div class="wrap wrap--narrow">
-      <div class="section-head">
-        <h2 class="section-head__title" id="sfaq-title">Before you subscribe</h2>
+      <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">04</span>
+        <h2 class="sec-head__title" id="sfaq-title">Before you subscribe</h2>
       </div>
       <div class="accordion">
         <details open>
@@ -201,13 +205,13 @@
 <div class="modal-backdrop" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle" aria-hidden="true">
   <div class="modal">
     <p class="overline text-accent">Secure checkout</p>
-    <h2 id="checkoutTitle" style="font-size:var(--fs-h3)">Subscribe — <span id="checkoutPlan">Reader</span></h2>
-    <p style="font-size:var(--fs-body-sm);color:var(--fg-soft)">You will be charged <strong id="checkoutPrice">£7</strong> and can cancel at any time from account settings.</p>
+    <h2 class="t-h3" id="checkoutTitle">Subscribe — <span id="checkoutPlan">Reader</span></h2>
+    <p class="t-body-sm">You will be charged <strong id="checkoutPrice">£7</strong> and can cancel at any time from account settings.</p>
     <div class="notice">
       {{info}}
       <span>This prototype takes no payment and transmits nothing. A real checkout would hand off to the payment provider at this point.</span>
     </div>
-    <div class="od-row" style="--od-gap:12px;justify-content:flex-end;flex-wrap:wrap">
+    <div class="od-row gap-12 row--end">
       <button class="btn btn--secondary" type="button" data-modal-close>Not now</button>
       <button class="btn btn--accent" type="button" data-modal-close id="confirmCheckout">Continue to payment</button>
     </div>

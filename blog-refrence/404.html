@@ -18,15 +18,15 @@
 
 <main id="main">
 
-  <header class="wrap section" style="padding-block:var(--s-96) var(--s-48)">
-    <div class="grid12" style="align-items:end;row-gap:var(--s-32)">
-      <div style="grid-column:span 5">
-        <p style="font-family:var(--font-serif);font-size:clamp(6rem,18vw,11rem);line-height:.85;letter-spacing:-0.04em;color:var(--accent)">404</p>
+  <header class="wrap section section">
+    <div class="grid12 row-gap-32">
+      <div class="col-5">
+        <p class="big-num big-num--xl">404</p>
       </div>
-      <div style="grid-column:span 7">
-        <h1 class="display" style="font-size:var(--fs-h1)">This page has been unpublished, moved, or never existed</h1>
-        <p class="lead" style="margin-block-start:var(--s-24)">Three ordinary explanations, in rough order of likelihood. If you followed a link from inside NOVA, that is our mistake and the newsroom would like to know about it.</p>
-        <div class="od-cluster" style="--od-gap:12px;margin-block-start:var(--s-32)">
+      <div class="col-7">
+        <h1 class="display t-h1">This page has been unpublished, moved, or never existed</h1>
+        <p class="lead mt-24">Three ordinary explanations, in rough order of likelihood. If you followed a link from inside NOVA, that is our mistake and the newsroom would like to know about it.</p>
+        <div class="od-cluster gap-12 mt-32">
           <a class="btn btn--primary" href="index.html">Go to the homepage</a>
           <a class="btn btn--secondary" href="search.html">Search the archive</a>
           <button class="btn btn--ghost" type="button" id="reportLink">Report the broken link</button>
@@ -37,11 +37,12 @@
 
   <section class="section" aria-labelledby="fourohfour-read">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="fourohfour-read">While you are here</h2>
-        <a class="section-head__link" href="category.html?s=latest">All stories</a>
+      <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">01</span>
+        <h2 class="sec-head__title" id="fourohfour-read">While you are here</h2>
+        <a class="sec-head__link" href="category.html?s=latest">All stories</a>
       </div>
-      <div class="cards-row" id="suggested" style="--cols:3"></div>
+      <div class="cards-row cols-3" id="suggested"></div>
     </div>
   </section>
 

@@ -22,19 +22,19 @@
     <img src="assets/img/category-technology.jpg" width="2000" height="900" alt="" decoding="async">
     <div class="wrap category-hero__body">
       <nav aria-label="Breadcrumb">
-        <ol class="breadcrumbs" style="color:rgba(247,246,242,.75)">
+        <ol class="breadcrumbs">
           <li><a href="index.html">Home</a></li>
           <li><a href="topic.html?t=artificial-intelligence">Topics</a></li>
-          <li><span aria-current="page" id="crumbTopic" style="color:#F7F6F2">Artificial Intelligence</span></li>
+          <li><span aria-current="page" id="crumbTopic">Artificial Intelligence</span></li>
         </ol>
       </nav>
-      <p class="overline" style="color:#B9C2FF;margin-block:var(--s-24) var(--s-16)">Continuing coverage</p>
-      <h1 style="font-size:var(--fs-display);line-height:var(--lh-display);letter-spacing:var(--ls-display);max-width:16ch" id="topicName">Artificial Intelligence</h1>
-      <p class="lead" style="margin-block-start:var(--s-24)" id="topicBlurb"></p>
-      <div class="od-cluster" style="--od-gap:12px;margin-block-start:var(--s-32)">
+      <p class="overline mt-24 mb-16">Continuing coverage</p>
+      <h1 class="t-display measure-short" id="topicName">Artificial Intelligence</h1>
+      <p class="lead mt-24" id="topicBlurb"></p>
+      <div class="od-cluster gap-12 mt-32">
         <button class="btn btn--accent" type="button" id="followTopic" aria-pressed="false">Follow this topic</button>
-        <a class="btn btn--secondary" href="newsletter.html" style="color:#F7F6F2;border-color:rgba(247,246,242,.4)">Get it by email</a>
-        <span class="meta od-nowrap" style="color:rgba(247,246,242,.7)" id="topicCount"></span>
+        <a class="btn btn--secondary" href="newsletter.html">Get it by email</a>
+        <span class="meta od-nowrap" id="topicCount"></span>
       </div>
     </div>
   </section>
@@ -42,8 +42,9 @@
   <!-- ======================================================= FEATURED STORY -->
   <section class="section" aria-labelledby="tfeat-title">
     <div class="wrap">
-      <div class="section-head">
-        <h2 class="section-head__title" id="tfeat-title">The story to start with</h2>
+      <div class="sec-head sec-head--major">
+        <span class="sec-head__index" aria-hidden="true">01</span>
+        <h2 class="sec-head__title" id="tfeat-title">The story to start with</h2>
       </div>
       <div id="topicFeatured"></div>
     </div>
@@ -51,13 +52,14 @@
 
   <!-- ================================================= LATEST + POPULAR -->
   <section class="section" aria-labelledby="tlatest-title">
-    <div class="wrap grid12" style="row-gap:var(--s-64)">
-      <div style="grid-column:span 8">
-        <div class="section-head">
-          <h2 class="section-head__title" id="tlatest-title">Latest on this topic</h2>
-          <span class="section-head__link" style="text-decoration:none" id="topicResults"></span>
+    <div class="wrap grid12 row-gap-64">
+      <div class="col-8">
+        <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">02</span>
+          <h2 class="sec-head__title" id="tlatest-title">Latest on this topic</h2>
+          <span class="sec-head__link no-underline" id="topicResults"></span>
         </div>
-        <div class="cards-list" id="topicLatest" style="gap:var(--s-32)"></div>
+        <div class="cards-list gap-32" id="topicLatest"></div>
 
         <div id="topicEmpty" hidden>
           <div class="empty-state">
@@ -69,18 +71,20 @@
         </div>
       </div>
 
-      <aside style="grid-column:span 4;display:grid;gap:var(--s-64);align-content:start">
+      <aside class="col-4 stack gap-64">
         <div>
-          <div class="section-head">
-            <h2 class="section-head__title">Most read on this topic</h2>
+          <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">03</span>
+            <h2 class="sec-head__title">Most read on this topic</h2>
           </div>
           <div class="cards-list" id="topicPopular"></div>
         </div>
         <div>
-          <div class="section-head">
-            <h2 class="section-head__title">Related topics</h2>
+          <div class="sec-head">
+        <span class="sec-head__index" aria-hidden="true">04</span>
+            <h2 class="sec-head__title">Related topics</h2>
           </div>
-          <div class="od-cluster" style="--od-gap:8px" id="relatedTopics"></div>
+          <div class="od-cluster gap-8" id="relatedTopics"></div>
         </div>
       </aside>
     </div>
