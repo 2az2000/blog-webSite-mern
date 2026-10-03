@@ -4,6 +4,8 @@ node_modules/
 # build
 dist/
 build/
+.claude
+CLAUDE.md
 
 # environment
 .env
@@ -23,3 +25,9 @@ Thumbs.db
 !.vscode/extensions.json
 .idea
 *.sw?
+
+# internal documentation and agent files (kept local, never pushed)
+web/docs/
+AGENTS.md
+CLAUDE.md
+.claude/
