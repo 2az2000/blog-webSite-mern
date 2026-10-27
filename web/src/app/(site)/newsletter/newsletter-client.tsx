@@ -7,14 +7,17 @@ import { z } from "zod";
 
 import { Notice } from "@/components/patterns/feedback";
 import { Field } from "@/components/patterns/field";
-import { formMode, SuccessPanel, useMockSubmit } from "@/components/patterns/forms";
+import { formMode, SuccessPanel } from "@/components/patterns/forms";
 import { notify } from "@/components/ui/sonner";
 import { panelClass } from "@/components/patterns/feedback";
-import { Button, ButtonLink, Cluster, flex, Input, Radio, Stack, Tag, Text } from "@/components/primitives";
+import { Button, ButtonLink, Cluster, flex, Input, Radio, Stack, Tag, Text, TextLink } from "@/components/primitives";
 import { routes } from "@/config/routes";
 import { useI18n } from "@/i18n/i18n-provider";
 import { cn } from "@/lib/utils";
+import { ApiError } from "@/lib/api";
+import { newsletter } from "@/lib/reader-api";
 import { fields } from "@/lib/validation";
+import { DISPATCH_TOPICS, useDispatchPrefs, type Frequency } from "@/stores/dispatch-prefs-store";
 
 /* Interactive parts of newsletter.html. */
 
@@ -23,7 +26,18 @@ export function DispatchSignup() {
   const [done, setDone] = useState(false);
   const schema = z.object({ email: fields(t).email("Email address") });
   const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema), ...formMode });
-  const submit = useMockSubmit(form, "Almost there — confirm from the email we just sent.", () => setDone(true));
+  const [problem, setProblem] = useState<string | null>(null);
+  const submit = form.handleSubmit(async ({ email }) => {
+    setProblem(null);
+    const { topics, frequency } = useDispatchPrefs.getState();
+    try {
+      await newsletter.subscribe(email, topics, frequency, "newsletter-page");
+      notify("Almost there — confirm from the email we just sent.", "success", { dismissLabel: t.a11y.dismiss });
+      setDone(true);
+    } catch (err) {
+      setProblem(err instanceof ApiError && err.code === "RATE_LIMITED" ? t.newsletter.tooMany : t.form.failed);
+    }
+  });
   const { errors, isSubmitting } = form.formState;
 
   if (done) {
@@ -45,6 +59,11 @@ export function DispatchSignup() {
 
   return (
     <form className={cn(panelClass(), "mt-8 max-w-ch-46")} noValidate onSubmit={submit}>
+      {problem && (
+        <Notice tone="error" className="mb-4">
+          {problem}
+        </Notice>
+      )}
       <Field
         id="hero-email"
         label="Email address"
@@ -64,46 +83,40 @@ export function DispatchSignup() {
         </Button>
       </Cluster>
       <Text variant="meta" mt={16}>
-        By subscribing you agree to our privacy notice. We never sell reader data, and unsubscribing takes one click from
+        By subscribing you agree to our <TextLink href={routes.privacy()}>privacy notice</TextLink>. We never sell reader data, and unsubscribing takes one click from
         any issue — no survey, no retention offer.
       </Text>
     </form>
   );
 }
 
-const TOPICS = ["Technology", "Business", "Science", "Design", "Culture", "Society", "Opinion", "Long reads"];
-
 export function TopicToggles() {
-  const [picked, setPicked] = useState<string[]>([]);
+  const picked = useDispatchPrefs((st) => st.topics);
+  const toggle = useDispatchPrefs((st) => st.toggleTopic);
   return (
     <fieldset className="m-0 border-0 p-0">
       <legend className="sr-only">Newsletter topics</legend>
       <Cluster gap={8}>
-        {TOPICS.map((topic) => {
-          const on = picked.includes(topic);
-          return (
-            <Tag
-              key={topic}
-              aria-pressed={on}
-              onClick={() => setPicked((p) => (on ? p.filter((x) => x !== topic) : [...p, topic]))}
-            >
-              {topic}
-            </Tag>
-          );
-        })}
+        {DISPATCH_TOPICS.map((topic) => (
+          <Tag key={topic.key} aria-pressed={picked.includes(topic.key)} onClick={() => toggle(topic.key)}>
+            {topic.label}
+          </Tag>
+        ))}
       </Cluster>
     </fieldset>
   );
 }
 
 const FREQUENCIES = [
-  { value: "both", strong: "Twice a week", rest: " — Tuesday and Friday. The default." },
-  { value: "weekly", strong: "Friday only", rest: " — the week in one issue." },
-  { value: "monthly", strong: "Monthly", rest: " — long reads and investigations only." },
+  { value: "both" as Frequency, strong: "Twice a week", rest: " — Tuesday and Friday. The default." },
+  { value: "weekly" as Frequency, strong: "Friday only", rest: " — the week in one issue." },
+  { value: "monthly" as Frequency, strong: "Monthly", rest: " — long reads and investigations only." },
 ];
 
 export function FrequencyPicker() {
   const { t } = useI18n();
+  const frequency = useDispatchPrefs((st) => st.frequency);
+  const setFrequency = useDispatchPrefs((st) => st.setFrequency);
   return (
     <>
       <Stack as="fieldset" gap={12} className="m-0 border-0 p-0">
@@ -113,8 +126,11 @@ export function FrequencyPicker() {
             key={f.value}
             name="freq"
             value={f.value}
-            defaultChecked={f.value === "both"}
-            onChange={() => notify("Frequency preference saved", "success", { dismissLabel: t.a11y.dismiss })}
+            checked={frequency === f.value}
+            onChange={() => {
+              setFrequency(f.value);
+              notify("Noted — it applies when you subscribe", "success", { dismissLabel: t.a11y.dismiss });
+            }}
             label={
               <>
                 <strong className="text-fg">{f.strong}</strong>
@@ -125,7 +141,7 @@ export function FrequencyPicker() {
         ))}
       </Stack>
       <Notice className="mt-6" bareIcon>
-        Frequency is changeable from the footer of any issue, and from your account settings.
+        You can change frequency and topics at any time from the link at the bottom of every issue.
       </Notice>
     </>
   );

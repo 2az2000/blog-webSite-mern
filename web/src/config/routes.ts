@@ -17,6 +17,8 @@
  *   states.html           → /states
  *   design-system.html    → /design-system
  *   404.html              → app/not-found.tsx
+ *   (no reference)        → /account  (signed-in reader's settings), /privacy, /terms, /cookies  (legal)
+ *   (no reference)        → /admin, /admin/articles, /admin/articles/new, /admin/articles/[id], /admin/front-page, /admin/newsletter, /admin/comments, /admin/reports, /admin/users, /admin/roles  (staff back office)
  */
 export const routes = {
   home: () => "/",
@@ -34,6 +36,21 @@ export const routes = {
   signUp: () => "/auth#signup",
   states: () => "/states",
   designSystem: () => "/design-system",
+  account: () => "/account",
+  privacy: () => "/privacy",
+  terms: () => "/terms",
+  cookies: () => "/cookies",
+  admin: () => "/admin",
+  adminArticles: () => "/admin/articles",
+  adminNew: () => "/admin/articles/new",
+  adminFrontPage: () => "/admin/front-page",
+  adminNewsletter: () => "/admin/newsletter",
+  adminIssue: (id: string) => `/admin/newsletter/${encodeURIComponent(id)}`,
+  adminComments: () => "/admin/comments",
+  adminReports: () => "/admin/reports",
+  adminUsers: () => "/admin/users",
+  adminRoles: () => "/admin/roles",
+  adminArticle: (id: string) => `/admin/articles/${encodeURIComponent(id)}`,
   /** The reference points every "about/contact/legal" link at index.html#about. */
   about: () => "/#about",
 } as const;

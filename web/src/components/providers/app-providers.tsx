@@ -3,10 +3,12 @@
 import { useEffect, type ReactNode } from "react";
 import { Direction } from "radix-ui";
 
+import { CookieNotice } from "@/components/patterns/cookie-notice";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { localeMeta, type Locale } from "@/i18n/config";
 import { I18nProvider } from "@/i18n/i18n-provider";
+import { useAuth } from "@/stores/auth-store";
 import { useBookmarks } from "@/stores/bookmarks-store";
 
 /**
@@ -16,9 +18,10 @@ import { useBookmarks } from "@/stores/bookmarks-store";
 export function AppProviders({ locale, children }: { locale: Locale; children: ReactNode }) {
   const dir = localeMeta[locale].dir;
 
-  // Persisted client stores load after hydration so server and client HTML match.
+  // Persisted client stores load after hydration so server and client HTML match;
+  // only then do we ask who is signed in, so the account’s list lands on top of the local one.
   useEffect(() => {
-    void useBookmarks.persist.rehydrate();
+    void Promise.resolve(useBookmarks.persist.rehydrate()).then(() => useAuth.getState().restore());
   }, []);
 
   return (
@@ -28,6 +31,7 @@ export function AppProviders({ locale, children }: { locale: Locale; children: R
         <TooltipProvider>
           {children}
           <Toaster dir={dir} />
+          <CookieNotice />
         </TooltipProvider>
       </Direction.Provider>
     </I18nProvider>

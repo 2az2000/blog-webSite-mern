@@ -27,6 +27,7 @@ Thumbs.db
 *.sw?
 
 # internal documentation and agent files (kept local, never pushed)
+blog-refrence/
 web/docs/
 AGENTS.md
 CLAUDE.md

@@ -59,16 +59,16 @@ export const footerColumns: FooterColumn[] = [
       { label: { footer: "about" }, href: routes.about() },
       { label: { footer: "standards" }, href: routes.about() },
       { label: { footer: "contact" }, href: routes.about() },
-      { label: { footer: "privacy" }, href: routes.about() },
-      { label: { footer: "terms" }, href: routes.about() },
+      { label: { footer: "privacy" }, href: routes.privacy() },
+      { label: { footer: "terms" }, href: routes.terms() },
       { label: { footer: "notFound" }, href: "/404" },
     ],
   },
 ];
 
 export const legalLinks: { key: FooterLinkKey; href: string }[] = [
-  { key: "privacy", href: routes.about() },
-  { key: "terms", href: routes.about() },
-  { key: "cookies", href: routes.about() },
+  { key: "privacy", href: routes.privacy() },
+  { key: "terms", href: routes.terms() },
+  { key: "cookies", href: routes.cookies() },
   { key: "accessibility", href: routes.about() },
 ];

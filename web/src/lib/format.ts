@@ -7,9 +7,9 @@ import { contentTimeZone, localeMeta, type Locale } from "@/i18n/config";
  * calendar without any extra library.
  */
 
-const cache = new Map<string, Intl.DateTimeFormat | Intl.NumberFormat>();
+const cache = new Map<string, Intl.DateTimeFormat | Intl.NumberFormat | Intl.RelativeTimeFormat>();
 
-function memo<T extends Intl.DateTimeFormat | Intl.NumberFormat>(key: string, make: () => T): T {
+function memo<T extends Intl.DateTimeFormat | Intl.NumberFormat | Intl.RelativeTimeFormat>(key: string, make: () => T): T {
   let f = cache.get(key) as T | undefined;
   if (!f) {
     f = make();
@@ -60,4 +60,53 @@ export function formatIndex(value: number, locale: Locale): string {
     `index:${locale}`,
     () => new Intl.NumberFormat(localeMeta[locale].intl, { minimumIntegerDigits: 2, useGrouping: false }),
   ).format(value);
+}
+
+/** "2026-09-12T14:03:00Z" → "12 Sept 2026, 14:03" (UTC, so server and browser agree) */
+export function formatDateTime(iso: string, locale: Locale): string {
+  const f = memo(
+    `datetime:${locale}`,
+    () =>
+      new Intl.DateTimeFormat(localeMeta[locale].intl, {
+        year: "numeric",
+        month: locale === "fa" ? "long" : "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hourCycle: "h23",
+        timeZone: contentTimeZone,
+      }),
+  );
+  return f.format(new Date(iso));
+}
+
+/**
+ * "5 minutes ago" / "۵ دقیقه پیش" — for a moment that has just happened, never for a calendar day
+ * (use formatDate for those). Depends on the clock, so render it only after hydration.
+ */
+export function formatRelative(iso: string, locale: Locale, now = Date.now()): string {
+  const seconds = Math.round((new Date(iso).getTime() - now) / 1000);
+  const f = memo(`rel:${locale}`, () => new Intl.RelativeTimeFormat(localeMeta[locale].intl, { numeric: "auto" }));
+  const abs = Math.abs(seconds);
+  if (abs < 60) return f.format(0, "second");
+  if (abs < 3600) return f.format(Math.round(seconds / 60), "minute");
+  if (abs < 86_400) return f.format(Math.round(seconds / 3600), "hour");
+  if (abs < 30 * 86_400) return f.format(Math.round(seconds / 86_400), "day");
+  return formatDate(iso.slice(0, 10), locale);
+}
+
+/** "Saturday" / "شنبه" */
+export function formatWeekday(date: Date, locale: Locale): string {
+  return memo(
+    `weekday:${locale}`,
+    () => new Intl.DateTimeFormat(localeMeta[locale].intl, { weekday: "long", timeZone: contentTimeZone }),
+  ).format(date);
+}
+
+/** "September 12, 2026" — the masthead's date, month in full. */
+export function formatLongDate(date: Date, locale: Locale): string {
+  return memo(
+    `longdate:${locale}`,
+    () => new Intl.DateTimeFormat(localeMeta[locale].intl, { year: "numeric", month: "long", day: "numeric", timeZone: contentTimeZone }),
+  ).format(date);
 }

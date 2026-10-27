@@ -31,6 +31,7 @@ import { RetryButton, ToastDemo } from "./states-client";
 export const metadata: Metadata = {
   title: "UI states",
   description: "Error, empty and loading states — every one a real screen with its own copy.",
+  robots: { index: false, follow: false },
 };
 
 /** .state-cell__label — the overline above each specimen. */

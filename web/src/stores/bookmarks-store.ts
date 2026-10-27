@@ -3,13 +3,18 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import { bookmarks } from "@/lib/reader-api";
+import { useAuth } from "@/stores/auth-store";
+
 /*
  * Saved articles (reference: the bookmark toggle + bookmarks.html).
- * Persisted per browser; when accounts exist, sync this list to the API and
- * keep the store as the optimistic client cache.
+ *
+ * The store is the instant, offline-friendly copy and is persisted per browser,
+ * so a visitor with no account can still save. When someone is signed in every
+ * change also goes to the API (optimistically: the UI flips first and undoes
+ * itself if the API refuses), and signing in merges what the browser had into
+ * the account — the account's list then wins.
  */
-/** First-visit contents — the sample list from blog-refrence/bookmarks.html. */
-const SEED = ["grid-rebuild", "open-source-money", "human-brain", "type-revival", "attention-economy"];
 
 type BookmarksState = {
   slugs: string[];
@@ -18,21 +23,57 @@ type BookmarksState = {
   toggle: (slug: string) => boolean;
   remove: (slug: string) => void;
   clear: () => void;
+  /** Replaces the local copy with the account's list. */
+  pull: () => Promise<void>;
+  /** Sends this browser's list to the account, then takes the account's list back. */
+  merge: () => Promise<void>;
 };
+
+const signedIn = () => useAuth.getState().status === "in";
 
 export const useBookmarks = create<BookmarksState>()(
   persist(
-    (set, get) => ({
-      slugs: SEED,
-      has: (slug) => get().slugs.includes(slug),
-      toggle: (slug) => {
-        const saved = !get().slugs.includes(slug);
-        set((s) => ({ slugs: saved ? [slug, ...s.slugs] : s.slugs.filter((x) => x !== slug) }));
-        return saved;
-      },
-      remove: (slug) => set((s) => ({ slugs: s.slugs.filter((x) => x !== slug) })),
-      clear: () => set({ slugs: [] }),
-    }),
+    (set, get) => {
+      /** Mirrors one change to the API; on failure puts the local copy back as it was. */
+      const mirror = (slug: string, saved: boolean) => {
+        if (!signedIn()) return;
+        (saved ? bookmarks.save(slug) : bookmarks.remove(slug)).catch(() => {
+          set((s) => ({ slugs: saved ? s.slugs.filter((x) => x !== slug) : [slug, ...s.slugs] }));
+        });
+      };
+
+      return {
+        slugs: [],
+        has: (slug) => get().slugs.includes(slug),
+        toggle: (slug) => {
+          const saved = !get().slugs.includes(slug);
+          set((s) => ({ slugs: saved ? [slug, ...s.slugs] : s.slugs.filter((x) => x !== slug) }));
+          mirror(slug, saved);
+          return saved;
+        },
+        remove: (slug) => {
+          set((s) => ({ slugs: s.slugs.filter((x) => x !== slug) }));
+          mirror(slug, false);
+        },
+        clear: () => set({ slugs: [] }),
+
+        pull: async () => {
+          try {
+            set({ slugs: await bookmarks.list() });
+          } catch {
+            // keep the local copy
+          }
+        },
+        merge: async () => {
+          try {
+            if (get().slugs.length > 0) await bookmarks.sync(get().slugs);
+            set({ slugs: await bookmarks.list() });
+          } catch {
+            // keep the local copy; the next sign-in tries again
+          }
+        },
+      };
+    },
     {
       name: "nova:bookmarks",
       storage: createJSONStorage(() => localStorage),

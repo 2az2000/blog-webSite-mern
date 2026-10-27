@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "reac
 
 import { ArticleCard } from "@/components/patterns/article-card";
 import { CollectionTile } from "@/components/patterns/blocks";
-import { EmptyState, Skeleton, SkeletonStack } from "@/components/patterns/feedback";
+import { EmptyState, Notice, Skeleton, SkeletonStack } from "@/components/patterns/feedback";
 import { SecHead, secHeadLink } from "@/components/patterns/sec-head";
 import { SortMenu } from "@/components/patterns/sort-menu";
 import { notify } from "@/components/ui/sonner";
@@ -14,10 +14,11 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button, ButtonLink, CardGrid, CardList, Cluster, Col, Container, flex, Grid, IconSearch, refLink, Section, Tag, Text } from "@/components/primitives";
 import { routes } from "@/config/routes";
 import { useI18n } from "@/i18n/i18n-provider";
+import { preferencesAllowed } from "@/lib/consent";
 import { formatNumber } from "@/lib/format";
+import { search as searchApi } from "@/lib/reader-api";
+import type { SearchData, SearchSort } from "@/lib/search";
 import { cn } from "@/lib/utils";
-import type { SearchIndex } from "@/services/content";
-import type { ArticleView } from "@/types/content";
 
 /* The search screen — behaviour ported from the search.html inline script. */
 
@@ -26,11 +27,14 @@ const RECENT_KEY = "nova:recent-searches";
 const PROMPT = "Type a word, or start from a suggestion below.";
 
 type Kind = "articles" | "authors" | "topics";
-type Sort = "relevance" | "newest" | "popular";
+type Sort = SearchSort;
 
 /* Recent searches live in localStorage (this device only), read as an external store. */
 const RECENT_EVENT = "nova:recent-searches";
+// without the visitor's consent to preference storage the list lasts for this page view only
+let sessionRecent: string | null = null;
 function readRecentRaw(): string {
+  if (sessionRecent !== null) return sessionRecent;
   try {
     return localStorage.getItem(RECENT_KEY) ?? "[]";
   } catch {
@@ -38,8 +42,14 @@ function readRecentRaw(): string {
   }
 }
 function writeRecent(list: string[]) {
+  const value = JSON.stringify(list.slice(0, 6));
   try {
-    localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, 6)));
+    if (preferencesAllowed()) {
+      sessionRecent = null;
+      localStorage.setItem(RECENT_KEY, value);
+    } else {
+      sessionRecent = value;
+    }
   } catch {
     // storage unavailable: recent searches simply are not remembered
   }
@@ -73,71 +83,77 @@ function remember(q: string) {
   writeRecent([q, ...list.filter((r) => r !== q)]);
 }
 
-const matches = (a: ArticleView, q: string) => {
-  const hay = `${a.title} ${a.standfirst} ${a.tags.join(" ")} ${a.authorRef.name} ${a.sectionRef.name}`.toLowerCase();
-  return q.split(/\s+/).every((w) => hay.includes(w));
-};
-const score = (a: ArticleView, q: string) =>
-  (a.title.toLowerCase().includes(q) ? 100 : 0) +
-  (a.tags.join(" ").includes(q.replace(/\s+/g, "-")) ? 50 : 0) +
-  a.views / 10000;
+const EMPTY_TOTALS = { articles: 0, authors: 0, topics: 0 };
 
-export function SearchScreen({ index, initialQuery }: { index: SearchIndex; initialQuery: string }) {
+export function SearchScreen({ initial, initialQuery }: { initial: SearchData | null; initialQuery: string }) {
   const { t, locale } = useI18n();
   const router = useRouter();
   const input = useRef<HTMLInputElement>(null);
-  const initial = initialQuery.trim();
+  const first = initialQuery.trim();
   const [value, setValue] = useState(initialQuery);
-  const [term, setTerm] = useState(initial);
-  // A search shows its skeleton for 450ms (reference timing) before results.
-  const [loading, setLoading] = useState(Boolean(initial));
+  const [term, setTerm] = useState(first);
+  const [data, setData] = useState<SearchData | null>(initial);
+  const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState(false);
   const [kind, setKind] = useState<Kind>("articles");
   const [sort, setSort] = useState<Sort>("relevance");
+  const [suggested, setSuggested] = useState(SUGGESTED);
   const recent = useRecentSearches();
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  // the answer to the latest question wins: an older, slower one must not overwrite it
+  const latest = useRef(0);
 
-  const settle = () => {
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => setLoading(false), 450);
+  const fetchPage = async (q: string, by: Sort, page: number) => {
+    const ticket = (latest.current += 1);
+    setLoading(true);
+    setFailed(false);
+    try {
+      const res = await searchApi.run(q, by, page);
+      if (ticket !== latest.current) return;
+      setData((cur) => (page > 1 && cur ? { ...res, articles: [...cur.articles, ...res.articles] } : res));
+    } catch {
+      if (ticket === latest.current) setFailed(true);
+    } finally {
+      if (ticket === latest.current) setLoading(false);
+    }
   };
 
   const run = (raw: string) => {
     const q = raw.trim();
     setTerm(q);
     router.replace(q ? routes.search(q) : routes.search(), { scroll: false });
-    if (!q) return;
+    if (!q) {
+      latest.current += 1;
+      setData(null);
+      setLoading(false);
+      return;
+    }
     remember(q);
-    setLoading(true);
-    settle();
+    void fetchPage(q, sort, 1);
   };
 
-  // Arriving with ?q= runs that search; arriving empty focuses the field.
+  // Arriving with ?q= already has its results; arriving empty focuses the field.
   useEffect(() => {
-    if (initial) {
-      remember(initial);
-      settle();
-    } else {
-      input.current?.focus();
-    }
-    return () => clearTimeout(timer.current);
+    if (first) remember(first);
+    else input.current?.focus();
+    // what other readers look for replaces the starter chips once there is enough of it
+    searchApi.popular().then(
+      (terms) => terms.length >= 3 && setSuggested(terms),
+      () => undefined,
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once, on mount
   }, []);
 
-  const q = term.toLowerCase();
-  const articles = index.articles.filter((a) => matches(a, q));
-  if (sort === "newest") articles.sort((a, b) => b.date.localeCompare(a.date));
-  else if (sort === "popular") articles.sort((a, b) => b.views - a.views);
-  else articles.sort((a, b) => score(b, q) - score(a, q));
-  const authors = index.authors.filter((o) => `${o.name} ${o.role}`.toLowerCase().includes(q));
-  const topics = index.topics.filter((o) => `${o.slug} ${o.name} ${o.blurb}`.toLowerCase().includes(q));
-  const counts = { articles: articles.length, authors: authors.length, topics: topics.length };
+  const articles = data?.articles ?? [];
+  const authors = data?.authors ?? [];
+  const topics = data?.topics ?? [];
+  const counts = data?.totals ?? EMPTY_TOTALS;
 
   const status = !term
     ? PROMPT
-    : loading
+    : loading && !data
       ? `Searching for “${term}”…`
       : counts[kind]
-        ? `${counts[kind]} ${kind} for “${term}”`
+        ? `${formatNumber(counts[kind], locale)} ${kind} for “${term}”`
         : `No ${kind} matched “${term}”.`;
 
   const chip = (s: string) => (
@@ -214,7 +230,7 @@ export function SearchScreen({ index, initialQuery }: { index: SearchIndex; init
           <Grid container rowGap={48}>
             <Col span={6}>
               <SecHead index={1} id="suggest-title" locale={locale} weight="major" title="Try one of these" />
-              <Cluster gap={8}>{SUGGESTED.map(chip)}</Cluster>
+              <Cluster gap={8}>{suggested.map(chip)}</Cluster>
             </Col>
             <Col span={6}>
               <SecHead
@@ -263,7 +279,10 @@ export function SearchScreen({ index, initialQuery }: { index: SearchIndex; init
                 label="Sort"
                 menuLabel="Sort results"
                 value={sort}
-                onChange={setSort}
+                onChange={(next) => {
+                  setSort(next);
+                  if (term) void fetchPage(term, next, 1);
+                }}
                 options={[
                   { key: "relevance", label: "Relevance" },
                   { key: "newest", label: "Newest" },
@@ -276,7 +295,9 @@ export function SearchScreen({ index, initialQuery }: { index: SearchIndex; init
               Search results
             </h2>
 
-            {loading ? (
+            {failed ? (
+              <Notice tone="error">Search is unavailable right now. Try again in a moment.</Notice>
+            ) : loading && (!data || data.page === 1) ? (
               // Shaped like the result rows it replaces.
               <CardList gap={32} aria-hidden="true">
                 {[0, 1].map((i) => (
@@ -298,7 +319,7 @@ export function SearchScreen({ index, initialQuery }: { index: SearchIndex; init
                 footer={
                   <>
                     Or try:{" "}
-                    {SUGGESTED.slice(0, 3).map((s, i) => (
+                    {suggested.slice(0, 3).map((s, i) => (
                       <span key={s}>
                         {i > 0 && ", "}
                         <Link
@@ -331,6 +352,14 @@ export function SearchScreen({ index, initialQuery }: { index: SearchIndex; init
                   <ArticleCard key={a.slug} article={a} variant="horizontal" locale={locale} headingLevel={3} />
                 ))}
               </CardList>
+            ) : null}
+
+            {!failed && !loading && kind === "articles" && articles.length > 0 && articles.length < counts.articles ? (
+              <div className="mt-8 flex justify-center">
+                <Button variant="secondary" onClick={() => void fetchPage(term, sort, (data?.page ?? 1) + 1)}>
+                  Show more results
+                </Button>
+              </div>
             ) : kind === "authors" ? (
               <CardGrid cols={3} gap={24}>
                 {authors.map((o) => (

@@ -13,6 +13,7 @@ import { SavedReading } from "./saved-reading";
 export const metadata: Metadata = {
   title: "Your reading",
   description: "Saved articles, your reading list, recent history and collections.",
+  robots: { index: false, follow: false },
 };
 
 export default async function BookmarksPage() {

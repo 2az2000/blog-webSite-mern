@@ -62,6 +62,11 @@ export function Input({
   return <input data-slot="input" {...useControl(id)} className={cn(control({ tone, mono }), className)} {...props} />;
 }
 
+/** A native <select> in the field look — the platform picker is the accessible one. */
+export function Select({ id, className, ...props }: ComponentProps<"select">) {
+  return <select data-slot="select" {...useControl(id)} className={cn(control({}), "cursor-pointer", className)} {...props} />;
+}
+
 export function Textarea({ id, tone, className, ...props }: ComponentProps<"textarea"> & Tone) {
   return (
     <textarea

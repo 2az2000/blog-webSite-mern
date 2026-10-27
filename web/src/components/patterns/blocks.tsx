@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SiteImage as Image } from "@/components/primitives/media/site-image";
 import Link from "next/link";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
 

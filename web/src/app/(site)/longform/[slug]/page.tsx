@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ChapterNav, MobileArticleBar } from "@/components/patterns/article-client";
+import { ArticleTracker, ChapterNav, MobileArticleBar } from "@/components/patterns/article-client";
 import { ArticleCard } from "@/components/patterns/article-card";
 import { ArticleBody, AuthorBio, LongformHero, LongformLayout, TagRow } from "@/components/patterns/article-parts";
 import { Byline } from "@/components/patterns/blocks";
@@ -14,6 +14,8 @@ import { Avatar, CardGrid, Container, Section } from "@/components/primitives";
 import { routes } from "@/config/routes";
 import { getDictionary, getLocale } from "@/i18n";
 import { formatDate, formatNumber } from "@/lib/format";
+import { JsonLd } from "@/components/seo/json-ld";
+import { articlePath, breadcrumbLd, newsArticleLd } from "@/lib/seo";
 import { getLongformPage, getSection, listLongformSlugs } from "@/services/content";
 
 /* Long read — blog-refrence/longform.html */
@@ -28,8 +30,19 @@ export async function generateMetadata({ params }: PageProps<"/longform/[slug]">
   const { article: a } = data;
   return {
     title: a.title,
-    description: "A continent-wide rewiring, conducted mostly at night, by crews who have been at it since 2019. A NOVA long read.",
-    openGraph: { title: a.title, images: [a.image], type: "article" },
+    description: a.standfirst,
+    alternates: { canonical: articlePath(a) },
+    openGraph: {
+      title: a.title,
+      description: a.standfirst,
+      images: [a.image],
+      type: "article",
+      publishedTime: a.date,
+      authors: [a.authorRef.name],
+      section: a.sectionRef.name,
+      tags: a.tags,
+    },
+    twitter: { card: "summary_large_image", title: a.title, description: a.standfirst, images: [a.image] },
   };
 }
 
@@ -40,12 +53,19 @@ export default async function LongformPage({ params }: PageProps<"/longform/[slu
   const t = await getDictionary(locale);
   const { article: a, detail, body, chapters, related } = data;
   const author = a.authorRef;
-  const section = getSection(detail.relatedSection);
+  const section = await getSection(detail.relatedSection);
   const firstChapter = chapters[0]?.id ?? "";
 
   return (
     <>
+      <JsonLd
+        data={[
+          newsArticleLd(a),
+          breadcrumbLd([{ name: t.nav.home, path: routes.home() }, { name: a.sectionRef.name, path: routes.category(a.section) }, { name: a.title }]),
+        ]}
+      />
       <ReadingProgress targetId="longread" />
+      <ArticleTracker slug={a.slug} endId="lf-tags" />
 
       <article id="longread">
         {/* IMMERSIVE HERO */}

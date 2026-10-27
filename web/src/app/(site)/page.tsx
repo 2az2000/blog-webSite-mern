@@ -18,47 +18,57 @@ import { RevealList } from "@/components/patterns/reveal-list";
 import { SecHead, SecMark } from "@/components/patterns/sec-head";
 import { ButtonLink, CardList, Col, Container, Grid, Section, Text } from "@/components/primitives";
 import { routes } from "@/config/routes";
-import { getLocale } from "@/i18n";
-import { getArticle, getArticles, latestExcluding, mostRead } from "@/services/content";
+import { JsonLd } from "@/components/seo/json-ld";
+import { FOUNDED, issueNumber } from "@/config/site";
+import { websiteLd } from "@/lib/seo";
+import { getDictionary, getLocale } from "@/i18n";
+import { formatLongDate, formatNumber, formatWeekday } from "@/lib/format";
+import { getHomePlacement, latestExcluding, listSections, mostRead } from "@/services/content";
 
 /*
  * Front page — blog-refrence/index.html.
  * Rhythm: large → dense → quiet → dense → immersive → quiet → large.
  */
 
-const LEAD = "context-software";
-const SECONDARY = ["human-brain", "ai-labour"];
-const BRIEF = ["small-powerful-companies", "think-better", "battery-chemistry", "internet-remember"];
-const PICKS = ["open-source-money", "type-revival", "ocean-floor", "public-transit"];
-const OPINION = ["think-better", "attention-economy", "founder-mode", "interview-rasmussen"];
-
+/** The five desks the front page shows as picture tiles; each tile's count is the desk's real number of published stories. */
 const TILES = [
-  { label: "Technology", href: routes.category("technology"), image: "/images/topic-technology.jpg", count: "148 stories" },
-  { label: "Science", href: routes.category("science"), image: "/images/topic-science.jpg", count: "96 stories" },
-  { label: "Business", href: routes.category("business"), image: "/images/topic-business.jpg", count: "121 stories" },
-  { label: "Design", href: routes.category("design"), image: "/images/topic-design.jpg", count: "84 stories" },
-  { label: "Culture", href: routes.category("culture"), image: "/images/topic-culture.jpg", count: "73 stories" },
-];
+  { slug: "technology", label: "Technology", image: "/images/topic-technology.jpg" },
+  { slug: "science", label: "Science", image: "/images/topic-science.jpg" },
+  { slug: "business", label: "Business", image: "/images/topic-business.jpg" },
+  { slug: "design", label: "Design", image: "/images/topic-design.jpg" },
+  { slug: "culture", label: "Culture", image: "/images/topic-culture.jpg" },
+] as const;
 
 export default async function HomePage() {
   const locale = await getLocale();
-  const [lead, secondary, brief, latest, board, picks, longRead, opinion] = await Promise.all([
-    getArticle(LEAD),
-    getArticles(SECONDARY),
-    getArticles(BRIEF),
-    latestExcluding([LEAD, ...SECONDARY, ...BRIEF]),
+  const t = await getDictionary(locale);
+  const today = new Date();
+  // the editors choose the placement in the back office; the Latest list is everything not already placed above it
+  const { lead, secondary, brief, picks, opinion, longread: longRead } = await getHomePlacement();
+  const [latest, board, sections] = await Promise.all([
+    latestExcluding([lead, ...secondary, ...brief].flatMap((a) => (a ? [a.slug] : []))),
     mostRead(5),
-    getArticles(PICKS),
-    getArticle("grid-rebuild"),
-    getArticles(OPINION),
+    listSections(),
   ]);
+  const counts = new Map(sections.map((s) => [s.slug, s.count]));
+  const tiles = TILES.map((tile) => ({
+    label: tile.label,
+    href: routes.category(tile.slug),
+    image: tile.image,
+    count: t.card.stories(formatNumber(counts.get(tile.slug) ?? 0, locale)),
+  }));
 
   return (
     <>
+      <JsonLd data={websiteLd(t.site.description)} />
       {/* LARGE · front page */}
       <section className={frontpageSection} aria-labelledby="lead-story">
         <Container>
-          <EditionLine edition="Saturday edition" date="September 12, 2026" issue="Nº 412 · Independent since 2019" />
+          <EditionLine
+            edition={`${formatWeekday(today, locale)} edition`}
+            date={formatLongDate(today, locale)}
+            issue={`Nº ${issueNumber(today)} · Independent since ${FOUNDED}`}
+          />
           <Grid  rowGap={48}>
             <Col span={8}>
               {lead && (
@@ -191,7 +201,7 @@ export default async function HomePage() {
             title="Where to start"
             link={{ label: "All topics", href: routes.topic("artificial-intelligence") }}
           />
-          <TopicTiles tiles={TILES} />
+          <TopicTiles tiles={tiles} />
         </Container>
       </Section>
 

@@ -24,13 +24,23 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps<"/category/[slug]">): Promise<Metadata> {
-  const section = getSection((await params).slug);
-  return section ? { title: section.name, description: section.blurb } : {};
+  const section = await getSection((await params).slug);
+  return section
+    ? {
+        title: section.name,
+        description: section.blurb,
+        alternates: {
+          canonical: routes.category(section.slug),
+          types: { "application/rss+xml": [{ url: `${routes.category(section.slug)}/feed.xml`, title: `${section.name} — NOVA` }] },
+        },
+        openGraph: { title: section.name, description: section.blurb },
+      }
+    : {};
 }
 
 export default async function CategoryPage({ params }: PageProps<"/category/[slug]">) {
   const { slug } = await params;
-  const section = getSection(slug);
+  const section = await getSection(slug);
   if (!section) notFound();
   const locale = await getLocale();
   const t = await getDictionary(locale);

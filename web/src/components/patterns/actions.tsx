@@ -1,13 +1,18 @@
 "use client";
 
-import { useState, type ComponentProps, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, type ComponentProps, type ReactNode } from "react";
 
 import { notify } from "@/components/ui/sonner";
 import { Button, IconBookmark, IconButton, IconHeart, IconLink, IconMail, IconShare } from "@/components/primitives";
 import { useI18n } from "@/i18n/i18n-provider";
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { routes } from "@/config/routes";
+import { articleLikes } from "@/lib/reader-api";
+import { useAuth } from "@/stores/auth-store";
 import { useBookmarks } from "@/stores/bookmarks-store";
+import { useFollows } from "@/stores/follows-store";
 
 /* Reference §11 `.share`, §16 `.bookmark-btn`, §14 like action, and the
    share / copy-link behaviour wired in article.html and longform.html. */
@@ -93,6 +98,56 @@ export function BookmarkButton({
   );
 }
 
+/**
+ * Like the article (a heart in the share group). Likes belong to an account:
+ * signed out, the button asks for a sign-in and returns the reader to this page.
+ * The heart flips at once and undoes itself if the API refuses.
+ */
+export function LikeArticleButton({ slug, label }: { slug: string; label: string }) {
+  const { t } = useI18n();
+  const router = useRouter();
+  const signedIn = useAuth((s) => s.status === "in");
+  const userId = useAuth((s) => s.user?.id);
+  const [likedByMe, setLiked] = useState(false);
+  // signing out clears the heart without an effect: it simply stops counting
+  const liked = signedIn && likedByMe;
+
+  useEffect(() => {
+    if (!signedIn) return;
+    let live = true;
+    articleLikes.mine(slug).then(
+      (v) => live && setLiked(v),
+      () => undefined,
+    );
+    return () => {
+      live = false;
+    };
+  }, [slug, signedIn, userId]);
+
+  const toggle = () => {
+    if (!signedIn) {
+      notify(t.share.signInToLike, "success", { dismissLabel: t.a11y.dismiss });
+      router.push(`${routes.signIn()}?next=${encodeURIComponent(window.location.pathname)}`);
+      return;
+    }
+    const was = liked;
+    setLiked(!was);
+    (was ? articleLikes.unlike(slug) : articleLikes.like(slug)).catch(() => setLiked(was));
+  };
+
+  return (
+    <IconButton
+      shape="round"
+      toggle
+      aria-pressed={liked}
+      aria-label={liked ? t.share.unlikeFor(label) : t.share.likeFor(label)}
+      onClick={toggle}
+    >
+      <IconHeart />
+    </IconButton>
+  );
+}
+
 /** Round share group (article byline): share, copy link, email, and optionally save. */
 export function ShareBar({
   title,
@@ -148,9 +203,20 @@ export const commentAction = cn(
 );
 
 /** Comment like — optimistic count, pressed state, pop animation (.comment__action.is-liked). */
-export function LikeButton({ count, liked: initial = false }: { count: number; liked?: boolean }) {
+export function LikeButton({
+  count,
+  liked: initial = false,
+  onToggle,
+}: {
+  count: number;
+  liked?: boolean;
+  /** Controlled: the parent owns `liked` and `count` (a real, server-backed like). Without it the like is local. */
+  onToggle?: () => void;
+}) {
   const { t, locale } = useI18n();
-  const [liked, setLiked] = useState(initial);
+  const [local, setLocal] = useState(initial);
+  const liked = onToggle ? initial : local;
+  const setLiked = (fn: (v: boolean) => boolean) => (onToggle ? onToggle() : setLocal(fn));
   return (
     <button
       type="button"
@@ -160,34 +226,49 @@ export function LikeButton({ count, liked: initial = false }: { count: number; l
       onClick={() => setLiked((v) => !v)}
     >
       <IconHeart />
-      <span>{formatNumber(count + (liked ? 1 : 0) - (initial ? 1 : 0), locale)}</span>
+      <span>{formatNumber(onToggle ? count : count + (liked ? 1 : 0) - (initial ? 1 : 0), locale)}</span>
     </button>
   );
 }
 
 /**
  * Follow toggle (topic and author pages): pressed state, label swap, toast.
- * Local state until accounts exist.
+ * Following belongs to an account: signed out, the button asks for a sign-in
+ * and brings the reader back to this page afterwards.
  */
 export function FollowButton({
+  kind,
+  slug,
   name,
   label,
   variant = "primary",
 }: {
+  kind: "author" | "topic";
+  slug: string;
   name: string;
   /** Resting label; defaults to "Follow". */
   label?: string;
   variant?: "primary" | "accent";
 }) {
   const { t } = useI18n();
-  const [on, setOn] = useState(false);
+  const router = useRouter();
+  const signedIn = useAuth((s) => s.status === "in");
+  const on = useFollows((s) => (kind === "author" ? s.authors : s.topics).includes(slug));
+  const toggle = useFollows((s) => s.toggle);
   return (
     <Button
       variant={variant}
       aria-pressed={on}
       onClick={() => {
-        setOn(!on);
-        notify(on ? t.follow.stopped(name) : t.follow.started(name), "success", { dismissLabel: t.a11y.dismiss });
+        if (!signedIn) {
+          notify(t.follow.signInToFollow, "success", { dismissLabel: t.a11y.dismiss });
+          router.push(`${routes.signIn()}?next=${encodeURIComponent(window.location.pathname)}`);
+          return;
+        }
+        toggle(kind, slug).then(
+          (now) => notify(now ? t.follow.started(name) : t.follow.stopped(name), "success", { dismissLabel: t.a11y.dismiss }),
+          () => notify(t.form.failed, "error", { dismissLabel: t.a11y.dismiss }),
+        );
       }}
     >
       {on ? t.follow.following : (label ?? t.follow.follow)}

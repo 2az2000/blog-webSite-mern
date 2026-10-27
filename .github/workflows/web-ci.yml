@@ -1,0 +1,81 @@
+name: web
+
+# The site reads every page from the API, so building it (and testing it in a
+# browser) needs the API and a database: a MongoDB service, the API started
+# from source and seeded, then the site built against it.
+
+on:
+  push:
+    paths: ["web/**", "backend/**", ".github/workflows/web-ci.yml"]
+  pull_request:
+    paths: ["web/**", "backend/**", ".github/workflows/web-ci.yml"]
+
+env:
+  MONGO_URL: mongodb://localhost:27017/nova
+  API_ORIGIN: http://localhost:5000
+  SITE_URL: http://localhost:3000
+  WEB_APP_URL: http://localhost:3000
+  REVALIDATE_SECRET: ci-revalidate-secret
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:7
+        ports: ["27017:27017"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            web/package-lock.json
+
+      - name: API — install, seed, start
+        working-directory: backend
+        env:
+          NODE_ENV: development
+          RATE_LIMIT_DISABLED: "1"
+          RESEND_API_KEY: ""
+        run: |
+          npm ci
+          npm run seed:content
+          npm run seed:e2e
+          nohup npm run dev > api.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://localhost:5000/api/v1/health/db && break || sleep 2; done
+
+      - name: Site — install and check
+        working-directory: web
+        run: |
+          npm ci
+          npx tsc --noEmit
+          npx eslint src
+          npm run check:tokens
+
+      - name: Site — build against the API
+        working-directory: web
+        run: npm run build
+
+      - name: Browser tests
+        working-directory: web
+        env:
+          CI: "true"
+        run: |
+          npx playwright install --with-deps chromium
+          nohup npm start > site.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://localhost:3000/ > /dev/null && break || sleep 2; done
+          npm run e2e
+
+      - name: Logs and traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagnostics
+          path: |
+            backend/api.log
+            web/site.log
+            web/test-results
+            web/playwright-report

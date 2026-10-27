@@ -7,7 +7,7 @@ npm install
 npm run dev          # http://localhost:3000  ·  دیزاین سیستم: /design-system
 ```
 
-سرور Express (`../server`) باید روی `API_ORIGIN` (پیش‌فرض `http://localhost:5000`) در دسترس باشد؛ `/api/*` به آن پروکسی می‌شود.
+سرور Express (`../backend`) باید روی `API_ORIGIN` (پیش‌فرض `http://localhost:5000`) در دسترس باشد؛ `/api/*` به آن پروکسی می‌شود.
 
 ## استایل
 

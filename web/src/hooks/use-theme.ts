@@ -2,6 +2,8 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 
+import { preferencesAllowed } from "@/lib/consent";
+
 export type Theme = "light" | "dark";
 
 export const THEME_STORAGE_KEY = "nova:theme";
@@ -32,7 +34,8 @@ export function useTheme() {
   const setTheme = useCallback((next: Theme) => {
     document.documentElement.setAttribute("data-theme", next);
     try {
-      localStorage.setItem(THEME_STORAGE_KEY, next);
+      // remembered across visits only if the visitor allowed preference storage (see lib/consent.ts)
+      if (preferencesAllowed()) localStorage.setItem(THEME_STORAGE_KEY, next);
     } catch {
       // Private mode / blocked storage: the choice lasts for this page only.
     }

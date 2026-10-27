@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SiteImage as Image } from "@/components/primitives/media/site-image";
 import type { ReactNode } from "react";
 
 import { BigNum } from "@/components/primitives";

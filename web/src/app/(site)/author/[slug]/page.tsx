@@ -14,7 +14,7 @@ import { Button, ButtonLink, CardGrid, CardList, Cluster, Col, Container, Grid, 
 import { routes } from "@/config/routes";
 import { getDictionary, getLocale } from "@/i18n";
 import { formatCompact, formatNumber } from "@/lib/format";
-import { articlesByAuthor, getAuthor, listAuthors, listAuthorSlugs, mostRead, topicName } from "@/services/content";
+import { articlesByAuthor, getAuthor, listAuthors, listAuthorSlugs, mostRead, topicName, topicNames } from "@/services/content";
 
 /* Writer — blog-refrence/author.html */
 
@@ -22,22 +22,20 @@ export async function generateStaticParams() {
   return (await listAuthorSlugs()).map((slug) => ({ slug }));
 }
 
-export const dynamicParams = false;
-
 export async function generateMetadata({ params }: PageProps<"/author/[slug]">): Promise<Metadata> {
-  const au = getAuthor((await params).slug);
-  return { title: au.name, description: au.bio };
+  const au = await getAuthor((await params).slug);
+  return au ? { title: au.name, description: au.bio, alternates: { canonical: routes.author(au.slug) }, openGraph: { title: au.name, description: au.bio, type: "profile" } } : {};
 }
 
 export default async function AuthorPage({ params }: PageProps<"/author/[slug]">) {
   const { slug } = await params;
-  if (!(await listAuthorSlugs()).includes(slug)) notFound();
+  const au = await getAuthor(slug);
+  if (!au) notFound();
   const locale = await getLocale();
   const t = await getDictionary(locale);
-  const au = getAuthor(slug);
-  const pool = await articlesByAuthor(slug);
+  const [pool, authors, names] = await Promise.all([articlesByAuthor(slug), listAuthors(), topicNames()]);
   const popular = await mostRead(4, pool);
-  const others = (await listAuthors()).filter((o) => o.slug !== slug).slice(0, 4);
+  const others = authors.filter((o) => o.slug !== slug).slice(0, 4);
 
   const reads = pool.reduce((s, a) => s + a.views, 0);
   const minutes = pool.reduce((s, a) => s + a.mins, 0);
@@ -95,7 +93,7 @@ export default async function AuthorPage({ params }: PageProps<"/author/[slug]">
               {au.bio}
             </Text>
             <Cluster gap={12} mt={32}>
-              <FollowButton name={au.name} />
+              <FollowButton kind="author" slug={au.slug} name={au.name} />
               <ButtonLink href={routes.newsletter()} variant="secondary">Get their stories by email</ButtonLink>
               <Button asChild variant="ghost">
                 <a href="#archive">Jump to archive</a>
@@ -128,7 +126,7 @@ export default async function AuthorPage({ params }: PageProps<"/author/[slug]">
             {tags.length ? (
               tags.map((tag) => (
                 <Tag key={tag} href={routes.topic(tag)}>
-                  {topicName(tag)}
+                  {topicName(tag, names)}
                 </Tag>
               ))
             ) : (

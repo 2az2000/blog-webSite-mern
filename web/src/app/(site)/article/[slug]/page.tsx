@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { CommentsSection, MobileArticleBar } from "@/components/patterns/article-client";
+import { ArticleTracker, MobileArticleBar } from "@/components/patterns/article-client";
+import { CommentsSection } from "@/components/patterns/comments-section";
 import { ArticleCard } from "@/components/patterns/article-card";
 import { ArticleBody, ArticleHead, ArticleMeta, AuthorBio, Byline, TagRow } from "@/components/patterns/article-parts";
 import { ActiveNav } from "@/components/layout/active-nav";
-import { BookmarkButton, ShareBar } from "@/components/patterns/actions";
+import { BookmarkButton, LikeArticleButton, ShareBar } from "@/components/patterns/actions";
 import { Notice } from "@/components/patterns/feedback";
 import { Frame } from "@/components/patterns/frame";
 import { Breadcrumbs } from "@/components/patterns/navigation";
@@ -24,7 +25,9 @@ import {
 } from "@/components/ui/dialog";
 import { routes } from "@/config/routes";
 import { getDictionary, getLocale } from "@/i18n";
-import { getArticlePage, getComments, listArticleSlugs } from "@/services/content";
+import { JsonLd } from "@/components/seo/json-ld";
+import { articlePath, breadcrumbLd, newsArticleLd } from "@/lib/seo";
+import { getArticlePage, listArticleSlugs } from "@/services/content";
 
 /* Article — blog-refrence/article.html */
 
@@ -39,7 +42,19 @@ export async function generateMetadata({ params }: PageProps<"/article/[slug]">)
   return {
     title: a.title,
     description: a.standfirst,
-    openGraph: { title: a.title, description: a.standfirst, images: [a.image], type: "article" },
+    alternates: { canonical: articlePath(a) },
+    openGraph: {
+      title: a.title,
+      description: a.standfirst,
+      images: [a.image],
+      type: "article",
+      publishedTime: a.date,
+      modifiedTime: typeof data.detail.updated === "string" ? data.detail.updated : a.date,
+      authors: [a.authorRef.name],
+      section: a.sectionRef.name,
+      tags: a.tags,
+    },
+    twitter: { card: "summary_large_image", title: a.title, description: a.standfirst, images: [a.image] },
   };
 }
 
@@ -53,12 +68,18 @@ export default async function ArticlePage({ params }: PageProps<"/article/[slug]
   const t = await getDictionary(locale);
   const { article: a, detail, body, tags, related, moreByAuthor } = data;
   const author = a.authorRef;
-  const comments = await getComments();
 
   return (
     <>
+      <JsonLd
+        data={[
+          newsArticleLd(a, { modified: detail.updated }),
+          breadcrumbLd([{ name: t.nav.home, path: routes.home() }, { name: a.sectionRef.name, path: routes.category(a.section) }, { name: a.title }]),
+        ]}
+      />
       <ActiveNav section={a.section} />
       <ReadingProgress targetId="article" />
+      <ArticleTracker slug={a.slug} endId="comments" />
 
       <article id="article">
         <Container>
@@ -89,6 +110,7 @@ export default async function ArticlePage({ params }: PageProps<"/article/[slug]
               <Byline author={author} locale={locale} />
               <ArticleMeta date={a.date} updated={detail.updated} mins={a.mins} locale={locale} />
               <ShareBar title={a.title}>
+                <LikeArticleButton slug={a.slug} label={a.title} />
                 <BookmarkButton slug={a.slug} label={a.title} />
               </ShareBar>
             </>
@@ -206,7 +228,7 @@ export default async function ArticlePage({ params }: PageProps<"/article/[slug]
       {/* COMMENTS */}
       <Section id="comments" aria-labelledby="comments-title">
         <Container narrow>
-          <CommentsSection comments={comments} index={3} />
+          <CommentsSection slug={a.slug} index={3} />
         </Container>
       </Section>
 

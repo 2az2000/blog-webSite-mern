@@ -28,6 +28,7 @@ import { useI18n } from "@/i18n/i18n-provider";
 import { formatIndex } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useActiveNav } from "@/stores/active-nav-store";
+import { useAuth } from "@/stores/auth-store";
 
 /*
  * Site header — reference nova.css §5 (+ §18) and nova.js renderHeader /
@@ -155,6 +156,7 @@ function ThemeToggle() {
 function MobileNav({ pathname }: { pathname: string }) {
   const { t, locale } = useI18n();
   const active = useIsActive();
+  const signedIn = useAuth((s) => s.status === "in");
   const [open, setOpen] = useState(false);
 
   // Navigating closes the menu.
@@ -225,9 +227,20 @@ function MobileNav({ pathname }: { pathname: string }) {
               <ButtonLink href={routes.subscribe()} variant="accent" block>
                 {t.header.subscribeLong}
               </ButtonLink>
-              <ButtonLink href={routes.signIn()} variant="secondary" block>
-                {t.header.signIn}
-              </ButtonLink>
+              {signedIn ? (
+                <>
+                  <ButtonLink href={routes.account()} variant="secondary" block>
+                    {t.header.account}
+                  </ButtonLink>
+                  <Button variant="ghost" block onClick={() => void useAuth.getState().signOut()}>
+                    {t.header.signOut}
+                  </Button>
+                </>
+              ) : (
+                <ButtonLink href={routes.signIn()} variant="secondary" block>
+                  {t.header.signIn}
+                </ButtonLink>
+              )}
               <ButtonLink href={routes.bookmarks()} variant="ghost" block>
                 {t.header.saved}
               </ButtonLink>
@@ -244,6 +257,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const scrolled = useScrolled(24);
   const active = useIsActive();
+  const signedIn = useAuth((s) => s.status === "in");
 
   return (
     <header
@@ -270,9 +284,20 @@ export function SiteHeader() {
         <div className="ms-auto flex items-center gap-2">
           <HeaderSearch />
           <ThemeToggle />
-          <ButtonLink href={routes.signIn()} variant="ghost" size="sm" className="max-lg:hidden">
-            {t.header.signIn}
-          </ButtonLink>
+          {signedIn ? (
+            <>
+              <ButtonLink href={routes.account()} variant="ghost" size="sm" className="max-lg:hidden">
+                {t.header.account}
+              </ButtonLink>
+              <Button variant="ghost" size="sm" className="max-lg:hidden" onClick={() => void useAuth.getState().signOut()}>
+                {t.header.signOut}
+              </Button>
+            </>
+          ) : (
+            <ButtonLink href={routes.signIn()} variant="ghost" size="sm" className="max-lg:hidden">
+              {t.header.signIn}
+            </ButtonLink>
+          )}
           <ButtonLink href={routes.subscribe()} variant="primary" size="sm" className="max-lg:hidden">
             {t.header.subscribe}
           </ButtonLink>

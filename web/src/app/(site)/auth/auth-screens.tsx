@@ -2,23 +2,56 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Field } from "@/components/patterns/field";
-import { ErrorSummary, formMode, SuccessPanel, useMockSubmit } from "@/components/patterns/forms";
+import { ErrorSummary, formMode, SuccessPanel } from "@/components/patterns/forms";
 import { Notice } from "@/components/patterns/feedback";
 import { notify } from "@/components/ui/sonner";
-import { Button, Checkbox, Cluster, flex, Heading, Input, Stack, Tag, Text } from "@/components/primitives";
+import { Button, Checkbox, Cluster, flex, Heading, Input, Stack, Tag, Text, TextLink } from "@/components/primitives";
+import { routes } from "@/config/routes";
 import { useI18n } from "@/i18n/i18n-provider";
+import { ApiError } from "@/lib/api";
+import { auth } from "@/lib/auth-api";
 import { cn } from "@/lib/utils";
 import { fields } from "@/lib/validation";
+import { useAuth } from "@/stores/auth-store";
 
 /*
  * Five authentication screens on one route, addressed by the URL hash exactly
  * as in the reference (#signin, #signup, #forgot, #reset, #verify).
- * Submissions are mocked. TODO(api): wire sign-in/sign-up to /api/users/*.
+ * Every submission goes to the API (/api/v1/auth/*); the session is an httpOnly
+ * cookie, so nothing here ever holds a token.
  */
+
+/** What a person should read for a failed request. */
+function failure(err: unknown): string {
+  if (!(err instanceof ApiError)) return "Something went wrong. Try again in a moment.";
+  switch (err.code) {
+    case "INVALID_CREDENTIALS":
+      return "That email and password do not match.";
+    case "EMAIL_TAKEN":
+      return "An account with that email already exists. Sign in instead.";
+    case "VERIFY_FAILED":
+      return "That code is wrong or has expired. Check it, or ask for a new one.";
+    case "RESET_TOKEN_INVALID":
+      return "This reset link has expired or was already used. Request a new one.";
+    case "RATE_LIMITED":
+      return "Too many attempts. Wait a few minutes and try again.";
+    case "VALIDATION_ERROR":
+      return err.message;
+    default:
+      return err.status === 0 ? "The server cannot be reached. Check your connection." : "Something went wrong. Try again in a moment.";
+  }
+}
+
+/** Only ever a path on this site, so a crafted ?next= cannot send someone elsewhere. */
+function safeNext(): string {
+  const next = new URLSearchParams(window.location.search).get("next");
+  return next && next.startsWith("/") && !next.startsWith("//") ? next : "/";
+}
 
 const VIEWS = ["signin", "signup", "forgot", "reset", "verify"] as const;
 type View = (typeof VIEWS)[number];
@@ -94,8 +127,10 @@ function ScreenHead({ id, eyebrow, title }: { id: string; eyebrow: string; title
   );
 }
 
-function SignIn({ go }: { go: (v: View) => void }) {
+function SignIn({ go, onUnverified }: { go: (v: View) => void; onUnverified: (email: string) => void }) {
   const { t } = useI18n();
+  const router = useRouter();
+  const [problem, setProblem] = useState<string | null>(null);
   const f = fields(t);
   const schema = z.object({ email: f.email("Email address"), password: f.required("Password"), keep: z.boolean() });
   const form = useForm<z.infer<typeof schema>>({
@@ -103,13 +138,28 @@ function SignIn({ go }: { go: (v: View) => void }) {
     defaultValues: { email: "", password: "", keep: true },
     ...formMode,
   });
-  const submit = useMockSubmit(form, "Signed in. Taking you back to what you were reading.");
+  const submit = form.handleSubmit(async ({ email, password }) => {
+    setProblem(null);
+    try {
+      await useAuth.getState().signedIn(await auth.signIn(email, password));
+      notify("Signed in. Taking you back to what you were reading.", "success", { dismissLabel: t.a11y.dismiss });
+      router.push(safeNext());
+    } catch (err) {
+      if (err instanceof ApiError && err.code === "EMAIL_NOT_VERIFIED") {
+        onUnverified(email);
+        go("verify");
+        return;
+      }
+      setProblem(failure(err));
+    }
+  });
   const { errors, isSubmitting, submitCount } = form.formState;
   return (
     <section aria-labelledby="signin-title">
       <ScreenHead id="signin-title" eyebrow="Welcome back" title="Sign in" />
       <form noValidate onSubmit={submit}>
         <Stack flow="flex" gap={24}>
+          {problem && <Notice tone="error">{problem}</Notice>}
           <ErrorSummary
             show={submitCount > 0}
             errors={errors}
@@ -149,10 +199,11 @@ function SignIn({ go }: { go: (v: View) => void }) {
   );
 }
 
-function SignUp({ go }: { go: (v: View) => void }) {
+function SignUp({ go, onRegistered }: { go: (v: View) => void; onRegistered: (email: string) => void }) {
   const { t } = useI18n();
   const f = fields(t);
   const [done, setDone] = useState(false);
+  const [problem, setProblem] = useState<string | null>(null);
   const schema = z.object({
     name: f.required("Name"),
     email: f.email("Email address"),
@@ -164,7 +215,17 @@ function SignUp({ go }: { go: (v: View) => void }) {
     defaultValues: { name: "", email: "", password: "", dispatch: true },
     ...formMode,
   });
-  const submit = useMockSubmit(form, "Account created. Check your email to verify it.", () => setDone(true));
+  const submit = form.handleSubmit(async ({ name, email, password }) => {
+    setProblem(null);
+    try {
+      await auth.register(name, email, password);
+      onRegistered(email);
+      notify("Account created. Check your email for the code.", "success", { dismissLabel: t.a11y.dismiss });
+      setDone(true);
+    } catch (err) {
+      setProblem(failure(err));
+    }
+  });
   const { errors, isSubmitting, submitCount } = form.formState;
 
   return (
@@ -174,6 +235,7 @@ function SignUp({ go }: { go: (v: View) => void }) {
         {!done && (
           <form noValidate onSubmit={submit}>
             <Stack flow="flex" gap={24}>
+              {problem && <Notice tone="error">{problem}</Notice>}
               <ErrorSummary
                 show={submitCount > 0}
                 errors={errors}
@@ -206,7 +268,10 @@ function SignUp({ go }: { go: (v: View) => void }) {
               <Button type="submit" variant="accent" block loading={isSubmitting}>
                 Create account
               </Button>
-              <Text variant="meta">By creating an account you agree to the terms and the privacy notice.</Text>
+              <Text variant="meta">
+                By creating an account you agree to the <TextLink href={routes.terms()}>terms</TextLink> and the{" "}
+                <TextLink href={routes.privacy()}>privacy notice</TextLink>.
+              </Text>
             </Stack>
           </form>
         )}
@@ -225,12 +290,12 @@ function SignUp({ go }: { go: (v: View) => void }) {
           action={
             <Button asChild variant="secondary" size="sm" className="mt-4">
               <Goto to="verify" go={go}>
-                See the verification screen
+                Enter the code
               </Goto>
             </Button>
           }
         >
-          We have sent a link to the address you gave. Click it and your account is live.
+          We have sent a six-character code to the address you gave. Enter it on the next screen and your account is live.
         </SuccessPanel>
       )}
     </>
@@ -242,7 +307,17 @@ function Forgot({ go }: { go: (v: View) => void }) {
   const [done, setDone] = useState(false);
   const schema = z.object({ email: fields(t).email("Email address") });
   const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema), ...formMode });
-  const submit = useMockSubmit(form, "If that address has an account, a reset link is on its way.", () => setDone(true));
+  const [problem, setProblem] = useState<string | null>(null);
+  const submit = form.handleSubmit(async ({ email }) => {
+    setProblem(null);
+    try {
+      await auth.forgotPassword(email);
+      notify("If that address has an account, a reset link is on its way.", "success", { dismissLabel: t.a11y.dismiss });
+      setDone(true);
+    } catch (err) {
+      setProblem(failure(err));
+    }
+  });
   const { errors, isSubmitting } = form.formState;
 
   return (
@@ -256,6 +331,7 @@ function Forgot({ go }: { go: (v: View) => void }) {
         {!done && (
           <form noValidate onSubmit={submit}>
             <Stack flow="flex" gap={24}>
+              {problem && <Notice tone="error">{problem}</Notice>}
               <Field id="fp-email" label="Email address" required requiredLabel={t.form.required} error={errors.email?.message}>
                 <Input type="email" autoComplete="email" placeholder="you@example.com" {...form.register("email")} />
               </Field>
@@ -278,7 +354,7 @@ function Forgot({ go }: { go: (v: View) => void }) {
           action={
             <Button asChild variant="secondary" size="sm" className="mt-4">
               <Goto to="reset" go={go}>
-                See the reset screen
+                I have the link
               </Goto>
             </Button>
           }
@@ -294,18 +370,35 @@ function Forgot({ go }: { go: (v: View) => void }) {
 function Reset({ go }: { go: (v: View) => void }) {
   const { t } = useI18n();
   const f = fields(t);
+  const [problem, setProblem] = useState<string | null>(null);
   const MISMATCH =
     "The two passwords do not match. Retype the second one — this field is shown here in its error state as a reference.";
   const schema = z
     .object({ password: f.password("New password"), confirm: f.required("Confirm new password") })
     .refine((v) => v.password === v.confirm, { path: ["confirm"], message: MISMATCH });
   const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema), ...formMode });
-  const submit = useMockSubmit(form, "Password changed. You are signed in.");
+  const submit = form.handleSubmit(async ({ password }) => {
+    setProblem(null);
+    const token = new URLSearchParams(window.location.search).get("reset");
+    if (!token) {
+      setProblem("Open the link from your reset email: it carries the key to this page.");
+      return;
+    }
+    try {
+      await auth.resetPassword(token, password);
+      history.replaceState(null, "", window.location.pathname);
+      notify("Password changed. Sign in with the new one.", "success", { dismissLabel: t.a11y.dismiss });
+      go("signin");
+    } catch (err) {
+      setProblem(failure(err));
+    }
+  });
   const { errors, isSubmitting } = form.formState;
 
-  // Reference: the confirm field is shown in its error state on arrival.
+  // Reference: the confirm field is shown in its error state on arrival. With a real
+  // reset link (?reset=…) the screen is a working form and starts clean.
   useEffect(() => {
-    form.setError("confirm", { message: MISMATCH });
+    if (!new URLSearchParams(window.location.search).get("reset")) form.setError("confirm", { message: MISMATCH });
   }, [form]);
 
   return (
@@ -313,6 +406,7 @@ function Reset({ go }: { go: (v: View) => void }) {
       <ScreenHead id="reset-title" eyebrow="Password reset" title="Choose a new password" />
       <form noValidate onSubmit={submit}>
         <Stack flow="flex" gap={24}>
+          {problem && <Notice tone="error">{problem}</Notice>}
           <Field
             id="rp-pass"
             label="New password"
@@ -327,7 +421,7 @@ function Reset({ go }: { go: (v: View) => void }) {
             <Input type="password" autoComplete="new-password" {...form.register("confirm")} />
           </Field>
           <Button type="submit" block loading={isSubmitting}>
-            Set new password and sign in
+            Set new password
           </Button>
         </Stack>
       </form>
@@ -342,28 +436,69 @@ function Reset({ go }: { go: (v: View) => void }) {
   );
 }
 
-function Verify() {
+function Verify({ email, setEmail, go }: { email: string; setEmail: (e: string) => void; go: (v: View) => void }) {
   const { t } = useI18n();
-  const schema = z.object({ code: fields(t).required("Verification code") });
-  const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema), ...formMode });
-  const submit = useMockSubmit(form, "Email verified. Welcome to NOVA.");
+  const [problem, setProblem] = useState<string | null>(null);
+  // an address typed here (arriving without a sign-up or sign-in just before) is the one to verify
+  const schema = z.object({
+    email: email ? z.string() : fields(t).email("Email address"),
+    code: fields(t).required("Verification code"),
+  });
+  const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema), defaultValues: { email, code: "" }, ...formMode });
+  const submit = form.handleSubmit(async (v) => {
+    setProblem(null);
+    const address = email || v.email;
+    try {
+      await auth.verifyEmail(address, v.code);
+      notify("Email verified. Sign in to continue.", "success", { dismissLabel: t.a11y.dismiss });
+      go("signin");
+    } catch (err) {
+      setProblem(failure(err));
+    }
+  });
   const { errors, isSubmitting } = form.formState;
+
+  const resend = async () => {
+    const address = email || form.getValues("email");
+    if (!address) {
+      form.setError("email", { message: t.form.requiredError("Email address") });
+      return;
+    }
+    try {
+      await auth.resendCode(address);
+      setEmail(address);
+      notify("A new code is on its way", "success", { dismissLabel: t.a11y.dismiss });
+    } catch (err) {
+      setProblem(failure(err));
+    }
+  };
 
   return (
     <section aria-labelledby="verify-title">
       <ScreenHead id="verify-title" eyebrow="One last step" title="Verify your email" />
       <Text tone="muted">
-        We sent a six-character code to <strong className="text-fg">you@example.com</strong>. Enter it below, or use the
-        link in the same email.
+        {email ? (
+          <>
+            We sent a six-character code to <strong className="text-fg">{email}</strong>. Enter it below.
+          </>
+        ) : (
+          <>Enter the six-character code we emailed you, with the address it went to.</>
+        )}
       </Text>
       <form className="mt-6" noValidate onSubmit={submit}>
         <Stack flow="flex" gap={24}>
+          {problem && <Notice tone="error">{problem}</Notice>}
+          {!email && (
+            <Field id="v-email" label="Email address" required requiredLabel={t.form.required} error={errors.email?.message}>
+              <Input type="email" autoComplete="email" placeholder="you@example.com" {...form.register("email")} />
+            </Field>
+          )}
           <Field
             id="v-code"
             label="Verification code"
             required
             requiredLabel={t.form.required}
-            hint="The code expires in 15 minutes."
+            hint="The code expires in 10 minutes."
             error={errors.code?.message}
           >
             <Input
@@ -383,11 +518,7 @@ function Verify() {
       </form>
       <Notice className="mt-6" bareIcon>
         Nothing arrived? Check spam, then{" "}
-        <Button
-          variant="ghost"
-          size="inline"
-          onClick={() => notify("A new code is on its way", "success", { dismissLabel: t.a11y.dismiss })}
-        >
+        <Button variant="ghost" size="inline" onClick={resend}>
           send it again
         </Button>
         .
@@ -398,6 +529,8 @@ function Verify() {
 
 export function AuthScreens() {
   const [view, go] = useView();
+  // the address a code was sent to, carried from sign-up or sign-in to the verify screen
+  const [pendingEmail, setPendingEmail] = useState("");
 
   useEffect(() => {
     document.title = TITLES[view];
@@ -405,11 +538,11 @@ export function AuthScreens() {
 
   return (
     <>
-      {view === "signin" && <SignIn go={go} />}
-      {view === "signup" && <SignUp go={go} />}
+      {view === "signin" && <SignIn go={go} onUnverified={setPendingEmail} />}
+      {view === "signup" && <SignUp go={go} onRegistered={setPendingEmail} />}
       {view === "forgot" && <Forgot go={go} />}
       {view === "reset" && <Reset go={go} />}
-      {view === "verify" && <Verify />}
+      {view === "verify" && <Verify email={pendingEmail} setEmail={setPendingEmail} go={go} />}
 
       <Cluster as="nav" gap={8} className="mt-12 border-t border-border pt-6" aria-label="Authentication screens">
         <span className={cn(flex.fixed, "me-2 text-caption leading-tight whitespace-nowrap text-meta")}>All screens</span>

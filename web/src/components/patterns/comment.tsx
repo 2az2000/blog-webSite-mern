@@ -19,6 +19,7 @@ export function Comment({
   reply,
   moderated,
   labels,
+  actions,
   children,
 }: {
   author: string;
@@ -31,6 +32,8 @@ export function Comment({
   reply?: boolean;
   moderated?: boolean;
   labels: { reply: string; report: string };
+  /** Replaces the default like / reply / report row (a live thread brings its own). */
+  actions?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -54,7 +57,8 @@ export function Comment({
           </Text>
         </div>
         <p className={cn("text-body-sm leading-160", moderated ? "text-meta italic" : "text-fg-soft")}>{children}</p>
-        {!moderated && (
+        {!moderated && actions && <div className="mt-3 flex flex-wrap items-center gap-1">{actions}</div>}
+        {!moderated && !actions && (
           <div className="mt-3 flex items-center gap-1">
             <LikeButton count={likes} />
             <button type="button" className={commentAction}>

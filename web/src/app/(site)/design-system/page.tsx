@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "The NOVA design system",
   description:
     "Foundations, editorial signatures, components and states as they are actually implemented in assets/nova.css and assets/nova.js.",
+  robots: { index: false, follow: false },
 };
 
 /**

@@ -116,6 +116,9 @@ export async function withChrome(fn) {
 }
 
 /** Opens `url` at `width`, collects console errors, runs `fn({ eval, sessionId, errors })`. */
+/* The cookie notice is new chrome the reference does not have: every page the fidelity scripts open has already answered it. */
+const CONSENT_ANSWERED = `try{localStorage.setItem("nova:consent",JSON.stringify({schema:1,preferences:false,at:"2026-01-01T00:00:00.000Z",policy:"2026-10-26"}))}catch(e){}`;
+
 export async function withPage(session, url, width, fn, { height = 900, settle = 400 } = {}) {
   const { targetId } = await session.send("Target.createTarget", { url: "about:blank" });
   const { sessionId } = await session.send("Target.attachToTarget", { targetId, flatten: true });
@@ -132,6 +135,7 @@ export async function withPage(session, url, width, fn, { height = 900, settle =
   try {
     await session.send("Runtime.enable", {}, sessionId);
     await session.send("Page.enable", {}, sessionId);
+    await session.send("Page.addScriptToEvaluateOnNewDocument", { source: CONSENT_ANSWERED }, sessionId);
     await session.send("Emulation.setDeviceMetricsOverride",
       { width, height, deviceScaleFactor: 1, mobile: width < 769 }, sessionId);
 

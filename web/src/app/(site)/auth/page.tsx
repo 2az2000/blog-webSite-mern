@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { Stack, Text, Wordmark } from "@/components/primitives";
+import { Stack, Text, TextLink, Wordmark } from "@/components/primitives";
+import { routes } from "@/config/routes";
 
 import { AuthScreens } from "./auth-screens";
 
@@ -9,6 +10,7 @@ import { AuthScreens } from "./auth-screens";
 export const metadata: Metadata = {
   title: "Sign in",
   description: "Sign in to NOVA or create a free account.",
+  robots: { index: false, follow: false },
 };
 
 export default function AuthPage() {
@@ -30,7 +32,7 @@ export default function AuthPage() {
           <li>Comment once your email is verified</li>
         </Stack>
         <Text variant="meta" tone="soft" mt={32}>
-          We never sell reader data. Read the privacy notice before you sign up if that matters to you — it should.
+          We never sell reader data. Read the <TextLink href={routes.privacy()}>privacy notice</TextLink> before you sign up if that matters to you — it should.
         </Text>
       </aside>
 

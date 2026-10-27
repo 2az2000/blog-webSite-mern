@@ -18,6 +18,11 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
     title: { default: t.site.title, template: `%s — ${t.site.name}` },
     description: t.site.description,
+    // the feed readers' apps and aggregators look for
+    alternates: { types: { "application/rss+xml": [{ url: "/feed.xml", title: t.site.name }] } },
+    // the default link preview; a story or a section overrides it with its own
+    openGraph: { type: "website", siteName: t.site.name, title: t.site.title, description: t.site.description },
+    twitter: { card: "summary_large_image" },
   };
 }
 

@@ -11,7 +11,8 @@ import { SecHead } from "@/components/patterns/sec-head";
 import { routes } from "@/config/routes";
 import { getDictionary, getLocale } from "@/i18n";
 import { cn } from "@/lib/utils";
-import { getArticles } from "@/services/content";
+import { formatLongDate, formatWeekday } from "@/lib/format";
+import { getArticles, getLatestIssue } from "@/services/content";
 
 import { DispatchSignup, FrequencyPicker, TopicToggles } from "./newsletter-client";
 
@@ -63,7 +64,10 @@ const FAQ = [
 export default async function NewsletterPage() {
   const locale = await getLocale();
   const t = await getDictionary(locale);
-  const sample = await getArticles(["grid-rebuild", "archive-fever", "open-source-money"]);
+  const [issue, fallback] = await Promise.all([getLatestIssue(), getArticles(["grid-rebuild", "archive-fever", "open-source-money"])]);
+  // the latest issue that really went out; before the first one, the design's sample stands in
+  const sample = issue ? issue.articles : fallback;
+  const sentAt = issue?.sentAt ? new Date(issue.sentAt) : null;
 
   return (
     <>
@@ -136,7 +140,7 @@ export default async function NewsletterPage() {
               width={1200}
               height={800}
               sizes="(max-width: 768px) 100vw, 40vw"
-              caption="Issue 418, sent Friday 5 September 2026."
+              caption={sentAt ? `${issue?.subject}, sent ${formatWeekday(sentAt, locale)} ${formatLongDate(sentAt, locale)}.` : "Issue 418, sent Friday 5 September 2026."}
               credit="Photograph for NOVA"
             />
           </Col>
@@ -145,20 +149,34 @@ export default async function NewsletterPage() {
               <Cluster gap={12} wrap={false} className="border-b-2 border-fg pb-4">
                 <Wordmark size="sm" className={flex.fixed} />
                 <Text as="span" variant="meta" className={flex.fill}>
-                  The Dispatch · Issue 418
+                  {issue ? `The Dispatch · ${issue.subject}` : "The Dispatch · Issue 418"}
                 </Text>
                 <Text as="span" variant="meta" className={cn(flex.fixed, "whitespace-nowrap")}>
-                  Fri 5 Sep
+                  {sentAt ? `${formatWeekday(sentAt, locale).slice(0, 3)} ${formatLongDate(sentAt, locale).replace(/,? \d{4}$/, "")}` : "Fri 5 Sep"}
                 </Text>
               </Cluster>
-              <p className="my-6 font-serif text-h4 leading-h4 tracking-h4 text-fg">
-                Two things this week that look unrelated and are not: the interconnection queue, and who is still paying
-                to host the internet&apos;s archives. Both are maintenance stories. Both are being decided by people
-                nobody elected to decide them.
-              </p>
-              <Text variant="meta" mb={16}>
-                — Marcus Feldt, Business Editor
-              </Text>
+              {issue ? (
+                // the editor’s note as written: paragraphs, and whatever signature the editor put at the end
+                issue.note
+                  .split(/\n{2,}/)
+                  .filter(Boolean)
+                  .map((p, i) => (
+                    <p key={i} className="my-6 font-serif text-h4 leading-h4 tracking-h4 text-fg first:mt-6 last:mb-4">
+                      {p}
+                    </p>
+                  ))
+              ) : (
+                <>
+                  <p className="my-6 font-serif text-h4 leading-h4 tracking-h4 text-fg">
+                    Two things this week that look unrelated and are not: the interconnection queue, and who is still paying
+                    to host the internet&apos;s archives. Both are maintenance stories. Both are being decided by people
+                    nobody elected to decide them.
+                  </p>
+                  <Text variant="meta" mb={16}>
+                    — Marcus Feldt, Business Editor
+                  </Text>
+                </>
+              )}
               <CardList>
                 {sample.map((a, i) => (
                   <ArticleCard key={a.slug} article={a} variant="numbered" rank={i + 1} locale={locale} headingLevel={4} />

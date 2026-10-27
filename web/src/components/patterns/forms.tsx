@@ -12,6 +12,8 @@ import { Button, Checkbox, Heading, Input, Text } from "@/components/primitives"
 import { useI18n } from "@/i18n/i18n-provider";
 import { formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { ApiError } from "@/lib/api";
+import { newsletter } from "@/lib/reader-api";
 import { fields, mockSubmit } from "@/lib/validation";
 
 /*
@@ -81,7 +83,15 @@ export function NewsletterForm({
   const emailLabel = label ?? t.newsletter.emailLabel;
   const schema = z.object({ email: fields(t).email(emailLabel), offers: z.boolean().optional() });
   const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema), ...formMode });
-  const onSubmit = useMockSubmit(form, success ?? t.newsletter.subscribed);
+  const onSubmit = form.handleSubmit(async ({ email }) => {
+    try {
+      await newsletter.subscribe(email, [], "both", variant === "band" ? "band" : "section");
+      notify(success ?? t.newsletter.subscribed, "success", { dismissLabel: t.a11y.dismiss });
+      form.reset();
+    } catch (err) {
+      notify(err instanceof ApiError && err.code === "RATE_LIMITED" ? t.newsletter.tooMany : t.form.failed, "error", { dismissLabel: t.a11y.dismiss });
+    }
+  });
   const err = form.formState.errors.email?.message;
 
   return (

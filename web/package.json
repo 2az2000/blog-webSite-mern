@@ -10,7 +10,8 @@
     "check:visual": "node scripts/visual-check.mjs",
     "shot": "node scripts/shot.mjs",
     "check:tokens": "node scripts/check-tokens.mjs",
-    "diff:layout": "node scripts/layout-diff.mjs"
+    "diff:layout": "node scripts/layout-diff.mjs",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -28,6 +29,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

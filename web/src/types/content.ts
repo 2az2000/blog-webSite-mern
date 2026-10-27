@@ -83,6 +83,8 @@ export type FigureBlock = {
   ratio?: "3x2" | "16x9";
   /** Reach past the measure (`.frame--wide`). */
   wide?: boolean;
+  /** Ornamental: read as nothing by a screen reader, so `alt` may be empty. */
+  decorative?: boolean;
 };
 
 export type ChartRow = { label: string; value: number; muted?: boolean };
@@ -99,7 +101,7 @@ export type BodyBlock =
   | { type: "recirc"; label: string; slugs?: string[] }
   | { type: "chapter"; id: string; label: string; title: string }
   /** Long-form full-width image band (`.lf-break`). */
-  | { type: "break"; src: string; alt: string; width: number; height: number; caption: string; credit: string }
+  | { type: "break"; src: string; alt: string; width: number; height: number; caption: string; credit: string; decorative?: boolean }
   | { type: "chart"; description: string; max: number; unit: string; rows: ChartRow[] }
   | { type: "chartNote"; text: string }
   | { type: "note"; label: string; text: string }

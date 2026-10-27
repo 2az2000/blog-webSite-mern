@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SiteImage as Image } from "@/components/primitives/media/site-image";
 import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 
@@ -242,7 +242,7 @@ export function ArticleBody({
                 key={i}
                 inProse
                 src={b.src}
-                alt={b.alt}
+                alt={b.decorative ? "" : b.alt}
                 width={b.width}
                 height={b.height}
                 ratio={b.ratio ?? "3x2"}
@@ -298,7 +298,7 @@ export function ArticleBody({
               </section>
             );
           case "break":
-            return <LongformBreak key={i} {...b} />;
+            return <LongformBreak key={i} {...b} alt={b.decorative ? "" : b.alt} />;
           case "chart":
             return <BarChart key={i} description={b.description} max={b.max} unit={b.unit} rows={b.rows} />;
           case "chartNote":
@@ -348,6 +348,7 @@ function LongformBreak({
   height: number;
   caption: ReactNode;
   credit: ReactNode;
+  decorative?: boolean;
 }) {
   return (
     <figure className="relative my-20 -mx-outset w-outset-full bg-ink max-lg:mx-0 max-lg:w-full max-md:my-12">

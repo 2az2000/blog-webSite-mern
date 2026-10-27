@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CookieSettingsButton } from "@/components/patterns/cookie-notice";
 
 import { Container, refLink, Wordmark } from "@/components/primitives";
 import { footerColumns, legalLinks } from "@/config/navigation";
@@ -55,6 +56,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
                 {t.footer.links[l.key]}
               </Link>
             ))}
+            <CookieSettingsButton />
           </nav>
         </div>
       </Container>
