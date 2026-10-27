@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "builds": [{ "src": "api/index.ts", "use": "@vercel/node@5" }],
+  "crons": [
+    { "path": "/api/v1/internal/publish-due", "schedule": "0 4 * * *" },
+    { "path": "/api/v1/internal/run-issues", "schedule": "0 7 * * *" }
+  ],
+  "rewrites": [{ "source": "/api/(.*)", "destination": "api/index.ts" }]
+}
